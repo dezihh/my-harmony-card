@@ -107,4 +107,49 @@ Possible entries below each action
 
 
 ### Button Options
+Possible entries below Button[1-4]
+| Name | Type | Default | Supported options | Description |
+| -------------- | ----------- | ------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name` | text | **Required** | 'mdi:netflix'| The name of Button (max 4 Chars) |
+| `command`| number | **Required** | mdi | bla |
+| `tooltip`| test | **Optional** | mdi | Command to send insted of 'Guide' |
+| `Home`| test | **Optional** | mdi | Command to send insted of 'Home' |
+| `Info`| test | **Optional** | mdi | Command to send insted of 'Home' |
 
+
+### Complete Examtle
+```yaml
+type: custom:my-harmony-card
+name: Harmony
+entity: remote.harmony_wohnzimmer
+activities:
+  Musik hören:
+    name: 36830123
+    device_id: 59107742
+    player_name: media_player.anlage
+    Button1:
+      label: MCh
+      command: ModeMultiChStereo
+      tooltip: Multichannel Stereo
+    Button2: null
+    Button3: null
+    Button4: null
+  NetFlix sehen:
+    name: 37038020
+    device_id: 43935598
+    volume_device_id: 59107742
+    player_name: media_player.lg_webos_smart_tv
+    Button1:
+      name: Set
+      command: Settings
+      tooltip: Settings
+    Button2:
+      name: Smt
+      command: SmartMenu
+      tooltip: SmartMenu
+    Button3: null
+    Button4: null
+dimensions:
+  scale: '0.59'
+  border_width: 2px
+````
