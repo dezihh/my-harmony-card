@@ -42,6 +42,69 @@ resources:
 # lovelace config: default view
 ```yaml
 - type: 'custom:my-harmony-card'
-  entity: remote.wohnzimmer
-  
+  entity: remote.harmony_wohnzimmer
+  name: Harmony
+  tooltip: true
+  activities:
+    PowerOff:
+      name: -1
+      device_id: -1 
 ```
+
+### Main Options
+| Name | Type | Default | Supported options | Description |
+| -------------- | ----------- | ------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type` | string | **Required** | `custom:my-harmony-card` | Type of the card |
+| `entity` | string | **Required** |  | remote entity |
+| `name` | string | **Option** |  | tv name |
+| `tooltip` | bool | **Option** |  | Displays Tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
+
+### Actions
+You allways need PowerOff as defined action. To configure the rest of the actions correctly, the file harmony_????.conf, which is located in the root directory of the Home Assistant 
+Installation directory is required for reading. Please note the above ???? is a number. 
+
+Next, open the file. At the top you will find the “Activities” section. Here, the heading of each activity is the defined activity (e.g. Watch TV). The number in front of the activity on the same line is added as "name:" under the activity (e.g. 36824865). You repeat this process with all other activities
+#### Example harmony????.conf
+```json
+{    "Activities": {
+        "-1": "PowerOff",
+        "36824865": "Watch Tv",
+        "36829890": "Play Blue Ray",
+        "36830123": "Listen Music",
+        "37038020": "Play PS5"
+    },
+```
+#### Example actions
+```yaml
+~~~
+entity: remote.harmony_wohnzimmer
+activities:
+  Listen to Music:
+    name: 36830123
+    device_id: 59107742
+  Watch TV:
+    name: 36824865
+    device_id: 59107742
+~~~~
+```
+#### The device_id:
+The device_id: is one of the most important parameters. It defines which device is addressed when a command is sent. The number of the device that is <b>primarily addressed</b> by remote control should be entered as device_id:. 
+The device_id: of each device can also be found in the harmony???.conf at the end of the respective device definition and begins with "id": . Please only accept the respective number. 
+Example: device_id: 59127742
+
+### Activities Options
+Possible entries below each action
+| Name | Type | Default | Supported options | Description |
+| -------------- | ----------- | ------------ | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `device_id` | number | **Required** | 'mdi:netflix'| url of the image to be displayed in the channel pad popup |
+| `volume_device_id`| number | **Optional** | mdi | bla |
+| `Guide`| test | **Optional** | mdi | Command to send insted of 'Guide' |
+| `Home`| test | **Optional** | mdi | Command to send insted of 'Home' |
+| `Info`| test | **Optional** | mdi | Command to send insted of 'Home' |
+| `OK`| test | **Optional** | mdi | Command to send insted of 'Home' |
+| `player_name` | string | **Optional** | app name | media_player  |
+| `tooltip` | string | **Optional** | app name | you have  |
+
+
+### Button Options
+
