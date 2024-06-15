@@ -25,10 +25,10 @@ jobs:
           npm install
           npm version --allow-same-version --git-tag-version=true --commit-hooks=false "${{ github.event.release.tag_name }}"
           npm run build
-
-      - name: Upload build result to release
+ 
+      - name: Upload Release Asset
+        id: upload-release-asset
         uses: svenstaro/upload-release-action@v1-release
-
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: dist/my-harmony-card.js
