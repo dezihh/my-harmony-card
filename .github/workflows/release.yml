@@ -9,20 +9,20 @@ jobs:
     name: Prepare release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v1
+      
+      - uses: actions/setup-node@v3
         with:
           node-version: 20
 
       - name: Build the file
         run: |
           npm install
-          npm version --git-tag-version=true --allow-same-version --commit-hooks=false "${{ github.event.release.tag_name }}"
+          npm version --git-tag-version=false --commit-hooks=false "${{ github.event.release.tag_name }}"
           npm run build
 
       - name: Upload build result to release
-        uses: svenstaro/upload-release-action@v2
+        uses: svenstaro/upload-release-action@v1-release
 
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
