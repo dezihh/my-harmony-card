@@ -14,7 +14,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-
+          
+      - name: Set up Git
+        run: |
+          git config --global user.email "myweb@ziegler.zip"
+          git config --global user.name "Derek"
+          
       - name: Build the file
         run: |
           npm install
