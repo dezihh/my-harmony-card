@@ -2,7 +2,11 @@ name: Build
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -21,7 +25,7 @@ jobs:
           npm run build
 
       - name: Archive built file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: my-harmony-card
           path: dist/my-harmony-card.js
