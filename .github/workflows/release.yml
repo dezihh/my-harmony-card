@@ -23,7 +23,7 @@ jobs:
       - name: Build the file
         run: |
           npm install
-          npm version --git-tag-version=true --commit-hooks=false "${{ github.event.release.tag_name }}"
+          npm version --allow-same-version --git-tag-version=true --commit-hooks=false "${{ github.event.release.tag_name }}"
           npm run build
 
       - name: Upload build result to release
