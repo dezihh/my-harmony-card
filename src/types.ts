@@ -20,3 +20,4 @@ export interface EntityRegistryDisplayEntry {
 
 export interface WindowWithCards extends Window {
   customCards: unknown[];
+}
