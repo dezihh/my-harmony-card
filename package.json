@@ -17,8 +17,8 @@
     "dependencies": {
         "inflight": "lru-cache",
         "rimraf": "^3.0.2",
-        "@humanwhocodes/object-schema": "eslint/object-schema",
-        "@humanwhocodes/config-array": "eslint/config-array",
+        "@humanwhocodes/object-schema": "https://github.com/eslint/object-schema.git",
+        "@humanwhocodes/config-array": "https://github.com/eslint/config-array.git"
         "custom-card-helpers": "^1.9.0",
         "home-assistant-js-websocket": "^9.3.0",
         "lit": "^3.1.4"
