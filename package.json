@@ -15,11 +15,16 @@
     "author": "Derek <myweb@ziegler.zip>",
     "license": "MIT",
     "dependencies": {
+        "inflight": "lru-cache",
+        "rimraf": "^3.0.2",
+        "@humanwhocodes/object-schema": "eslint/object-schema",
+        "@humanwhocodes/config-array": "eslint/config-array",
         "custom-card-helpers": "^1.9.0",
         "home-assistant-js-websocket": "^9.3.0",
         "lit": "^3.1.4"
     },
     "devDependencies": {
+        "babel-preset-es2015": "babel-preset-env",
         "@babel/core": "^7.24.7",
         "@babel/plugin-proposal-class-properties": "^7.14.5",
         "@babel/plugin-proposal-decorators": "^7.24.7",
