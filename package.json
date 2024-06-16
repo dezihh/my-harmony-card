@@ -1,6 +1,6 @@
 {
     "name": "my-harmony-card",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "My Harmony Remote card",
     "keywords": [
         "home-assistant",
@@ -12,7 +12,7 @@
     ],
     "module": "my-harmony-card.js",
     "repository": "https://github.com/dezihh/my-harmony-card.git",
-    "author": "Derek <myweb@ziegler.zip>",
+    "author": "Derek <dev@ziegler.zip>",
     "license": "MIT",
     "dependencies": {
         "custom-card-helpers": "^1.9.0",

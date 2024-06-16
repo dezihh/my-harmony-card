@@ -119,7 +119,7 @@ class MyHarmony extends LitElement {
         this._show_vol_text = false;
         this.volume_value = 0;
         this._current_activity = '';
-        this.debug = true;
+        this.debug = false;
 
     }
 
