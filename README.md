@@ -140,19 +140,19 @@ activities:
     device_id: 59107742
     player_name: media_player.anlage
     Button1:
-      label: MCh
+      name: MCh
       command: ModeMultiChStereo
       tooltip: Multichannel Stereo
     Button2:
-      label: QS1
+      name: QS1
       command: QuickSelect1
       tooltip: AV Receiver Macro 1
     Button3:
-      label: CD
+      name: CD
       command: InputCd
       tooltip: Input CD Player
     Button4:
-      label: Eco
+      name: Eco
       command: Eco
       tooltip: Eco Mode
   NetFlix sehen:
