@@ -17,28 +17,97 @@ I decided to develop a solution for Harmony based on this. Unfortunately, the cu
 For this reason, the functions of the Harmony's buttons cannot be mapped 1:1 to the functions of the physical remote control.
 I therefore took the route of using actions to control the device groups and, at the moment when an action is active, addressing the device directly with its ID and aligning the buttons on the remote control as flexibly as possible.
 
-## hacs Card install
-1. Find and install `My Harmony Card` plugin
+## HACS Card install
+### 1. Access HACS
 
-2. Add a reference  inside your resources config:
+- Open your Home Assistant interface.
+- Navigate to the sidebar and click on **HACS**.
 
-  ```yaml
-resources:
-  - type: module
-    url: /hacsfiles/my-harmony-card/my-harmony-card.js
+### 2. Open Frontend Section
+
+- In HACS, go to the **Frontend** tab.
+
+### 3. Add a Custom Repository
+
+- Click on the three dots (menu) in the upper right corner of the HACS Frontend page.
+- Select **Custom repositories** from the dropdown menu.
+
+### 4. Add My Harmony Card Repository
+
+- In the dialog that appears, you will see a text field labeled **"Repository"**.
+- Paste the following URL into this field: `https://github.com/dezihh/my-harmony-card`.
+- Set the **Category** to `Lovelace` from the dropdown menu.
+- Press the **Add** button.
+
+### 5. Install My Harmony Card
+
+- After adding the repository, close the custom repositories dialog.
+- Return to the HACS Frontend page, and you should now see **My-Harmony-Card** listed.
+- Click on **My-Harmony-Card**.
+- Press the **Download** button to install it.
+
+### 6. Configure Lovelace
+
+- Once the card is installed, you need to add it to your Lovelace dashboard.
+- Go to your Lovelace dashboard.
+- Click on the three dots (menu) in the upper right corner of the dashboard and select **Edit Dashboard**.
+- Click on **Add Card**.
+- Search for **My-Harmony-Card** and select it.
+- Configure the card settings as per your requirements and save it.
+
+### Post-Installation
+
+- After installing and configuring My-Harmony-Card, you may need to refresh your Home Assistant page or restart Home Assistant to ensure the card loads correctly.
+- Refer to the documentation provided in the repository for any additional configuration options or troubleshooting tips.
+
+By following these steps, you should have My-Harmony-Card successfully installed and running in your Home Assistant setup.
+
+
+## Manual install
+To manually install My-Harmony-Card in Home Assistant, please follow these detailed steps:
+
+### 1. Navigate to Your Home Assistant Root Directory
+- Open a terminal window.
+- Navigate to the root directory of your Home Assistant installation. This is the directory where you find `configuration.yaml`.
+
+```sh
+cd /path/to/your/homeassistant/
 ```
+- Change to the www/community/ directory
+- Create a new directory for My Harmony Card
+```cd www/community/
+mkdir my-harmony-card
+cd my-harmony-card
+```
+- Download most actual version and verify Download
+- _Please note, you have to look to the releases to find the latest version id. Please enter the most recent version_
+```
+wget https://github.com/dezihh/my-harmony-card/releases/download/1.0.2/my-harmony-card.js
+ls -l my-harmony-card.js
+```
+###  2. Add the Resource in Home Assistant
+- Open your Home Assistant interface.
+- Go to a dashboard in the frontend and switch to edit mode by clicking the pencil icon in the upper right corner.
+- Click on the three dots (menu) in the upper right corner.
+- Select Resources or Manage Resources (the exact wording might vary).
 
-### Manual install
+### 3. Add the JavaScript Module
+- Click on the blue Add Resource button.
+- In the URL field, enter:
+```
+/hacsfiles/my-harmony-card/my-harmony-card.js?hacstag=1718527325
+```
+- Set the Resource Type to JavaScript Module using the radio button.
+- Click Save.
 
-1. Download and copy `my-harmony-card.js` from (https://github.com/dezihh/my-harmony-card/releases/latest) into your custom components  directory.
+### 4. Refresh your broser
+- Reload your browser window by pressing Shift + F5 to ensure the new resource is loaded.
 
-2. Add a reference `my-harmony-card.js` inside your resources config:
+### Post-Installation
+- After completing these steps, My Harmony Card should be available for use in your Lovelace dashboard.
+By following these steps, you should have My-Harmony-Card successfully installed and running in your Home Assistant setup
+I recomand HACS setup, because of aupdatemangement
 
-  ```yaml
-  resources:
-    - url: /local/"your_directory"/my-harmony-card.js
-      type: module
-  ```
 # lovelace config: default view
 At least the following entries must be present for the card to work:
 ```yaml
@@ -177,5 +246,17 @@ dimensions:
 
 ## More Functions
 The buttons Forward and rewind have two functions:
-Short pressed: FastForward or Rewind
-Long pressed: SkipForward or SkipBack
+- Short pressed: FastForward or Rewind
+- Long pressed: SkipForward or SkipBack
+
+## Troubleshooting
+After installing card, adding default configuration and harmony entity, you should see immediate your configurated activities, if you press the "ACT" Button.<br>
+In PowerOff mode, the power button should be "red", otherwise "green". <br>
+If you have configured your activities as described above, you should be able to do the first actions (ie. VolumeUp, Guide, Home, Number, etc.) <br>
+If this isn't working, you should not go on, because there is a naming missmatch between your configured activities and the real activities. This could be happen, due nameing special characters (ie. +, -, " ", Ü, ^, etc.). <br>
+In this case I recomand either
+- Rename your activity at the harmony device to a "better" name, best without whitespaces
+- Copy name of activity from Development Tools --> Conditions --> <Harmony Device> --> Attributes <br>
+
+**Relevant for mapping activity is the name (ie. NetFlix sehen: in the example above), _not_ the named number!**
+  
