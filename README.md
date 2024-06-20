@@ -259,4 +259,31 @@ In this case I recomand either
 - Copy name of activity from Development Tools --> Conditions --> <Harmony Device> --> Attributes <br>
 
 **Relevant for mapping activity is the name (ie. NetFlix sehen: in the example above), _not_ the named number!**
+
+### Debugging
+1. Launch the Chrome browser on your computer and access my-harmony-card.
+
+2. Access Developer Tools:
+Click on the three vertical dots in the upper right corner of the Chrome window to open the menu.
+Navigate to More Tools.
+Select Developer Tools from the dropdown menu.
+Navigate to the Console Tab:
+
+3. Once the Developer Tools window is open, click on the Console tab. This tab displays logs and diagnostic information about the current web page.
+4. Inspect the Log Output:
+
+In the Console tab, you will find the log output of the messages being sent. This is particularly useful when a button is pressed on the card.
+The log will display the following information:
+- Current Activity: The current action or state being executed.
+- device_id: The identifier of the device to which the message is being sent.
+- Command: The command being sent.
   
+5. Example output:
+   ```_button Pressed: DeviceID: 43632597 - Command: VolumeUp - entity_id: remote,harmony_wohnzimmer ```
+
+6. As well you can see the current Activitty and the used DeviceID:
+   ``` Current Activity Fernsehen - DeviceID: 43935597```
+
+**Have fun!**
+   
+   
