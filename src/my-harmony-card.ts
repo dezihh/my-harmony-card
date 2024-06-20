@@ -257,7 +257,7 @@ class MyHarmony extends LitElement {
                          <ha-icon icon="mdi:television-guide"/> </button>
 
                          <button class="btn ripple item_up" style="background-color: transparent;"
-                            @click=${() => this._button("Up")}><ha-icon icon="mdi:chevron-up"/></button>
+                            @click=${() => this._button("DirectionUp")}><ha-icon icon="mdi:chevron-up"/></button>
                          <button class="btn ripple item_act"
                             @mousedown=${(e: MouseEvent) => this._handleButtonDown("Menu", "media")}
                             @mouseup=${(e: MouseEvent) => this._handleButtonUp("Menu")}
