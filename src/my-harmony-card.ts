@@ -31,7 +31,6 @@ windowWithCards.customCards.push({
 @customElement(CARD_TAG_NAME)
 class MyHarmony extends LitElement {
     debug: boolean;
-
     public hass!: HomeAssistant;
     public config!: any;
     private _show_keypad: boolean;
@@ -441,6 +440,7 @@ class MyHarmony extends LitElement {
             throw new Error("Invalid configuration");
         }
         this.config = config;
+        this.debug = config.debug === true;
     }
 
     // Get the card size
