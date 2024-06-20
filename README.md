@@ -262,15 +262,16 @@ In this case I recomand either
 
 ### Debugging
 1. Launch the Chrome browser on your computer and access my-harmony-card.
-
-2. Access Developer Tools:
+2. Open the config of card and add in the root of config ```debug: true``` to enable debugging
+3. Save your config
+4. Access Developer Tools:
 Click on the three vertical dots in the upper right corner of the Chrome window to open the menu.
 Navigate to More Tools.
 Select Developer Tools from the dropdown menu.
 Navigate to the Console Tab:
 
-3. Once the Developer Tools window is open, click on the Console tab. This tab displays logs and diagnostic information about the current web page.
-4. Inspect the Log Output:
+5. Once the Developer Tools window is open, click on the Console tab. This tab displays logs and diagnostic information about the current web page.
+6. Inspect the Log Output:
 
 In the Console tab, you will find the log output of the messages being sent. This is particularly useful when a button is pressed on the card.
 The log will display the following information:
