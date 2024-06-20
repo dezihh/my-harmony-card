@@ -279,7 +279,7 @@ The log will display the following information:
 - Command: The command being sent.
   
 5. Example output:
-   ```_button Pressed: DeviceID: 43632597 - Command: VolumeUp - entity_id: remote,harmony_wohnzimmer ```
+   ```_button Pressed: DeviceID: 43632597 - Command: VolumeUp - entity_id: remote.harmony_wohnzimmer ```
 
 6. As well you can see the current Activitty and the used DeviceID:
    ``` Current Activity Fernsehen - DeviceID: 43935597```
