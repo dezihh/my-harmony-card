@@ -6,7 +6,7 @@ import { HomeAssistantFixed } from "./types";
 import { EDITOR_CARD_TAG_NAME } from "./const";
 
 interface ActivityData {
-  name: string;
+  //name: string;
   device_id: number;
 }
 
@@ -24,40 +24,37 @@ class LgRemoteControlEditor extends LitElement {
 
   setConfig(config) {
     this._config = config;
-    if (!this._config.activities || !this._config.activities.PowerOff) {
-      this._config.activities = {
-        ...this._config.activities,
-        PowerOff: {
-          name: 'Poweroff',
-          device_id: -1
-        }
-      };
-    }
   }
+  //  if (!this._config.activities || !this._config.activities.PowerOff) {
+  //    this._config.activities = {
+  //      ...this._config.activities,
+  //      PowerOff: {
+  //        name: 'Poweroff',
+  //        device_id: -1
+  //      }
+  //    };
+  //  }
+  //}
 
 
-  configChanged(event) {
-   const target = event.target;
-   const _config = { ...this._config };
 
-   if (target.id === 'remote-name') {
-     _config.name = target.value;
-   } else {
-     const [activityKey, attribute] = target.name.split('.');
-     if (_config.activities && _config.activities[activityKey]) {
-       _config.activities[activityKey][attribute] = target.value;
-     }
-   }
+  //###############
+  configChanged(ev) {
 
+    const _config = Object.assign({}, this._config);
+    _config[ev.target.name.toString()] = ev.target.value;
     this._config = _config;
 
-   const customEvent = new CustomEvent("config-changed", {
-    detail: { config: _config },
-     bubbles: true,
+    // A config-changed event will tell lovelace we have made changed to the configuration
+    // this make sure the changes are saved correctly later and will update the preview
+    const event = new CustomEvent("config-changed", {
+      detail: { config: _config },
+      bubbles: true,
       composed: true,
     });
-    this.dispatchEvent(customEvent);
+    this.dispatchEvent(event);
   }
+
   configChangedBool(ev) {
     const inputName = ev.target.name;
     const newValue = ev.target.value === 'true';
@@ -123,10 +120,11 @@ class LgRemoteControlEditor extends LitElement {
 
   getLgTvEntityDropdown(optionValue) {
     let remoteEntities = Object.keys(this.hass.states).filter(e => e.startsWith('remote.'));
-    let heading = 'Harmony Remote Entity+';
+    let heading = 'Harmony Remote Entity';
     let blankEntity = html``;
 
-    if (this._config.tventity == '' || !(remoteEntities).includes(optionValue)) {
+    //if (this._config.tventity == '' || !(remoteEntities).includes(optionValue)) {
+    if (this._config.entity == '' || !(remoteEntities).includes(optionValue)) {
       blankEntity = html`<option value="" selected> - - - - </option>`;
     }
 
@@ -137,7 +135,7 @@ class LgRemoteControlEditor extends LitElement {
               @change=${this.configChanged}>
         ${blankEntity}
         ${remoteEntities.map((eid) => {
-          if (eid != this._config.tventity) {
+          if (eid != this._config.entity) {
             return html`<option value="${eid}">${this.hass.states[eid].attributes.friendly_name || eid}</option>`;
           } else {
             return html`<option value="${eid}" selected>${this.hass.states[eid].attributes.friendly_name || eid}</option>`;
@@ -204,58 +202,45 @@ class LgRemoteControlEditor extends LitElement {
     `;
   }
 
-renderActivities(activities: { [key: string]: ActivityData }) {
-  if (!activities) {
-    activities = {};
-  }
+  renderActivities(activities){
+    const stateObj = this.hass.states[this._config.entity];
+    const activityList = stateObj.attributes.activity_list;
+  
+    // Get the keys of the activities in the config
+    const configActivityKeys = Object.keys(this._config.activities);
+  
+    // Add new activities from activityList that are not in configActivityKeys
+    const newActivities = activityList.filter(activity => !configActivityKeys.includes(activity));
+    const toDeleteActivities = configActivityKeys.filter(key => !activityList.includes(key));
+    const commonActivities = configActivityKeys.filter(key => activityList.includes(key));
+    
+    console.log("Gemeinsame Ojekte", commonActivities);
+    console.log('New activities:', newActivities);
+    console.log('toDelete', toDeleteActivities);
 
-  const visibleActivities = Object.entries(activities).filter(([activityName]) => activityName !== 'PowerOff');
-
-  return html`
-    <div class="heading">Activities:</div>
-    <br>
-    ${visibleActivities.map(([activityKey, activityData], index) => html`
-      <div class="activity-container">
-        <div class="form-group">
-          <label for="activity-${index}-key" class="activity-identifier">Activity Identifier:</label>
-          <input type="text" id="activity-identifier" name="${activityKey}.key" .value="${activityKey}" title="The name of Activity i.e. Watch TV" @input="${(e) => this.changeActivityKey(e, activityKey)}" class="activity-input">
-          <button @click="${() => this.removeActivity(activityKey)}" class="remove-button">Remove</button>
-        </div>
-        <div class="form-group">
-          <label for="activity-${index}-name">Activity Number:</label>
-          <input type="number" id="activity-name" name="${activityKey}.name" .value="${activityData.name}" title="The number of the activity (in harmony_*.conf)" @input="${this.configChanged}" class="activity-input">
-        </div>
-        <div class="form-group">
-          <label for="activity-${index}-device_id">Device ID:</label>
-          <input type="number" id="activity-id" name="${activityKey}.device_id" .value="${activityData.device_id}" title="The number of the primary device for this activiy (in harmony_*.conf)" @input="${this.configChanged}" class="activity-input">
-        </div>
-      </div>
-    `)}
-    <button @click="${this.addActivity}" class="add-activity-button">Add New Activity</button>
-  `;
-}
-
-
-changeActivityKey(event, oldKey) {
-  const newKey = event.target.value;
-  if (newKey !== oldKey) {
-    const _config = { ...this._config };
-    if (_config.activities[newKey]) {
-      // Key already exists, handle accordingly (e.g., show a warning)
-      return;
-    }
-    _config.activities[newKey] = _config.activities[oldKey];
-    delete _config.activities[oldKey];
-    this._config = _config;
-
-    const customEvent = new CustomEvent("config-changed", {
-      detail: { config: _config },
-      bubbles: true,
-      composed: true,
+    commonActivities.forEach(key => {
+      console.log(`Device ID for ${key}: ${this._config.activities[key]?.device_id}`);
     });
-    this.dispatchEvent(customEvent);
+
+    console.log(JSON.stringify(configActivityKeys, null, 2));
+    console.log(JSON.stringify(activityList, null, 2));
+  
+    return html`
+      <div class="heading">Activities:</div>
+      <br>
+      ${commonActivities.map((activityData, index) => html`
+        <div class="activity-container">
+          <div class="form-group">
+          <label for="activity-${index}-key" class="activity-identifier">${activityData}:</label>
+  
+          <div class="form-group">
+            <label for="activity-${index}-device_id">Device ID:</label>
+          <input type="number" id="activity-id" name="${activityData}.device_id" .value="${this._config.activities[activityData]?.device_id}" title="The number of the primary device for this activity (in harmony_*.conf)" @input="${this.configChanged}" class="activity-input">
+        </div>
+      `)}
+      <button @click="${this.addActivity}" class="add-activity-button">Add New Activity</button>
+    `;
   }
-}
 
   addActivity() {
     const _config = { ...this._config };
@@ -368,7 +353,12 @@ static get styles() {
     .add-activity-button {
       margin-top: 16px;
     }
+    
+    .heading {
+       font-weight: bold;
+    }
   `;
   }
+  
 
 }
