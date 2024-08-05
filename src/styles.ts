@@ -293,4 +293,89 @@ export const styles = css`
             cursor: pointer;
 
           }
+/********************* Editor.ts *******************/
+          .heading {
+   
+            font-weight: bold; 
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+          }
+
+          .color-item {
+            display: inline-block;
+            margin-right: 10px; 
+            white-space: nowrap;
+            margin-right: 10px; 
+            word-wrap: nowrap; 
+            margin-bottom: 14px; 
+          }
+          
+
+          .form-group {
+            margin-bottom: 16px;
+          }
+
+          .form-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: bold;
+          }
+
+          .form-group input[type="number"],
+          .form-group input[type="number"] {
+            padding: 8px;
+            box-sizing: border-box;
+          }
+          .activity-container {
+            margin-bottom: 16px;
+            padding: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            filter: brightness(0.9); 
+            width: 100%; 
+            max-width: 280px;
+            box-sizing: border-box; 
+          }
+          .outer-container {
+            border: 1px solid #ccc;
+            padding: 16px; */
+            border-radius: 8px;
+            background-color: #fefefe; 
+            width: 50%; 
+            max-width: 300px; 
+            box-sizing: border-box;
+            margin-top: 0px;
+          }
+
+          .activity-identifier {
+            font-weight: bold;
+            width: 150px; 
+          }
+
+          .activity-input {
+            margin-left: 8px;
+            width: 9ch; 
+            box-sizing: border-box;
+          }
+
+          .import-activities {
+            display: flex;
+            align-items: center;
+            margin: 12px;
+
+        }
+
+          .import-activities label {
+            margin-left: 8px;
+        }
+
+          .import-activities .mdi-file-restore-outline {
+            margin-right: 8px;
+        }
+        .info {
+          padding: 16px; 
+          border-radius: 8px; 
+          border: 1px solid #eeeeee;
+        }
         `;
