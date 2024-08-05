@@ -126,22 +126,11 @@ At least the following entries must be present for the card to work:
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
 
-### Actions
-You allways need PowerOff as defined action. To configure the rest of the actions correctly, the file harmony_????.conf, which is located in the root directory of the Home Assistant
+### Introducion
+To make this card run, you need to map the main device for each defined action in Harmony (ie. Receiver is the main device for Action "Listen to Music"). Inatial, you should click the "Synchronize Activities from Harmony" to import all activities to the configuration of the card automativly. After that you have to add the device_id number to each activity. You will see it is default nameed mit "-1". You find the real device_id's in the file harmony_????.conf, which is located in the root directory of the Home Assistant
 installation directory is required for reference. Please note the above ???? is a number. 
 
-Next, open the file. At the top you will find the “Activities” section. Here is the heading of each activity that is defined in unison (e.g. Watch TV). The number before the activity on the same line is added as “Name:” under the activity (e.g. 36824865). Repeat this process for all other activities listed
-#### Example harmony????.conf
-```json
-{    "Activities": {
-        "-1": "PowerOff",
-        "36824865": "Watch Tv",
-        "36829890": "Play Blue Ray",
-        "36830123": "Listen Music",
-        "37038020": "Play PS5"
-    },
-```
-#### Example actions
+#### Very basic example config
 Here a very basic example:
 ```yaml
 ~~~
@@ -149,13 +138,9 @@ type: 'custom:my-harmony-card'
 entity: remote.harmony_wohnzimmer
 activities:
   Listen to Music:
-    name: 36830123
     device_id: 59107742
   Watch TV:
-    name: 36824865
     device_id: 59107742
-  PowerOff:
-    device_id: -1
 ~~~~
 ```
 #### The device_id:
@@ -253,10 +238,7 @@ The buttons Forward and rewind have two functions:
 After installing card, adding default configuration and harmony entity, you should see immediate your configurated activities, if you press the "ACT" Button.<br>
 In PowerOff mode, the power button should be "red", otherwise "green". <br>
 If you have configured your activities as described above, you should be able to do the first actions (ie. VolumeUp, Guide, Home, Number, etc.) <br>
-If this isn't working, you should not go on, because there is a naming missmatch between your configured activities and the real activities. This could be happen, due nameing special characters (ie. +, -, " ", Ü, ^, etc.). <br>
-In this case I recomand either
-- Rename your activity at the harmony device to a "better" name, best without whitespaces
-- Copy name of activity from Development Tools --> Conditions --> <Harmony Device> --> Attributes <br>
+If this isn't working, you should check the button "sycronize" again 
 
 **Relevant for mapping activity is the name (ie. NetFlix sehen: in the example above), _not_ the named number!**
 
