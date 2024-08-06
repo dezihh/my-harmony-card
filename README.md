@@ -62,6 +62,9 @@ I therefore took the route of using actions to control the device groups and, at
 
 By following these steps, you should have My-Harmony-Card successfully installed and running in your Home Assistant setup.
 
+Or simply:
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=DeZi&category=frontend&repository=https%3A%2F%2Fgithub.com%2Fdezihh%2Fmy-harmony-card)
+
 
 ## Manual install
 To manually install My-Harmony-Card in Home Assistant, please follow these detailed steps:
