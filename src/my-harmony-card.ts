@@ -3,6 +3,7 @@ import { customElement } from 'lit/decorators.js';
 import { HomeAssistant, fireEvent } from 'custom-card-helpers';
 
 import "./editor";
+//import { generatePopupTemplate } from './popcard';
 import { styles } from './styles'; // Importing styles
 import { HomeAssistantFixed, WindowWithCards } from "./types";
 import { CARD_TAG_NAME, CARD_VERSION, EDITOR_CARD_TAG_NAME } from "./const";
@@ -35,11 +36,12 @@ class MyHarmony extends LitElement {
     public config!: any;
     private _show_keypad: boolean;
     private _show_activity: boolean;
-    private _show_vol_text: boolean;
-    private volume_value: number;
+    //private _show_vol_text: boolean;
+    //private volume_value: number;
     private _current_activity: string;
     private defaultDeviceId: number;
     private volumeDeviceId: number;
+    private _dialogOpen: boolean;
 
     static get styles() {
         return styles;  // Use of imported styles
@@ -54,7 +56,7 @@ class MyHarmony extends LitElement {
       // Capture all entities starting with "remote."
      let remoteEntities = Object.keys(hass.entities).filter(e => e.startsWith("remote."));
 
-     // Auswahl der ersten gemeinsamen Entität oder ein Fallback
+     // Select of the first common entity or fallback
      const entity = remoteEntities.length > 0 ? remoteEntities[0] : ""
 
      return {
@@ -63,24 +65,47 @@ class MyHarmony extends LitElement {
      }
    }
 
-// Shot and Longpress Handling
-   isButtonPressed = false;
+    _getFavorites(): { number: string, image: string }[] {
+      const currentActivityConfig = this.config.activities?.[this._current_activity];
+      const favorites = currentActivityConfig?.favorites || [];
+      return favorites.map((favorite) => ({
+        number: favorite.number,
+        image: favorite.image
+      }));
+   }
+
+    // Shot and Longpress button handling
+    public isButtonPressed = false;
     buttonTimeout: NodeJS.Timeout | null = null;
 
+    //Handling Keypad button pressed
+    _handle123ButtonDown() {
+      this.buttonTimeout = setTimeout(() => {
+        if (this._getFavorites().length > 0) {
+          this._popcard();
+        }
+      }, 500); // 500ms Timeout für langen Tastendruck
+    }
+
+    _handle123ButtonUp() {
+      clearTimeout(this.buttonTimeout);
+      this._show_keypad = !this._show_keypad;
+    }
+
    // General handling, if button pressed
-   _handleButtonDown(buttonActionShort: string, buttonActionLong: string) {
-     this.isButtonPressed = true;
-     this.buttonTimeout = setTimeout(() => {
-         if (this.isButtonPressed) {
-             if (buttonActionLong === "media") {
-                 this._moreMediaPlayer();
-             } else {
-                 this._button(buttonActionLong); // If long pressed (> 500 ms)
-             }
-             this.isButtonPressed = false; // Reset condition
-         }
-     }, 500);
-  }
+    _handleButtonDown(buttonActionShort: string, buttonActionLong: string) {
+      this.isButtonPressed = true;
+      this.buttonTimeout = setTimeout(() => {
+          if (this.isButtonPressed) {
+              if (buttonActionLong === "media") {
+                  this._moreMediaPlayer();
+              } else {
+                  this._button(buttonActionLong); // If long pressed (> 500 ms)
+              }
+              this.isButtonPressed = false; // Reset condition
+          }
+      }, 500);
+   }
 
     // General function by release of button
     _handleButtonUp(buttonActionShort: string) {
@@ -115,14 +140,25 @@ class MyHarmony extends LitElement {
         super();
         this._show_keypad = false;
         this._show_activity = false;
-        this._show_vol_text = false;
-        this.volume_value = 0;
+        //this._show_vol_text = false;
+        //this.volume_value = 0;
         this._current_activity = '';
         this.debug = false;
+        this._dialogOpen = false;
 
     }
 
-    // Open details for media_player
+    //Toggle popup dialog
+    _toggleDialog() {
+      this._dialogOpen = !this._dialogOpen;
+      this.requestUpdate();
+    }
+    // Open favorites, if defines
+    _popcard() {
+      this._dialogOpen = true;
+      this.requestUpdate();
+    }
+    //Open properties of media player if defined
     private _moreMediaPlayer() {
         const activityConfig = this.config.activities[this._current_activity]
         const playerName = activityConfig.player_name;
@@ -134,25 +170,40 @@ class MyHarmony extends LitElement {
         }
     }
 
+  _renderTable() {
+    const favorites = this._getFavorites();
+    const favsize = this.config.favsize ? this.config.favsize : 50;
+    return html`
+        <!-- <tbody>  -->
+          <!-- <div class="popup-container"> -->
+            ${favorites.map((favorite) => html`
+                  <img style="max-height: ${ favsize }px;" src="${favorite.image}" alt="${favorite.number}" @click=${() => this._chanchange(favorite.number)} />
+              <!-- </div>   -->         
+            `)}
+       <!-- </tbody>-->
+    `;
+  }
+
 // Render the component
     render() {
         const stateObj = this.hass.states[this.config.entity];
         const colorButtons = this.config.color_buttons;
         this._current_activity = stateObj.attributes.current_activity;
+       
 
         const currentActivityConfig = this.config.activities?.[this._current_activity];
-  if (currentActivityConfig) {
-    // Standardmäßig wird die Geräte-ID für die aktuelle Aktivität verwendet
-    this.defaultDeviceId = currentActivityConfig.device_id || null;
+        if (currentActivityConfig) {
+          // Default DeviceID for Device for this activity
+          this.defaultDeviceId = currentActivityConfig.device_id || null;
 
-    // Überprüfen, ob eine separate Geräte-ID für Lautstärkebefehle definiert ist
-    this.volumeDeviceId = currentActivityConfig.volume_device_id || this.defaultDeviceId;
-  } else {
-    // Wenn keine Konfiguration für die aktuelle Aktivität gefunden wurde, setzen wir die Geräte-IDs auf -1
-    this.defaultDeviceId = -1;
-    this.volumeDeviceId = -1;
-    this._current_activity = "PowerOff";
-  }
+          // Check if there is a different deviceID vor Volume
+          this.volumeDeviceId = currentActivityConfig.volume_device_id || this.defaultDeviceId;
+        } else {
+          // If no config Found, use this as default..
+          this.defaultDeviceId = -1;
+          this.volumeDeviceId = -1;
+          this._current_activity = "PowerOff";
+        }
 
         // Determine color of PowerOff based on status
         const powerButtonColor = this._current_activity === 'PowerOff' ? 'red' : 'green';
@@ -164,12 +215,12 @@ class MyHarmony extends LitElement {
         const borderWidth = this.config.dimensions && this.config.dimensions.border_width ? this.config.dimensions.border_width : "1px";
         const scale = this.config.dimensions && this.config.dimensions.scale ? this.config.dimensions.scale : 1;
         const remoteWidth = Math.round(scale * 260) + "px";
-        const tv_name_color = this.config.tv_name_color ? this.config.tv_name_color : "var(--primary-text-color)";
+        //const tv_name_color = this.config.tv_name_color ? this.config.tv_name_color : "var(--primary-text-color)";
         const backgroundColor = this.config.colors && this.config.colors.background ? this.config.colors.background : "var( --ha-card-background, var(--card-background-color, white) )";
         const borderColor = this.config.colors && this.config.colors.border ? this.config.colors.border: "var(--primary-text-color)";
         const buttonColor = this.config.colors && this.config.colors.buttons ? this.config.colors.buttons : "var(--secondary-background-color)";
         const textColor = this.config.colors && this.config.colors.text ? this.config.colors.text : "var(--primary-text-color)";
-
+       
     return html`
 
         <div class="card">
@@ -179,23 +230,31 @@ class MyHarmony extends LitElement {
                         --remote-color: ${backgroundColor};
                         --remotewidth: ${remoteWidth};
                         --main-border-color: ${borderColor};
-                        --main-border-width: ${borderWidth}">
+                        --main-border-width: ${borderWidth};
+                        --scale: ${scale }">
 
                 <!-- Power row -->
                 ${this.config.name
-                    ? html` <div class="tv_title" style="color:${tv_name_color}" >${this.config.name}</div> ` : ""}
+                    ? html` <div class="tv_title" style="color:${textColor}" >${this.config.name}</div> ` : ""}
                 <div class="grid-container-power" style="--remotewidth: ${remoteWidth}">
 
-                    <button class="btn-flat flat-high ripple"
+                    <button class="btn-flat flat-high ripple btn-text"
                       @click=${() => this._show_activity = !this._show_activity}
-                      title=${this.config.tooltip ? 'Configured Action Selector' : ''}>
+                      title=${this.config.tooltip ? 'Action Selector' : ''}>
                     ACT</button>
 
                     <button class="btn ripple"
                       @click=${() => this._select_activity('PowerOff')}>
-                      <ha-icon icon="mdi:power" style="color: ${powerButtonColor};"/></button>
-                      <button class="btn-flat flat-high ripple" @click=${() => this._show_keypad = !this._show_keypad} title=${this.config.tooltip ? 'Number Keypad' : ''}>
-                    123</button>
+                      <ha-icon class="msc" icon="mdi:power"  style="color: ${powerButtonColor};"/
+                      title=${this.config.tooltip ? this._current_activity : 'Off'}></button>
+
+                    <button class="btn-flat flat-high ripple btn-text"
+                      @mousedown=${(e: MouseEvent) => this._handle123ButtonDown()}
+                      @mouseup=${(e: MouseEvent) => this._handle123ButtonUp()}
+                      title=${this.config.tooltip ? 'Number Keypad' : ''}>
+                      123                      
+                    </button>
+
                 </div>
 
                 ${this._show_activity ? html`
@@ -206,7 +265,7 @@ class MyHarmony extends LitElement {
                           @click=${() => this._show_activity = false}>
                           <ha-icon icon="mdi:undo-variant"/></button>
 
-                        <p class="act_text"><b>ACTIONS</b></p>
+                        <p class="act_text" style="color:${textColor}"><b>ACTIONS</b></p>
                         <div class="grid-item-act">
                            ${stateObj.attributes.activity_list.map(activity => html`
                                 <button class="${stateObj.attributes.current_activity === activity ? 'btn-act-on' : 'btn-act ripple overlay'}" @click=${() => {
@@ -238,6 +297,15 @@ class MyHarmony extends LitElement {
                     </div>
                 ` : html`
 
+                <!-- Call Popup Window -->
+                  ${this._dialogOpen ? html`
+                    <ha-dialog  class="popup-dialog" open @closed="${this._toggleDialog}" > ${this._renderTable()}
+                      <hr>
+                      <mwc-button slot="primaryAction" dialogAction="close"> Close </mwc-button>   
+                    </ha-dialog> 
+                    
+                    ` : ''}
+
                     <!-- DIRECTION PAD  -->
                     <div class="grid-container-cursor">
                       <div class="shape">
@@ -253,21 +321,22 @@ class MyHarmony extends LitElement {
                          <button class="btn ripple item_guide"
                             @click=${() => this._button(this.config.activities[this._current_activity]?.Guide ?? 'Guide')}
                             title=${this.config.tooltip ? 'Guide' : ''}>
-                         <ha-icon icon="mdi:television-guide"/> </button>
+                         <ha-icon class="msc" icon="mdi:television-guide"/> </button>
 
                          <button class="btn ripple item_up" style="background-color: transparent;"
-                            @click=${() => this._button("DirectionUp")}><ha-icon icon="mdi:chevron-up"/></button>
+                            @click=${() => this._button("DirectionUp")}><ha-icon class="msc" icon="mdi:chevron-up"/></button>
+                         
                          <button class="btn ripple item_act"
                             @mousedown=${(e: MouseEvent) => this._handleButtonDown("Menu", "media")}
                             @mouseup=${(e: MouseEvent) => this._handleButtonUp("Menu")}
                             @touchstart=${(e: TouchEvent) => this._handleButtonDown("Menu", "media")}
                             @touchend=${(e: TouchEvent) => this._handleButtonUp("menu")}
                             title=${this.config.tooltip ? 'Menu/Mediaplayer' : ''}>
-                         <ha-icon icon="mdi:silverware-fork-knife"/></button>
+                         <ha-icon class="msc" icon="mdi:silverware-fork-knife"/></button>
 
                          <button class="btn ripple item_2_sx" style="background-color: transparent;"
                             @click=${() => this._button("Left")}>
-                         <ha-icon icon="mdi:chevron-left"/></button>
+                         <ha-icon class="msc" icon="mdi:chevron-left"/></button>
 
                          <div class="ok_button ripple item_2_c"
                             style="border: solid 2px ${backgroundColor}"
@@ -275,59 +344,65 @@ class MyHarmony extends LitElement {
                          OK</div>
 
                          <button class="btn ripple item_right"
-                            style="background-color: transparent;"
+                            style="background-color: transparent;"                            
                             @click=${() => this._button("DirectionRight")}>
-                         <ha-icon icon="mdi:chevron-right"/></button>
+                            <ha-icon class="msc" icon="mdi:chevron-right"/></button>
+
 
                          <button class="btn ripple item_back"
                             @click=${() => this._button(this.config.activities[this._current_activity]?.Back ?? 'Back')}>
-                         <ha-icon icon="mdi:undo-variant"/></button>
+                         <ha-icon class="msc" icon="mdi:undo-variant"/></button>
 
                          <button class="btn ripple item_down"
                             style="background-color: transparent;"
                             @click=${() => this._button("DirectionDown")}>
-                         <ha-icon icon="mdi:chevron-down"/></button>
+                         <ha-icon class="msc" icon="mdi:chevron-down"/></button>
 
                          <button class="btn ripple item_exit" @click=${() => this._button("Exit")}>EXIT</button>
-                       </div>
+                       </div>   `}
                        <!-- DIRECTION PAD END  -->
-                            `}
 
                        <!-- Extra BUTTONS  -->
                        <div class="grid-container-extra">
                           ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
                             && this.config.activities[this._current_activity].Button1 ? html`
-                              <button class="btn-flat ripple" style="height: calc(var(--remotewidth) / 8); width: 100%;"
-                                  @click=${() => this._button(this.config.activities[this._current_activity].Button1.command)}
-                                  title=${this.config.activities[this._current_activity].Button1.tooltip ||''}>
-                                  ${this.config.activities[this._current_activity].Button1.name}
-                              </button> `
-                          : ""}
+                              <button class="ripple btn-extra"
+                                @click=${() => this._button(this.config.activities[this._current_activity].Button1.command)}
+                                title=${this.config.activities[this._current_activity].Button1.tooltip ||''}>
+                                ${this.config.activities[this._current_activity].Button1.icon ? 
+                                  html`<ha-icon class="mdi-extra" icon="${this.config.activities[this._current_activity].Button1.icon}"></ha-icon>`
+                                  : this.config.activities[this._current_activity].Button1.name}
+                              </button>` : ""}
 
                           ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
                             && this.config.activities[this._current_activity].Button2 ? html`
-                              <button class="btn-flat ripple" style="height: calc(var(--remotewidth) / 8); width: 100%;"
-                                  @click=${() => this._button(this.config.activities[this._current_activity].Button2.command)}
-                                  title=${this.config.activities[this._current_activity].Button2.tooltip ||''}>
-                                  ${this.config.activities[this._current_activity].Button2.name}
-                              </button> `
-                          : ""}
+                              <button class="ripple btn-extra"
+                                @click=${() => this._button(this.config.activities[this._current_activity].Button2.command)}
+                                title=${this.config.activities[this._current_activity].Button2.tooltip ||''}>
+                                ${this.config.activities[this._current_activity].Button2.icon ? 
+                                  html`<ha-icon class="mdi-extra" icon="${this.config.activities[this._current_activity].Button2.icon}"></ha-icon>`
+                                  : this.config.activities[this._current_activity].Button2.name}
+                              </button>` : ""}
+
                           ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
                             && this.config.activities[this._current_activity].Button3 ? html`
-                              <button class="btn-flat ripple" style="height: calc(var(--remotewidth) / 8); width: 100%;"
-                                  @click=${() => this._button(this.config.activities[this._current_activity].Button3.command)}
-                                  title=${this.config.activities[this._current_activity].Button3.tooltip ||''}>
-                                  ${this.config.activities[this._current_activity].Button3.name}
-                              </button> `
-                            : ""}
+                              <button class="ripple btn-extra"
+                                @click=${() => this._button(this.config.activities[this._current_activity].Button3.command)}
+                                title=${this.config.activities[this._current_activity].Button3.tooltip ||''}>
+                                ${this.config.activities[this._current_activity].Button3.icon ? 
+                                  html`<ha-icon class="mdi-extra" icon="${this.config.activities[this._current_activity].Button3.icon}"></ha-icon>`
+                                  : this.config.activities[this._current_activity].Button3.name}
+                              </button>` : ""}
+
                           ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
                             && this.config.activities[this._current_activity].Button4 ? html`
-                              <button class="btn-flat ripple" style="height: calc(var(--remotewidth) / 8); width: 100%;"
-                                  @click=${() => this._button(this.config.activities[this._current_activity].Button4.command)}
-                                   title=${this.config.activities[this._current_activity].Button4.tooltip ||''}>
-                                   ${this.config.activities[this._current_activity].Button4.name}
-                              </button> `
-                          : ""}
+                              <button class="ripple btn-extra"
+                                @click=${() => this._button(this.config.activities[this._current_activity].Button2.command)}
+                                title=${this.config.activities[this._current_activity].Button4.tooltip ||''}>
+                                ${this.config.activities[this._current_activity].Button4.icon ? 
+                                  html`<ha-icon class="mdi-extra" icon="${this.config.activities[this._current_activity].Button4.icon}"></ha-icon>`
+                                  : this.config.activities[this._current_activity].Button4.name}
+                              </button>` : ""}
                        </div>
                        <!--  Extra buttons end -->
 
@@ -344,61 +419,61 @@ class MyHarmony extends LitElement {
                     <div class="grid-container-volume-channel-control" >
                          <button class="btn ripple" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;"
                             @click=${() => this._button("VolumeUp")}>
-                          <ha-icon icon="mdi:plus"/></button>
+                          <ha-icon class="msc" icon="mdi:plus"/></button>
 
                          <button class="btn-flat flat-high ripple" style="margin-top: 0px; height: 65%;"
                             @click=${() => this._button(this.config.activities[this._current_activity]?.Home ?? 'Home')}
                             title=${this.config.tooltip ? 'Home' : ''}>
-                           <ha-icon icon="mdi:home"></ha-icon> </button>
+                           <ha-icon class="msc" icon="mdi:home" ></ha-icon> </button>
 
                          <button class="btn ripple" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;"
                             @click=${() => this._button("ChannelUp")}>
-                          <ha-icon icon="mdi:chevron-up"/></button>
+                          <ha-icon class="msc" icon="mdi:chevron-up"/></button>
 
                          <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;">
-                          <ha-icon icon="mdi:volume-high"/></button>
+                          <ha-icon class="msc" icon="mdi:volume-high"/></button>
 
                          <button class="btn ripple" Style="height: 100%;"
                             @click=${() => this._button("Mute")}><span>
-                          <ha-icon icon="mdi:volume-mute"></span></button>
+                          <ha-icon class="msc" icon="mdi:volume-mute"></span></button>
 
                          <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;">
-                          <ha-icon icon="mdi:parking"/></button>
+                          <ha-icon class="msc" icon="mdi:parking"/></button>
 
                          <button class="btn ripple" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"
                             @click=${() => this._button("VolumeDown")}>
-                          <ha-icon icon="mdi:minus"/></button>
+                          <ha-icon class="msc" icon="mdi:minus"/></button>
 
                          <button class="btn-flat flat-high ripple" style="margin-bottom: 0px; height: 65%;"
                             @click=${() => this._button(this.config.activities[this._current_activity]?.Info ?? 'Info')}
                             title=${this.config.tooltip ? 'Info' : ''}>
-                          <ha-icon icon="mdi:information-variant"/></button>
+                          <ha-icon class="msc" icon="mdi:information-variant"/></button>
 
                          <button class="btn ripple" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"
                             @click=${() => this._button("ChannelDown")}>
-                          <ha-icon icon="mdi:chevron-down"/></button>
+                          <ha-icon class="msc" icon="mdi:chevron-down"/></button>
                         </div>
 
                     <!--  MEDIA CONTROL -->
                     <div class="grid-container-media-control">
-                         <button class="btn-flat flat-low ripple" @click=${() => this._button("Play")}><ha-icon icon="mdi:play"/></button>
-                         <button class="btn-flat flat-low ripple"  @click=${() => this._button("Pause")}><ha-icon icon="mdi:pause"/></button>
-                         <button class="btn-flat flat-low ripple"  @click=${() => this._button("Stop")}><ha-icon icon="mdi:stop"/></button>
+                         <button class="btn-flat flat-low ripple" @click=${() => this._button("Play")}><ha-icon class="msc" icon="mdi:play"/></button>
+                         <button class="btn-flat flat-low ripple"  @click=${() => this._button("Pause")}><ha-icon class="msc" icon="mdi:pause"/></button>
+                         <button class="btn-flat flat-low ripple"  @click=${() => this._button("Stop")}><ha-icon class="msc" icon="mdi:stop"/></button>
                          <button class="btn-flat flat-low ripple"
                             @mousedown=${(e: MouseEvent) => this._handleButtonDown("Rewind", "SkipBack")}
                             @mouseup=${(e: MouseEvent) => this._handleButtonUp("Rewind")}
                             @touchstart=${(e: TouchEvent) => this._handleButtonDown("Rewind", "SkipBack")}
                             @touchend=${(e: TouchEvent) => this._handleButtonUp("Rewind")}>
-                          <ha-icon icon="mdi:skip-backward" /> </button>
+                          <ha-icon class="msc" icon="mdi:skip-backward" /> </button>
 
-                         <button class="btn-flat flat-low ripple" style="color: red;" @click=${() => this._button("Record")}><ha-icon icon="mdi:record"/></button>
+                         <button class="btn-flat flat-low ripple" style="color: red;" @click=${() => this._button("Record")}><ha-icon class="msc" icon="mdi:record"/></button>
 
                          <button class="btn-flat flat-low ripple"
                            @mousedown=${(e: MouseEvent) => this._handleButtonDown("FastForward", "SkipForward")}
                            @mouseup=${(e: MouseEvent) => this._handleButtonUp("FastForward")}
                            @touchstart=${(e: TouchEvent) => this._handleButtonDown("FastForward", "SkipForward")}
                            @touchend=${(e: TouchEvent) => this._handleButtonUp("FastForward")}>
-                          <ha-icon icon="mdi:skip-forward"></ha-icon> </button>
+                          <ha-icon class="msc" icon="mdi:skip-forward"></ha-icon> </button>
                     </div>
                         <!-- ################################# MEDIA CONTROL END ################################# -->
                         </div>
@@ -431,6 +506,7 @@ class MyHarmony extends LitElement {
 
     // Channel change is implemented global in aioharmony, let's use it
     _chanchange(chan) {
+      console.log("Kanal:",chan);
        this.hass.callService('harmony', 'change_channel', { entity_id: this.config.entity, channel: chan });
     }
 
