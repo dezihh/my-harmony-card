@@ -1,15 +1,15 @@
-**Icons for favorite popup**
+## Icons for Favorite Popup
 
-You can take these icons for station logos or take your own icons.
+You can use the provided icons for station logos or upload your own.
 
-Please add them to a for the browser accessible directory. Normally this is `~/www/`
+To begin, place the icons in a directory accessible by your browser. Typically, this directory is located at `~/www/`.
 
-Best, create a directory for these icons (i.e. ``/www/icons``) and put the icons in there.
+For better organization, it’s recommended to create a subdirectory specifically for these icons (e.g., `/www/icons`) and place your icons there.
 
-After that, please try to access them by browser. In this example you should able to reach the `` zdf.png`` via
+Next, verify that the icons are accessible via your browser. For example, you should be able to access `zdf.png` using the following URL:
 
-``http://:8125/local/icons/zdf.png``
+``http://<your.home.assist.ip>:8125/local/icons/zdf.png``
 
-If this is working you can go on with configure favorite icons in MyHarmony, as described
+If you can successfully view the icon in your browser, proceed with configuring your favorite icons in MyHarmony as described.
 
-Have fun!
+Enjoy!
