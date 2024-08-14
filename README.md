@@ -20,7 +20,7 @@ I therefore took the route of using actions to control the device groups and, at
 ## Card install
 
 You should find this card by searching "My-Harmony-Card" the HACS Community Store.  
-If this should not work or for any other reasons, you can find a more manual install Howto [here](https://github.com/dezihh/my-harmony-card/blob/master/Install.md).
+If this should not work or for any other reasons, you can find a more manual install Howto [here](Install.md).
 
 If the card is installed, we can go on with configuring...
 
