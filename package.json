@@ -1,7 +1,10 @@
 {
     "name": "my-harmony-card",
     "version": "1.10.0",
-    "description": "My Harmony Remote card",
+    "description": "Not yet only another Remote Control for Logitech HARMONY COMPANION Hub",
+    "files": [
+        "my-harmony-card.js",
+        "icons/*" ],
     "keywords": [
         "home-assistant",
         "homeassistant",
@@ -15,6 +18,7 @@
     "author": "Derek <dev@ziegler.zip>",
     "license": "MIT",
     "dependencies": {
+        "@mdi/font": "^7.4.47",
         "custom-card-helpers": "^1.9.0",
         "home-assistant-js-websocket": "^9.3.0",
         "lit": "^3.1.4",
@@ -44,7 +48,7 @@
     },
     "scripts": {
         "start": "rollup -c rollup.config.mjs --watch",
-        "build": "npm run rollup && npm run add-version",
+        "build": "npm run rollup && npm run add-version && cp -r icons/ dist/icons",
         "add-version": "cross-var replace-in-file \"@MY_HARMONY_CARD_PLACEHOLDER@\" \"$npm_package_version\" \"dist/my-harmony-card.js\"",
         "rollup": "rollup -c"
     }
