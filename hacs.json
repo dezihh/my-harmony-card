@@ -1,8 +1,6 @@
 {
 "name": "My-Harmony-Card",
 "filename": "my-harmony-card.js",
-"description": "Not yet only another Remote Control for Logitech HARMONY COMPANION Hub",
 "content_in_root": false,
-"render_readme": true,
-"issue_tracker": "https://github.com/dezihh/my-harmony-card/issues"
+"render_readme": true
 }
