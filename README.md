@@ -7,9 +7,10 @@ Not another Remote Control for Logitech HARMONY COMPANION
 
 This project is inspired by the LG WebOS Remote Card based on (madmicio's [repository](https://github.com/madmicio/LG-WebOS-Remote-Control))
 
-![all](pictures/harmony-1.jpg)  
-![all](pictures/harmony-2.jpg)  
-![all](pictures/harmony-3.jpg)
+![all](pictures/my-front.jpg)  
+![all](pictures/my-keypad.jpg)  
+![all](pictures/my-actions.jpg)
+![all](pictures/my-favorites.jpg)
 
 ## Introduction
 
