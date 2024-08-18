@@ -177,7 +177,7 @@ class MyHarmony extends LitElement {
         <!-- <tbody>  -->
           <!-- <div class="popup-container"> -->
             ${favorites.map((favorite) => html`
-                  <img style="max-height: ${ favsize }px;" src="${favorite.image}" alt="${favorite.number}" @click=${() => this._chanchange(favorite.number)} />
+                  <img style="max-height: ${ favsize }px;" src='/local/community/my-harmony-card/icons/${favorite.image}' alt="${favorite.number}" @click=${() => this._chanchange(favorite.number)} />
               <!-- </div>   -->         
             `)}
        <!-- </tbody>-->
