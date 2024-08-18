@@ -1,6 +1,6 @@
 {
 "name": "My-Harmony-Card",
-"filename": "my-harmony-card.zip",
+"filename": "my-harmony-card.js",
 "homeassistant": "2024.6.0",
 "render_readme" : true,
 "zip_release": true,
