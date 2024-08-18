@@ -64,6 +64,7 @@ cd /path/to/your/homeassistant/
 *   Change to the www/community/ directory
 *   Create a new directory for My Harmony Card ``mkdir my-harmony-card``
 *   Download most actual version and verify Download
+*   Unzip the my-harmony-card.zip
 *   Make sure that "my-harmony-card.js" resides in your new created directory "my-harmony-card"
 *   _Please note, you have to look to the releases to find the latest version id. Please enter the most recent version_
 
