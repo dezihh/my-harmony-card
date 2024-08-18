@@ -1,37 +1,43 @@
-name: Release
+name: Create Release
 
 on:
-  release:
-    types: [published]
+  create:
+    tags:
+      - '*'
 
 jobs:
-  release:
-    name: Prepare release
+  create-release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Create ZIP file with my-harmony-card.js
+        run: |
+          # Erstelle eine ZIP-Datei mit my-harmony-card.js im Wurzelverzeichnis
+          zip -j my-harmony-card.zip dist/my-harmony-card.js
       
-      - uses: actions/setup-node@v3
+          # Füge das icons-Verzeichnis zur ZIP-Datei hinzu
+          zip -r my-harmony-card.zip icons
+
+      - name: Upload Release
+        id: upload-release
+        uses: softprops/action-gh-release@v2
         with:
-          node-version: 20
-          
-      - name: Set up Git
-        run: |
-          git config --global user.email "myweb@ziegler.zip"
-          git config --global user.name "Derek"
-          
-      - name: Build the file
-        run: |
-          npm install
-          npm version --allow-same-version --git-tag-version=true --commit-hooks=false "${{ github.event.release.tag_name }}"
-          npm run build
- 
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: svenstaro/upload-release-action@v1-release
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: dist/my-harmony-card.js
-          asset_name: my-harmony-card.js
-          tag: ${{ github.ref }}
-          overwrite: true
+          files: my-harmony-card.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up
+        run: rm -rf temp
+
