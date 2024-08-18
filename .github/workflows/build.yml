@@ -3,29 +3,82 @@ name: Build
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
+    tags:
+      - '*.*.*'
 
 jobs:
   build:
-    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          ref: ${{ github.ref }} # Check out the current ref
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Check for outdated dependencies
+        run: npm outdated || true
+
+      - name: Update dependencies to the latest version
+        run: npm update
+
+      - name: Audit dependencies for vulnerabilities
+        run: npm audit || true
+
+      - name: Attempt to fix vulnerabilities
+        run: npm audit fix || true
+        
+      - name: Commit and push updated dependencies
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add package.json package-lock.json
+          git commit -m "Update dependencies and fix vulnerabilities"
+          git push origin master
+        if: ${{ github.ref == 'refs/heads/master' }}
 
       - name: Build
+        run: npm run build
+        
+      - name: Update package.json and package-lock.json
         run: |
-          npm install
-          npm run build
-
-      - name: Archive built file
-        uses: actions/upload-artifact@v3
-        with:
-          name: my-harmony-card
-          path: dist/my-harmony-card.js
+          echo "GitHub Ref: ${{ github.ref }}"
+          
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            # Extract the tag name
+            tag_name=${{ github.ref }}
+            tag_name=${tag_name##*/} # Strip 'refs/tags/' prefix
+            
+            echo "Updating package.json with tag version $tag_name"
+            
+            # Update package.json using sed
+            sed -i "s/\"version\": \".*\"/\"version\": \"$tag_name\"/" package.json
+            
+            # Regenerate package-lock.json to ensure it matches the new version
+            echo "Regenerating package-lock.json with updated version"
+            rm package-lock.json
+            npm install --package-lock-only
+            
+            # Commit and push changes
+            git config --global user.name 'github-actions'
+            git config --global user.email 'github-actions@github.com'
+            
+            # Ensure we are on the correct branch
+            git fetch origin master
+            git checkout master || git checkout -b master
+            
+            git add package.json package-lock.json
+            git commit -m "Update version to $tag_name"
+            git push origin master
+          else
+            echo "Not a tag push. Skipping version update."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
