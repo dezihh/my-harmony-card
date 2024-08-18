@@ -1,10 +1,7 @@
 {
     "name": "my-harmony-card",
-    "version": "1.10.0",
-    "description": "Not yet only another Remote Control for Logitech HARMONY COMPANION Hub",
-    "files": [
-        "my-harmony-card.js",
-        "icons/*" ],
+    "version": "1.4.2",
+    "description": "My Harmony Remote card",
     "keywords": [
         "home-assistant",
         "homeassistant",
@@ -14,18 +11,19 @@
         "custom-cards"
     ],
     "module": "my-harmony-card.js",
-    "repository": "https://github.com/dezihh/my-harmony-card.git",
+    "repository": "https://github.com/dezihh/my-harmony-test.git",
     "author": "Derek <dev@ziegler.zip>",
     "license": "MIT",
     "dependencies": {
-        "@mdi/font": "^7.4.47",
         "custom-card-helpers": "^1.9.0",
         "home-assistant-js-websocket": "^9.3.0",
         "lit": "^3.1.4",
         "lru-cache": "^10.2.2"
     },
     "devDependencies": {
+        "rimraf": "^4.0.0",
         "@babel/core": "^7.24.7",
+        "@babel/preset-env": "^7.24.7",
         "@babel/plugin-proposal-class-properties": "^7.14.5",
         "@babel/plugin-proposal-decorators": "^7.24.7",
         "@babel/plugin-transform-runtime": "^7.24.7",
@@ -39,17 +37,20 @@
         "@typescript-eslint/eslint-plugin": "^7.13.0",
         "@typescript-eslint/parser": "^7.13.0",
         "cross-var": "^1.1.0",
+        "copyfiles": "^2.4.1",
         "prettier": "^3.3.2",
         "replace-in-file": "^7.2.0",
         "rollup": "^4.18.0",
         "rollup-plugin-serve": "^2.0.3",
+        "rollup-plugin-copy": "^3.5.0",
         "ts-lit-plugin": "^2.0.2",
         "typescript": "^5.4.5"
     },
     "scripts": {
         "start": "rollup -c rollup.config.mjs --watch",
-        "build": "npm run rollup && npm run add-version && cp -r icons/ dist/icons",
+        "build": "npm run rollup && npm run add-version",
         "add-version": "cross-var replace-in-file \"@MY_HARMONY_CARD_PLACEHOLDER@\" \"$npm_package_version\" \"dist/my-harmony-card.js\"",
-        "rollup": "rollup -c"
+        "rollup": "rollup -c",
+        "postbuild": "copyfiles -V -u 1 'icons/*' dist/icons/"
     }
 }
