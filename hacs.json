@@ -4,5 +4,6 @@
 "homeassistant": "2024.6.0",
 "render_readme" : true,
 "zip_release": true,
-"hide_default_branch": true
+"hide_default_branch": true,
+"file_name": "my-harmony-card.zip"
 }
