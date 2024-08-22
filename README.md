@@ -44,7 +44,7 @@ At least the following entries must be present for the card to work:
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
 | `favsize` | int | Option | 80 | Size of the icons in the favorites popup |
-| `faviconpath` | path | Option | **Option** | Path were your station logos reside. Default it is a directory below this card (/local/community/my-harmony-card/stations/), but you can change it to a different directory i.e. /local/icons. This directory is not the physical directory, it is the directory, you can reach through Home Assistant. In my example the physical directory of /local/icons would be ~/www/icons.  |
+| `faviconpath` | path | Option | /local/icons/ | Path were your station logos reside. Default it is a directory below this card (/local/community/my-harmony-card/stations/), but you can change it to a different directory i.e. /local/icons. This directory is not the physical directory, it is the directory, you can reach through Home Assistant. In my example the physical directory of /local/icons would be ~/www/icons.  |
 | `debug` | bool | Option | true | Provide debugging information in the browser's console.log if set to true |
 
 ### Import activities
