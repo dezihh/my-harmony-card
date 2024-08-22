@@ -1,6 +1,6 @@
 # My-Harmony-Card
 
-Not yet only another Remote Control for Logitech HARMONY COMPANION Hub
+Not [yet only another Remote Control](https://github.com/dezihh/my-harmony-card/) for Logitech HARMONY COMPANION Hub
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)  
 [![buymeacoffee_badge](https://img.shields.io/badge/Donate-buymeacoffe-ff813f?style=flat)](https://buymeacoffee.com/dezi)
