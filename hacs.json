@@ -2,6 +2,5 @@
 "name": "My-Harmony-Card",
 "filename": "my-harmony-card.js",
 "content_in_root": false,
-"render_readme" : true,
-"use_release": true
+"render_readme" : true
 }
