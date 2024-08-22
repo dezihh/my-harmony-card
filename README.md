@@ -8,10 +8,10 @@ Not yet only another Remote Control for Logitech HARMONY COMPANION Hub
 This project is inspired by the LG WebOS Remote Card based on (madmicio's [repository](https://github.com/madmicio/LG-WebOS-Remote-Control))
 
 <div style="display: flex; flex-wrap: wrap; align-items: center;">
-  <img src="pictures/my-front.png" width="128" style="margin-right: 10px;"/>
-  <img src="pictures/my-keypad.png" width="128" style="margin-right: 10px;"/>
-  <img src="pictures/my-actions.png" width="128" style="margin-right: 10px;"/>
-  <img src="pictures/my-favorites.png" width="256" style="margin-right: 10px;"/>
+  <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-front.png" width="128" style="margin-right: 10px;"/>
+  <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-keypad.png" width="128" style="margin-right: 10px;"/>
+  <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-actions.png" width="128" style="margin-right: 10px;"/>
+  <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-favorites.png" width="256" style="margin-right: 10px;"/>
 </div>
 
 ## Introduction
