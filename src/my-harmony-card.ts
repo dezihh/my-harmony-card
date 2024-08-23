@@ -184,11 +184,12 @@ class MyHarmony extends LitElement {
   _renderTable() {
     const favorites = this._getFavorites();
     const favsize = this.config.favsize ? this.config.favsize : 50;
+    const faviconpath = this.config.faviconpath ? this.config.faviconpath : '/local/community/my-harmony-card/stations/';
     return html`
         <!-- <tbody>  -->
           <!-- <div class="popup-container"> -->
             ${favorites.map((favorite) => html`
-                  <img style="max-height: ${ favsize }px;" src='/local/community/my-harmony-card/icons/${favorite.image}' alt="${favorite.number}" @click=${() => this._chanchange(favorite.number)} />
+                  <img style="max-height: ${ favsize }px;" src='${faviconpath}${favorite.image}' alt="${favorite.number}" @click=${() => this._chanchange(favorite.number)} />
               <!-- </div>   -->         
             `)}
        <!-- </tbody>-->
