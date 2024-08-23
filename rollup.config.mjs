@@ -36,7 +36,8 @@ const plugins = [
         '@babel/plugin-proposal-decorators',
       ]
     }),
-    terser() // optional, minimiert das Bundle
+    terser(), // optional, minimiert das Bundle
+    dev && serve(serveopts)
   ];
 
 export default [
