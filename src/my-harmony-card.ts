@@ -79,18 +79,29 @@ class MyHarmony extends LitElement {
     buttonTimeout: NodeJS.Timeout | null = null;
 
     //Handling Keypad button pressed
-    _handle123ButtonDown() {
+    _handle123ButtonDown(e) {
+      if (e.type === 'touchstart' && e.touches.length > 1) {
+          return; // Verhindert mehrere gleichzeitige Touches
+      }
+      e.preventDefault();
+      this.isButtonPressed = true;
       this.buttonTimeout = setTimeout(() => {
-        if (this._getFavorites().length > 0) {
           this._popcard();
-        }
-      }, 500); // 500ms Timeout für langen Tastendruck
-    }
-
-    _handle123ButtonUp() {
-      clearTimeout(this.buttonTimeout);
-      this._show_keypad = !this._show_keypad;
-    }
+          this.isButtonPressed = false;
+      }, 500);
+  }
+  
+  _handle123ButtonUp(e) {
+      e.preventDefault();
+      if (this.isButtonPressed) {
+          this._show_keypad = !this._show_keypad;
+      }
+      if (this.buttonTimeout) {
+          clearTimeout(this.buttonTimeout);
+          this.buttonTimeout = null;
+      }
+      this.isButtonPressed = false;
+  }
 
    // General handling, if button pressed
     _handleButtonDown(buttonActionShort: string, buttonActionLong: string) {
@@ -249,11 +260,15 @@ class MyHarmony extends LitElement {
                       title=${this.config.tooltip ? this._current_activity : 'Off'}></button>
 
                     <button class="btn-flat flat-high ripple btn-text"
-                      @mousedown=${(e: MouseEvent) => this._handle123ButtonDown()}
-                      @mouseup=${(e: MouseEvent) => this._handle123ButtonUp()}
+                      @mousedown=${this._handle123ButtonDown}
+                      @mouseup=${this._handle123ButtonUp}
+                      @touchstart=${this._handle123ButtonDown}
+                      @touchend=${this._handle123ButtonUp}
+                      @touchcancel=${this._handle123ButtonUp}  // Füge touchcancel hinzu, um eventuelle Unterbrechungen zu behandeln
                       title=${this.config.tooltip ? 'Number Keypad' : ''}>
-                      123                      
+                      123
                     </button>
+
 
                 </div>
 
