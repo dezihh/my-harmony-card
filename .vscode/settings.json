@@ -1,0 +1,14 @@
+{
+    "markdown.extension.tableFormatter.enabled": false,
+    "markdown.extension.toc.slugifyMode": "github",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[markdown]": {
+      "editor.wordWrap": "on",
+      "editor.quickSuggestions": {
+        "comments": "off",
+        "strings": "off",
+        "other": "off"
+      },
+      "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    }
+  }
