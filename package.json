@@ -45,7 +45,7 @@
     "rollup-plugin-serve": "^1.1.1",
     "ts-lit-plugin": "^2.0.2",
     "typescript": "^5.5.4"
-  },
+  }, 
   "scripts": {
     "start": "rollup -c rollup.config.mjs --watch",
     "build": "npm run rollup && npm run add-version",
