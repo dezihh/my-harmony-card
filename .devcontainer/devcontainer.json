@@ -1,34 +1,37 @@
+//	"customizations": {
+//		"vscode": {
+//			"extensions": [
+//				"GitHub.codespaces",
+
+//			]
+//		}
+//	}
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
 {
 	"name": "Node.js & TypeScript",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  // Alternitive Images from: https://containers.dev/templates
 	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-	"features": {
-		"ghcr.io/devcontainers/features/node:1": {}
-	},
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	//"forwardPorts": [5000],
 	"runArgs": [
 		"-p=5000:5000"
 	],
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"GitHub.codespaces",
-				"Bito.Bito",
-				"TabNine.tabnine-vscode",
-				"esbenp.prettier-vscode",
-				"yzhang.markdown-all-in-one",
-				"bradlc.vscode-tailwindcss"
+				"TabNine.tabnine-vscode"
+				//"Bito.Bito",
+//				"TabNine.tabnine-vscode",
+//				"esbenp.prettier-vscode",
+//				"yzhang.markdown-all-in-one",
+//				"bradlc.vscode-tailwindcss"
 			]
 		}
 	}
+		
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
