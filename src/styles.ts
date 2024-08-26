@@ -6,6 +6,32 @@ export const styles = css`
       opacity: 0;
     }
   }
+
+/* Allgemeines Makro für Buttons mit Hover- und Klick-Effekten */
+.button-style {
+    color: var(--remote-text-color);
+    border-radius: calc(var(--remotewidth)/10);
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+}
+
+/* Hover-Effekt */
+.button-style:hover {
+    filter: brightness(1.1) saturate(1.2); /*Helligkeit und Sättigung der Hintergrundfarbe beim Hover erhöhen */
+   /* filter: sepia(0.3) hue-rotate(10deg) brightness(1.2); */ 
+    transform: scale(1.1);
+    /* filter: invert(0.1) brightness(1.1); */ 
+}
+
+/* Klick-Effekt Active-Zustand) */
+.button-style:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.2) saturate(1.5); /* Noch stärkerer Effekt beim Klick */
+}
+
+
+
   .tv_title {
     width: fit-content;
     alig: -webkit-center;
@@ -17,6 +43,24 @@ export const styles = css`
     border-radius: calc(var(--remotewidth)/10);
     background-color: var(--remote-button-color);            
   }
+.act_action {
+    width: fit-content;
+    text-align: center;
+    display: block;
+    margin: auto;
+    width: calc(var(--remotewidth)/1.1);
+    margin-top: 10px;
+    font-size: calc(var(--scale) * 22px); 
+    font-weight: normal;
+    padding: calc(var(--remotewidth)/52) calc(var(--remotewidth)/26);
+    border-radius: calc(var(--remotewidth)/10);
+    background-color: var(--remote-button-color);  
+    border: 0px solid;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+}
+
+
 
   button:focus {
     outline: 0;
@@ -135,6 +179,19 @@ export const styles = css`
     gap: 5px;
     padding: 0px;
   }  
+
+  .grid-container-extra_2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    background-color: transparent;
+    width: calc(var(--remotewidth)/1.1);
+    overflow: hidden;
+    margin: auto;
+    margin-top:10px;         
+    gap: 5px;
+    padding: 0px;
+  }
 
     .btn-extra {
     font-size: calc(var(--scale) * 16px);
@@ -292,18 +349,38 @@ export const styles = css`
 
   .btn-color {
     background-color: var(--remote-button-color);
-    border-radius: calc(var(--remotewidth)/10);
+    border-radius: calc(var(--remotewidth)/9);
+    border-width: 0;
     place-items: center;
     cursor: pointer;
-    transform: scale(1.3); }
+    /* transform: scale(1.3); */ 
+    }
 
   .btn-color {
-    width: 65%;
-    height: 45%;
+    width: 85%;
+    height: 100%
     margin: auto;
+    background-color: inherit;
   }
 
+.btn-red {
+    background-color: red;
+}
+
+.btn-blue {
+    background-color: blue;
+}
+
+.btn-green {
+    background-color: green;
+}
+
+.btn-yellow {
+    background-color: yellow;
+}
+
   .btn-act, .btn-act-on {
+  /* ACT Text */
     font-size: calc(var(--remotewidth)/10.5);
     height: calc(var(--remotewidth)/7.2226);
     border-width: 0;
@@ -314,11 +391,27 @@ export const styles = css`
     cursor: pointer;
   }
 
-  .btn-act {
+.btn-act {
     background-color: var(--remote-button-color);
     color: var(--remote-text-color);
     border: solid 2px var(--remote-color);
-  }
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+}
+
+/* Effekt bei Hover */
+.btn-act:hover {
+    filter: brightness(1.1) saturate(1.2); /* Helligkeit und Sättigung der Hintergrundfarbe und des Rahmens beim Hover erhöhen */
+}
+
+/* Effekt bei Aktivierung (Klick) */
+.btn-act:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.2) saturate(1.5); /* Noch stärkerer Effekt beim Klick */
+}
+
+
+
 
   .btn-act-on {
     background-color: var(--primary-color);

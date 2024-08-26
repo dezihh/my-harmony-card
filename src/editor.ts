@@ -134,6 +134,12 @@ class MYHarmonyCardEditor extends LitElement {
       <hr style="width: 100%; height: 1px; border: none; border-top: 1px solid #eeeeee;">
       <div class="heading">Colors</div>
       <div>
+        <input type="color" name="buttons" id="buttons"  .value="${config.colors && config.colors.buttons || ''}"
+             @input=${this.colorsConfigChanged}></input>
+        <ha-icon data-input-name="buttons" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
+        <label class="color-item" for="background">Button Color</label>
+      </div>  
+      <div>
         <input type="color" name="background" id="background" .value="${config.colors.background || ''}"
                @input=${this.colorsConfigChanged}>
         <ha-icon data-input-name="background" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
