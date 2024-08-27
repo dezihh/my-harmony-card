@@ -427,45 +427,50 @@ class MyHarmony extends LitElement {
                        <!--  Extra buttons end -->
                        <!-- Extra BUTTONS #2  -->
                        <div class="grid-container-extra_2">
-                          ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
-                            && this.config.activities[this._current_activity].Button1 ? html`
+
+                          ${(() => { const config = this.config.ButtonA; return config ? html`
                               <button class="ripple btn-extra button-style"
-                                @click=${() => this._button(this.config.activities[this._current_activity].Button1.command)}
-                                title=${this.config.activities[this._current_activity].Button1.tooltip ||''}>
-                                ${this.config.activities[this._current_activity].Button1.icon ? 
-                                  html`<ha-icon class="mdi-extra button-style" icon="${this.config.activities[this._current_activity].Button1.icon}"></ha-icon>`
-                                  : this.config.activities[this._current_activity].Button1.name}
+                                @click=${() => {
+                                  if (config.service) {
+                                    this._service(config.service);
+                                  } else if (config.command) {
+                                    this._button(config.command);
+                                  }
+                                }}
+                                title=${config.tooltip || ''}>
+                                ${config.icon ? 
+                                  html`<ha-icon class="mdi-extra button-style" icon="${config.icon}"></ha-icon>`
+                                  : config.name}
+                              </button>` : "";
+                          })()}
+
+                          ${this.config.ButtonB ? html`
+                              <button class="ripple btn-extra button-style"
+                                @click=${() => this._button(this.config.ButtonB.command)}
+                                title=${this.config.ButtonB.tooltip ||''}>
+                                ${this.config.ButtonB.icon ? 
+                                  html`<ha-icon class="mdi-extra button-style" icon="${this.config.ButtonB.icon}"></ha-icon>`
+                                  : this.config.ButtonB.name}
+                              </button>` : ""}                              
+
+                          ${this.config.ButtonC ? html`
+                              <button class="ripple btn-extra button-style"
+                                @click=${() => this._button(this.config.ButtonC.command)}
+                                title=${this.config.ButtonC.tooltip ||''}>
+                                ${this.config.ButtonC.icon ? 
+                                  html`<ha-icon class="mdi-extra button-style" icon="${this.config.ButtonC.icon}"></ha-icon>`
+                                  : this.config.ButtonC.name}
                               </button>` : ""}
 
-                          ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
-                            && this.config.activities[this._current_activity].Button2 ? html`
+                          ${this.config.ButtonD ? html`
                               <button class="ripple btn-extra button-style"
-                                @click=${() => this._button(this.config.activities[this._current_activity].Button2.command)}
-                                title=${this.config.activities[this._current_activity].Button2.tooltip ||''}>
-                                ${this.config.activities[this._current_activity].Button2.icon ? 
-                                  html`<ha-icon class="mdi-extra button-style" icon="${this.config.activities[this._current_activity].Button2.icon}"></ha-icon>`
-                                  : this.config.activities[this._current_activity].Button2.name}
-                              </button>` : ""}
+                                @click=${() => this._button(this.config.ButtonD.command)}
+                                title=${this.config.ButtonD.tooltip ||''}>
+                                ${this.config.ButtonD.icon ? 
+                                  html`<ha-icon class="mdi-extra button-style" icon="${this.config.ButtonD.icon}"></ha-icon>`
+                                  : this.config.ButtonD.name}
+                              </button>` : ""}      
 
-                          ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
-                            && this.config.activities[this._current_activity].Button3 ? html`
-                              <button class="ripple btn-extra button-style"
-                                @click=${() => this._button(this.config.activities[this._current_activity].Button3.command)}
-                                title=${this.config.activities[this._current_activity].Button3.tooltip ||''}>
-                                ${this.config.activities[this._current_activity].Button3.icon ? 
-                                  html`<ha-icon class="mdi-extra button-style" icon="${this.config.activities[this._current_activity].Button3.icon}"></ha-icon>`
-                                  : this.config.activities[this._current_activity].Button3.name}
-                              </button>` : ""}
-
-                          ${this.config.activities && this._current_activity && this.config.activities[this._current_activity]
-                            && this.config.activities[this._current_activity].Button4 ? html`
-                              <button class="ripple btn-extra button-style"
-                                @click=${() => this._button(this.config.activities[this._current_activity].Button2.command)}
-                                title=${this.config.activities[this._current_activity].Button4.tooltip ||''}>
-                                ${this.config.activities[this._current_activity].Button4.icon ? 
-                                  html`<ha-icon class="mdi-extra button-style" icon="${this.config.activities[this._current_activity].Button4.icon}"></ha-icon>`
-                                  : this.config.activities[this._current_activity].Button4.name}
-                              </button>` : ""}
                        </div>
                        <!--  Extra buttons end -->
 
@@ -561,6 +566,24 @@ class MyHarmony extends LitElement {
         console.log(`_button Pressed - DeviceId: ${deviceId} - Command: ${button} - entity_id: ${ this.config.entity}`);
         }
     }
+      _service(buttonID: string){
+        const buttonConfig = this.config[buttonID];
+      
+        if (!buttonConfig || !buttonConfig.service) {
+            console.error(`Service configuration for ${buttonConfig} is missing or incomplete.`);
+            return;
+        }
+        
+        const serviceToUse = buttonConfig.service;
+        const serviceDataToUse = buttonConfig.data || {};
+        
+        this.hass.callService(
+            serviceToUse.split(".")[0],
+            serviceToUse.split(".")[1],
+            serviceDataToUse
+        );
+    }
+    
 
     // Switch on specific activity
     _select_activity(activity) {
@@ -586,5 +609,21 @@ class MyHarmony extends LitElement {
     getCardSize() {
         return 15;
     }
+
+    callServiceFromConfig(key: string, service: string, serviceData: Record<string, any>) {
+      let serviceToUse = service;
+      let serviceDataToUse = serviceData;
+      if(this.config.keys && key in this.config.keys) {
+          const keyConfig = this.config.keys[key];
+          serviceToUse = keyConfig["service"];
+          serviceDataToUse = keyConfig["data"];
+      }
+      this.hass.callService(
+        serviceToUse.split(".")[0],
+        serviceToUse.split(".")[1],
+        serviceDataToUse
+      );
+
+  }
 
 }
