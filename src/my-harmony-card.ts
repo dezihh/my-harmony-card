@@ -431,8 +431,9 @@ class MyHarmony extends LitElement {
                           ${(() => { const config = this.config.ButtonA; return config ? html`
                               <button class="ripple btn-extra button-style"
                                 @click=${() => {
-                                  if (config.service) {
-                                    this._service(config.service);
+                                  const contextPath = 'config.ButtonA';
+                                  if (config.service, contextPath) {
+                                    this._service(config.service, contextPath);
                                   } else if (config.command) {
                                     this._button(config.command);
                                   }
@@ -566,23 +567,32 @@ class MyHarmony extends LitElement {
         console.log(`_button Pressed - DeviceId: ${deviceId} - Command: ${button} - entity_id: ${ this.config.entity}`);
         }
     }
-      _service(buttonID: string){
-        const buttonConfig = this.config[buttonID];
+    _service(serviceName, contextPath) {
+      // Hole die Konfiguration basierend auf dem übergebenen Pfad
+      const buttonConfig = this._getConfigFromPath(contextPath);
+  
+      if (!buttonConfig || !buttonConfig.service) {
+          console.error(`Service configuration for ${contextPath} is missing or incomplete.`);
+          return;
+      }
       
-        if (!buttonConfig || !buttonConfig.service) {
-            console.error(`Service configuration for ${buttonConfig} is missing or incomplete.`);
-            return;
-        }
-        
-        const serviceToUse = buttonConfig.service;
-        const serviceDataToUse = buttonConfig.data || {};
-        
-        this.hass.callService(
-            serviceToUse.split(".")[0],
-            serviceToUse.split(".")[1],
-            serviceDataToUse
-        );
-    }
+      const serviceToUse = buttonConfig.service;
+      const serviceDataToUse = buttonConfig.data || {};
+      const serviceTargetToUse = buttonConfig.target || this.config.entity;
+
+      console.log(`Service: ${serviceToUse}, Data: ${JSON.stringify(serviceDataToUse)}`);   
+      
+      this.hass.callService(
+          serviceToUse.split(".")[0],
+          serviceToUse.split(".")[1],
+          serviceDataToUse
+      );
+  }
+  
+  _getConfigFromPath(path) {
+      return path.split('.').reduce((obj, key) => obj && obj[key], this);
+  }
+  
     
 
     // Switch on specific activity
