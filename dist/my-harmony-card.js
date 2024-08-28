@@ -716,14 +716,14 @@ const st=t=>(e,i)=>{void 0!==i?i.addInitializer((()=>{customElements.define(t,e)
                   `:""} 
                 `)))}
          <!-- </tbody>-->
-      `}render(){var t;const e=this.hass.states[this.config.entity];this.config.color_buttons,this._current_activity=e.attributes.current_activity;const i=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity];i?(this.defaultDeviceId=i.device_id||null,this.volumeDeviceId=i.volume_device_id||this.defaultDeviceId):(this.defaultDeviceId=-1,this.volumeDeviceId=-1,this._current_activity="PowerOff");const o="PowerOff"===this._current_activity?"red":"green";this.debug&&console.log(`Current Activity ${e.attributes.current_activity} - DeviceID: ${i.device_id} `);const n=this.config.dimensions&&this.config.dimensions.border_width?this.config.dimensions.border_width:"1px",s=this.config.dimensions&&this.config.dimensions.scale?this.config.dimensions.scale:1,r=Math.round(260*s)+"px",a=this.config.colors&&this.config.colors.background?this.config.colors.background:"var( --ha-card-background, var(--card-background-color, white) )",c=this.config.colors&&this.config.colors.border?this.config.colors.border:"var(--primary-text-color)",l=this.config.colors&&this.config.colors.buttons?this.config.colors.buttons:"var(--secondary-background-color)",d=this.config.colors&&this.config.colors.text?this.config.colors.text:"var(--primary-text-color)",h=this.config.colors&&this.config.colors.popup?this.config.colors.popup:"var(--popup-color)";return I`
+      `}render(){var t;const e=this.hass.states[this.config.entity];this.config.color_buttons,this._current_activity=e.attributes.current_activity;const i=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity];i?(this.defaultDeviceId=i.device_id||null,this.volumeDeviceId=i.volume_device_id||this.defaultDeviceId):(this.defaultDeviceId=-1,this.volumeDeviceId=-1,this._current_activity="PowerOff");const o="PowerOff"===this._current_activity?"red":"green";this.debug&&console.log(`Func: render - Current Activity ${e.attributes.current_activity} - DeviceID: ${i.device_id} `);const n=this.config.dimensions&&this.config.dimensions.border_width?this.config.dimensions.border_width:"1px",s=this.config.dimensions&&this.config.dimensions.scale?this.config.dimensions.scale:1,r=Math.round(260*s)+"px",a=this.config.colors&&this.config.colors.background?this.config.colors.background:"var( --ha-card-background, var(--card-background-color, white) )",c=this.config.colors&&this.config.colors.border?this.config.colors.border:"var(--primary-text-color)",l=this.config.colors&&this.config.colors.buttons?this.config.colors.buttons:"var(--secondary-background-color)",d=this.config.colors&&this.config.colors.text?this.config.colors.text:"var(--primary-text-color)",h=this.config.colors&&this.config.colors.popup?this.config.colors.popup:"var(--popup-color)";return I`
 
         <div class="card">
             <div class="page"
                  style="--remote-button-color: ${l};
                         --remote-text-color: ${d};
                         --remote-color: ${a};
-                       --popup-color: ${h};
+                        --popup-color: ${h};
                         --remotewidth: ${r};
                         --main-border-color: ${c};
                         --main-border-width: ${n};
