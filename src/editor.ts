@@ -138,8 +138,7 @@ class MYHarmonyCardEditor extends LitElement {
              @input=${this.colorsConfigChanged}></input>
         <ha-icon data-input-name="buttons" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
         <label class="color-item" for="background">Button Color</label>
-      </div>  
-      <div>
+
         <input type="color" name="background" id="background" .value="${config.colors.background || ''}"
                @input=${this.colorsConfigChanged}>
         <ha-icon data-input-name="background" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
@@ -150,6 +149,11 @@ class MYHarmonyCardEditor extends LitElement {
                @input=${this.colorsConfigChanged}>
         <ha-icon data-input-name="text" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
         <label class="color-item" for="text">Text Color</label>
+
+        <input type="color" name="popup" id="popup" .value="${config.colors.popup || ''}"
+            @input=${this.colorsConfigChanged}>
+        <ha-icon data-input-name="text" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
+        <label class="color-item" for="text">Popup Background Color</label>
       </div>
       <div>
         <input type="color" name="border" id="border" .value="${config.colors.border || ''}"

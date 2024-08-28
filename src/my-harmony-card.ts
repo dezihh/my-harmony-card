@@ -236,7 +236,7 @@ class MyHarmony extends LitElement {
         const powerButtonColor = this._current_activity === 'PowerOff' ? 'red' : 'green';
 
       if (this.debug) {
-        console.log(`Current Activity ${stateObj.attributes.current_activity} - DeviceID: ${currentActivityConfig.device_id} `);
+        console.log(`Func: render - Current Activity ${stateObj.attributes.current_activity} - DeviceID: ${currentActivityConfig.device_id} `);
       }
 
         const borderWidth = this.config.dimensions && this.config.dimensions.border_width ? this.config.dimensions.border_width : "1px";
@@ -247,6 +247,7 @@ class MyHarmony extends LitElement {
         const borderColor = this.config.colors && this.config.colors.border ? this.config.colors.border: "var(--primary-text-color)";
         const buttonColor = this.config.colors && this.config.colors.buttons ? this.config.colors.buttons : "var(--secondary-background-color)";
         const textColor = this.config.colors && this.config.colors.text ? this.config.colors.text : "var(--primary-text-color)";
+        const popupColor = this.config.colors && this.config.colors.popup ? this.config.colors.popup : "var(--popup-color)";
        
     return html`
 
@@ -255,6 +256,7 @@ class MyHarmony extends LitElement {
                  style="--remote-button-color: ${buttonColor};
                         --remote-text-color: ${textColor};
                         --remote-color: ${backgroundColor};
+                        --popup-color: ${popupColor};
                         --remotewidth: ${remoteWidth};
                         --main-border-color: ${borderColor};
                         --main-border-width: ${borderWidth};

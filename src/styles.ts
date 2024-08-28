@@ -554,7 +554,7 @@ export const styles = css`
     justify-content: center; }
 
   .popup-dialog {
-    --mdc-theme-surface: var(--remote-color); /* Hintergrundfarbe */
+    --mdc-theme-surface: var(--popup-color); /* Hintergrundfarbe */
     --ha-dialog-border-radius: 10px; /* Optional: Rundungen des Dialogs */
     --mdc-dialog-content-padding: 0px;
     --mdc-dialog-min-width: 20vw;
