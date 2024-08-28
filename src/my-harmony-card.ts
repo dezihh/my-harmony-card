@@ -399,7 +399,11 @@ class MyHarmony extends LitElement {
                        <!-- DIRECTION PAD END  -->
 
                        <!-- Extra BUTTONS  -->
-                       <div class="grid-container-extra">
+                       ${(() => {
+                        const activityConfig = this.config.activities?.[this._current_activity];
+                        const hasButtons = activityConfig?.Button1 || activityConfig?.Button2 || activityConfig?.Button3 || activityConfig?.Button4;
+                        return hasButtons ? html`
+                      <div class="grid-container-extra">
                           ${(() => {
                             const activityConfig = this.config.activities?.[this._current_activity];
                             const buttonConfig = activityConfig?.Button1;
@@ -423,7 +427,7 @@ class MyHarmony extends LitElement {
 
                           ${(() => {
                             const activityConfig = this.config.activities?.[this._current_activity];
-                            const buttonConfig = activityConfig?.Button3;
+                            const buttonConfig = activityConfig?.Button2;
                             if (!buttonConfig) return html``;
                             return html`
                               <button class="ripple btn-extra button-style"
@@ -483,10 +487,14 @@ class MyHarmony extends LitElement {
                               </button>
                             `;
                           })()}
-                        </div>
+                        </div>  
+                       ` : html``; })()}
                        <!--  Extra buttons end -->
                        
                        <!-- Extra BUTTONS #2  -->
+                       ${(() => {
+                        const hasButtons = this.config?.ButtonA || this.config?.ButtonB || this.config?.ButtonC || this.config?.ButtonD;
+                        return hasButtons ? html`                       
                        <div class="grid-container-extra_2">
 
                           ${(() => { const config = this.config.ButtonA; return config ? html`
@@ -554,15 +562,18 @@ class MyHarmony extends LitElement {
                           })()}   
 
                        </div>
+                       ` : html``; })()}                       
                        <!--  Extra buttons end -->
 
                        <!-- COLORED BUTTONS -->
-                       <div class="grid-container-color_btn">
-                         <button class="btn-color ripple btn-red button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Red")}></button>
-                         <button class="btn-color ripple btn-green button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Green")}></button>
-                         <button class="btn-color ripple btn-yellow button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Yellow")}></button>
-                         <button class="btn-color ripple btn-blue button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Blue")}></button>
-                       </div>
+
+                        <div class="grid-container-color_btn">
+                          <button class="btn-color ripple btn-red button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Red")}></button>
+                          <button class="btn-color ripple btn-green button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Green")}></button>
+                          <button class="btn-color ripple btn-yellow button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Yellow")}></button>
+                          <button class="btn-color ripple btn-blue button-style" style="height: calc(var(--remotewidth) / 9);" @click=${() => this._button("Blue")}></button>
+                        </div>
+
                         <!-- COLORED BUTTONS END  -->
 
 

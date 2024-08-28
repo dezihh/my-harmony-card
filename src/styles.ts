@@ -162,7 +162,7 @@ export const styles = css`
     width: calc(var(--remotewidth)/1.1);
     overflow: hidden;
     margin: auto;
-    margin-top:10px;
+    margin-top:8px;
     gap: 4px;
     padding: 5px;
   }
@@ -175,8 +175,8 @@ export const styles = css`
     width: calc(var(--remotewidth)/1.1);
     overflow: hidden;
     margin: auto;
-    margin-top:10px;         
-    gap: 5px;
+    margin-top:8px;         
+    gap: 4px;
     padding: 0px;
   }  
 
@@ -188,8 +188,8 @@ export const styles = css`
     width: calc(var(--remotewidth)/1.1);
     overflow: hidden;
     margin: auto;
-    margin-top:10px;         
-    gap: 5px;
+    margin-top:8px;         
+    gap: 4px;
     padding: 0px;
   }
 
