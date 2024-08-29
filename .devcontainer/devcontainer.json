@@ -2,7 +2,7 @@
     "name": "MY Harmony-Card",
     "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
     "workspaceFolder": "/workspace",
-    "workspaceMount": "source=c:/Benutzer/Dezi/Vscode-Dev/harmony,target=/workspace,type=bind",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
     "customizations": {
         "vscode": {
             "settings": {},
