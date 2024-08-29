@@ -20,5 +20,6 @@
     "runArgs": [
         "-p=5000:5000"
     ],
+    "remoteUser": "root",
     "postCreateCommand": "echo 'Container eingerichtet!'"
 }
