@@ -3,8 +3,8 @@
     "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
     "workspaceFolder": "/workspace",
     "mounts": [
-        "source=${localWorkspaceFolder},target=/workspace,type=bind"
-    ],
+        "source=mein-volume,target=/workspace,type=volume"
+         ],
     "customizations": {
         "vscode": {
             "settings": {},
