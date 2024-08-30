@@ -57,6 +57,10 @@ export const styles = css`
     background-color: var(--remote-button-color);  
     border: 0px solid;
     cursor: pointer;
+
+    //place-items: center;
+    //text-wrap: nowrap;
+
     transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
 }
 
@@ -379,7 +383,7 @@ export const styles = css`
     background-color: yellow;
 }
 
-  .btn-act, .btn-act-on {
+.btn-act, .btn-act-on {
   /* ACT Text */
     font-size: calc(var(--remotewidth)/10.5);
     height: calc(var(--remotewidth)/7.2226);
@@ -389,7 +393,30 @@ export const styles = css`
     place-items: center;
     display: list-item;
     cursor: pointer;
+    text-wrap: nowrap;
+    display: inline-block;
+    max-width: 100%;
+}
+
+//.btn-act-scale {
+//    font-size: min(calc(100% - 2px), 1em); /* Passt die Schriftgröße an den verfügbaren Platz an */
+//}
+
+.btn-act-scale {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: scroll-text 5s linear infinite alternate;
+}
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(0%);
   }
+  100% {
+    transform: translateX(calc(-100% + 100px)); /* Adjust 100px to the width of the container */
+  }
+}
 
 .btn-act {
     background-color: var(--remote-button-color);
@@ -398,7 +425,7 @@ export const styles = css`
     transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
 }
 
-/* Effekt bei Hover */
+/* Effect on Hover */
 .btn-act:hover {
     filter: brightness(1.1) saturate(1.2); /* Helligkeit und Sättigung der Hintergrundfarbe und des Rahmens beim Hover erhöhen */
 }
@@ -410,13 +437,10 @@ export const styles = css`
     filter: brightness(1.2) saturate(1.5); /* Noch stärkerer Effekt beim Klick */
 }
 
-
-
-
-  .btn-act-on {
+.btn-act-on {
     background-color: var(--primary-color);
     color: #fff;
-  }
+}
 
   .overlay {
     background-color: rgba(0, 0, 0, .02);

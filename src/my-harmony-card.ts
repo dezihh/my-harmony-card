@@ -265,7 +265,7 @@ class MyHarmony extends LitElement {
                 <!-- Power row -->
                 ${this.config.name ? html` <div class="tv_title" style="color:${textColor}" >${this.config.name}</div> ` : ""}
                     
-                    <button class="act_action button-style" style="color:${textColor}"
+                    <button class="act_action button-style"  style="color:${textColor}"
                      @click=${() => this._show_activity = !this._show_activity} 
                      title=${this.config.tooltip ? 'Action Selector' : ''}>
                       ${this._current_activity}</button>
@@ -297,22 +297,30 @@ class MyHarmony extends LitElement {
 
                 ${this._show_activity ? html`
 
-                    <!--  Activity Overlay  -->
-                    <div class="grid-container-act">
-                        <button class="ripple bnt-act-back button-style"
-                          @click=${() => this._show_activity = false}>
-                          <ha-icon icon="mdi:undo-variant"/></button>
+                  <!--  Activity Overlay  -->
+                  <div class="grid-container-act">
+                      <button class="ripple bnt-act-back button-style"
+                        @click=${() => this._show_activity = false}>
+                        <ha-icon icon="mdi:undo-variant"/></button>
 
-                        <p class="act_text" style="color:${textColor}"><b>ACTIONS</b></p>
-                        <div class="grid-item-act">
-                           ${stateObj.attributes.activity_list.map(activity => html`
-                                <button class="button-style ${stateObj.attributes.current_activity === activity ? 'btn-act-on' : 'btn-act ripple overlay'}" @click=${() => {
-                                    this._select_activity(activity);
-                                    this._show_activity = false;
-                               }}>${activity}</button>
-                            `)}
-                        </div>
+                      <p class="act_text" style="color:${textColor}"><b>ACTIONS</b></p>
+
+                  <div class="grid-item-act">
+                        ${stateObj.attributes.activity_list.map(activity => html`
+                            <button class="button-style 
+                                          ${stateObj.attributes.current_activity === activity ? 'btn-act-on' : 'btn-act ripple overlay'}"
+                                    @click=${() => {
+                                        this._select_activity(activity);
+                                        this._show_activity = false;
+                                  }}>
+                              <span class="${activity.length > 18 ? 'btn-act-scale' : ''}">
+                                <div class="scrolling-text">${activity}</div>
+                              </span>
+                            </button>
+                        `)}
                     </div>
+                  </div>
+
 
                      <!--  Activity Overlay END  -->
                     ` : html`
