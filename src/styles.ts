@@ -214,6 +214,15 @@ export const styles = css`
     height: calc(var(--remotewidth)/10);
   }
 
+  .grid-container-media-control {
+    /* grid-template-rows: 1fr 1fr;
+    height: calc(var(--remotewidth)/2.85);*/
+      display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
+  grid-template-rows: 1fr 1fr; /* 2 Reihen */
+  height: calc(var(--remotewidth)/4);
+  }
+
   .grid-container-media-control, .grid-container-volume-channel-control {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -224,6 +233,13 @@ export const styles = css`
     overflow: hidden;
     margin-top: calc(var(--remotewidth)/12);
   }
+  .grid-container-media-control {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Spalten */
+    grid-template-rows: 1fr 1fr; /* 2 Reihen */
+    height: calc(var(--remotewidth)/2.85);
+  }
+
   /* Overlay Action selector */
   .grid-item-act {
     grid-column-start: 1;
