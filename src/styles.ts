@@ -7,30 +7,28 @@ export const styles = css`
     }
   }
 
-/* Allgemeines Makro für Buttons mit Hover- und Klick-Effekten */
-.button-style {
-    color: var(--remote-text-color);
-    border-radius: calc(var(--remotewidth)/10);
-    cursor: pointer;
-    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
-}
+  /* General macro for buttons with hover and click effects */
+  .button-style {
+      color: var(--remote-text-color);
+      border-radius: calc(var(--remotewidth)/10);
+      cursor: pointer;
+      transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+  }
 
-/* Hover-Effekt */
-.button-style:hover {
-    filter: brightness(1.1) saturate(1.2); /*Helligkeit und Sättigung der Hintergrundfarbe beim Hover erhöhen */
-   /* filter: sepia(0.3) hue-rotate(10deg) brightness(1.2); */ 
-    transform: scale(1.1);
-    /* filter: invert(0.1) brightness(1.1); */ 
-}
+  /* Hover-Effekt */
+  .button-style:hover {
+      filter: brightness(1.1) saturate(1.2); /*Helligkeit und Sättigung der Hintergrundfarbe beim Hover erhöhen */
+    /* filter: sepia(0.3) hue-rotate(10deg) brightness(1.2); */ 
+      transform: scale(1.1);
+      /* filter: invert(0.1) brightness(1.1); */ 
+  }
 
-/* Klick-Effekt Active-Zustand) */
-.button-style:active {
-    transform: scale(0.95);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    filter: brightness(1.2) saturate(1.5); /* Noch stärkerer Effekt beim Klick */
-}
-
-
+  /* Klick-Effekt Active-state) */
+  .button-style:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      filter: brightness(1.2) saturate(1.5); /* Noch stärkerer Effekt beim Klick */
+  }
 
   .tv_title {
     width: fit-content;
@@ -43,38 +41,34 @@ export const styles = css`
     border-radius: calc(var(--remotewidth)/10);
     background-color: var(--remote-button-color);            
   }
-.act_action {
-    width: fit-content;
-    text-align: center;
-    display: block;
-    margin: auto;
-    width: calc(var(--remotewidth)/1.1);
-    margin-top: 10px;
-    font-size: calc(var(--scale) * 22px); 
-    font-weight: normal;
-    padding: calc(var(--remotewidth)/52) calc(var(--remotewidth)/26);
-    border-radius: calc(var(--remotewidth)/10);
-    background-color: var(--remote-button-color);  
-    border: 0px solid;
-    cursor: pointer;
 
-    //place-items: center;
-    //text-wrap: nowrap;
-
-    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
-}
-
-
-
-  button:focus {
-    outline: 0;
+  /* Button for actual activity above Power*/
+  .btn-act-action {
+      width: fit-content;
+      text-align: center;
+      display: list-item;
+      align-items: center; /* Centers the content vertically */
+      justify-content: center; /* Centers the content horentionaly */
+      margin: auto;
+      width: calc(var(--remotewidth)/1.1);
+      margin-top: 8px;
+      font-size: calc(var(--scale) * 22px); 
+      font-weight: normal;
+      padding: calc(var(--remotewidth)/52)  calc(var(--remotewidth)/26); 
+      border: 0px solid transparent;
+      border-radius: calc(var(--remotewidth)/10);
+      background-color: var(--remote-button-color);  
+      cursor: pointer;
+      overflow: hidden; /* Ensures text stays within the defined area */
+      white-space: nowrap;
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
   }
 
-  .ripple {
+ .ripple {
     position: relative;
     overflow: hidden;
     transform: translate3d(0, 0, 0);
-  }
+  } 
 
   .ripple:after {
     content: "";
@@ -98,10 +92,7 @@ export const styles = css`
     transition: 0s;
   }
 
-  .blink {
-    animation: blinker 1.5s linear infinite;
-    color: red; }
-
+/* Position of the card itself on lovelance */
   .card, .ripple:after {
     width: 100%;
     height: 100%; }
@@ -109,7 +100,7 @@ export const styles = css`
   .card {
     display: flex;
     justify-content: center;
-  }
+  } 
 
   .page {
     background-color: var(--remote-color);
@@ -197,7 +188,7 @@ export const styles = css`
     padding: 0px;
   }
 
-    .btn-extra {
+  .btn-extra {
     font-size: calc(var(--scale) * 16px);
     height: calc(var(--remotewidth) / 8); 
     width: 100%;
@@ -220,7 +211,7 @@ export const styles = css`
   }            
 
   .grid-container-color_btn {          
-  height: calc(var(--remotewidth)/10);
+    height: calc(var(--remotewidth)/10);
   }
 
   .grid-container-media-control, .grid-container-volume-channel-control {
@@ -233,12 +224,7 @@ export const styles = css`
     overflow: hidden;
     margin-top: calc(var(--remotewidth)/12);
   }
-
-  .grid-container-media-control {
-    grid-template-rows: 1fr 1fr;
-    height: calc(var(--remotewidth)/2.85);
-  }
-
+  /* Overlay Action selector */
   .grid-item-act {
     grid-column-start: 1;
     grid-column-end: 4;
@@ -271,10 +257,11 @@ export const styles = css`
     grid-row-end: 3; }
 
   .item_guide {
-  grid-area: ctl; }
+    grid-area: ctl; }
 
   .item_up {
     grid-area: up; }
+
   .item_act {
     grid-area: act; }
 
@@ -341,9 +328,9 @@ export const styles = css`
     border-width: 0; }
 
   .btn-extra {
-  text-align: center;
-  float: none;
-  margin-right: -10px; }
+    text-align: center;
+    float: none;
+    margin-right: -10px; }
 
   .btn-keypad {
     background-color: transparent;
@@ -357,7 +344,6 @@ export const styles = css`
     border-width: 0;
     place-items: center;
     cursor: pointer;
-    /* transform: scale(1.3); */ 
     }
 
   .btn-color {
@@ -367,80 +353,78 @@ export const styles = css`
     background-color: inherit;
   }
 
-.btn-red {
-    background-color: red;
-}
+  .btn-red {
+      background-color: red;
+  }
 
-.btn-blue {
-    background-color: blue;
-}
+  .btn-blue {
+      background-color: blue;
+  }
 
-.btn-green {
-    background-color: green;
-}
+  .btn-green {
+      background-color: green;
+  }
 
-.btn-yellow {
-    background-color: yellow;
-}
+  .btn-yellow {
+      background-color: yellow;
+  }
 
-.btn-act, .btn-act-on {
   /* ACT Text */
-    font-size: calc(var(--remotewidth)/10.5);
-    height: calc(var(--remotewidth)/7.2226);
-    border-width: 0;
-    border-radius: calc(var(--remotewidth)/20);
-    margin: calc(var(--remotewidth)/47);
-    place-items: center;
-    display: list-item;
-    cursor: pointer;
-    text-wrap: nowrap;
+  .btn-act, .btn-act-on {
+      font-size: calc(var(--remotewidth)/10.5);
+      height: calc(var(--remotewidth)/7.2226);
+      border-width: 0;
+      border-radius: calc(var(--remotewidth)/20);
+      margin: calc(var(--remotewidth)/47);
+      place-items: center;
+      display: list-item;
+      cursor: pointer;
+      text-wrap: nowrap;
+      display: inline-block;
+      max-width: 100%;
+  }
+
+  .btn-act-scroll {
     display: inline-block;
-    max-width: 100%;
-}
-
-//.btn-act-scale {
-//    font-size: min(calc(100% - 2px), 1em); /* Passt die Schriftgröße an den verfügbaren Platz an */
-//}
-
-.btn-act-scale {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  animation: scroll-text 5s linear infinite alternate;
-}
-
-@keyframes scroll-text {
-  0% {
-    transform: translateX(0%);
+    white-space: nowrap;
+    overflow: hidden;
+    animation: scroll-text 5s linear infinite alternate;
   }
-  100% {
-    transform: translateX(calc(-100% + 100px)); /* Adjust 100px to the width of the container */
+
+  @keyframes scroll-text {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(calc(-100% + 100px)); /* Adjust 100px to the width of the container */
+    }
   }
-}
 
-.btn-act {
-    background-color: var(--remote-button-color);
-    color: var(--remote-text-color);
-    border: solid 2px var(--remote-color);
-    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
-}
+  .btn-act {
+      background-color: var(--remote-button-color);
+      color: var(--remote-text-color);
+      border: solid 2px var(--remote-color);
+      transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+  }
 
-/* Effect on Hover */
-.btn-act:hover {
-    filter: brightness(1.1) saturate(1.2); /* Helligkeit und Sättigung der Hintergrundfarbe und des Rahmens beim Hover erhöhen */
-}
+  /* Effect on Hover */
+  .btn-act:hover {
+      filter: brightness(1.1) saturate(1.2); /* Helligkeit und Sättigung der Hintergrundfarbe und des Rahmens beim Hover erhöhen */
+  }
 
-/* Effekt bei Aktivierung (Klick) */
-.btn-act:active {
-    transform: scale(0.95);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    filter: brightness(1.2) saturate(1.5); /* Noch stärkerer Effekt beim Klick */
-}
+  /* Effekt on activfation (click) */
+  .btn-act:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      filter: brightness(1.2) saturate(1.5); /* Noch stärkerer Effekt beim Klick */
+  }
 
-.btn-act-on {
-    background-color: var(--primary-color);
-    color: #fff;
-}
+  .btn-act-on {
+      /* background-color: var(--primary-color); */
+      background-color: var(--remote-button-color);
+      /*color: #fff;*/
+      filter: invert(1);
+  }
 
   .overlay {
     background-color: rgba(0, 0, 0, .02);
@@ -470,8 +454,8 @@ export const styles = css`
     cursor: pointer;
   }
 
-    .msc {
-      --mdc-icon-size: calc(var(--scale) * 34px); }
+  .msc {
+    --mdc-icon-size: calc(var(--scale) * 34px); }
 
 
   .ok_button {
@@ -487,7 +471,6 @@ export const styles = css`
 
   /********************* Editor.ts *******************/
     .heading {
-
       font-weight: bold; 
       font-size: 16px;
       font-weight: bold;
