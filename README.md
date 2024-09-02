@@ -47,10 +47,10 @@ At least the following entries must be present for the card to work:
 | `type` | string | **Required** | `custom:my-harmony-card` | Type of the card |
 | `entity` | string | **Required** | remote.myharmonydevice | harmony entity |
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
-| `activities` | Opject | **Required** | see [activities](##Activities-Optopns) | name of harmony device in HA, ie. living room |
+| `activities` | Opject | **Required** | see [activities](##activities-options) | name of harmony device in HA, ie. living room |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
-| `Special` | object | **Option** | see [Button\[A-D\]](###Button\[A-DD\]) | Free global select: 5th configurable global Button -  works on all activities same  |
-| `Button[A-D]` | object | **Option** | see [Button\[A-D\]](###Button\[A-DD\]) | 4 Buttons for global use. You can add to each service one service all. If not configured, the buttons disappear and the remote will get smaller  |
+| `Special` | object | **Option** | see [Button\[A-D\]](###Buttona-d) | Free global select: 5th configurable global Button -  works on all activities same  |
+| `Button[A-D]` | object | **Option** | see [Button\[A-D\]](###Buttona-a) | 4 Buttons for global use. You can add to each service one service all. If not configured, the buttons disappear and the remote will get smaller  |
 | `favsize` | int | **Option** | 80 | Size of the icons in the favorites popup |
 | `faviconpath` | path | **Option** | /local/icons/ | Path were your station logos reside. Default it is a directory below this card (/local/community/my-harmony-card/stations/), but you can change it to a different directory i.e. /local/icons. This directory is not the physical directory, it is the directory, you can reach through Home Assistant. In my example the physical directory of /local/icons would be ~/www/icons.  |
 | `dimensions` | object | **Option** | see [Dimensions]() | Scale total size of remote and size of border |
