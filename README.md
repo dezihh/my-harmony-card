@@ -1,3 +1,4 @@
+
 # My-Harmony-Card
 
 Not [yet only another Remote Control](https://github.com/dezihh/my-harmony-card/) for Logitech HARMONY COMPANION Hub
@@ -9,10 +10,14 @@ This project is inspired by the LG WebOS Remote Card based on (madmicio's [repos
 
 <div style="display: flex; flex-wrap: wrap; align-items: center;">
   <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-front.png" width="128" style="margin-right: 10px;"/>
+  <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-front-small.png" width="128" style="margin-right: 10px;"/>
   <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-keypad.png" width="128" style="margin-right: 10px;"/>
   <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-actions.png" width="128" style="margin-right: 10px;"/>
   <img src="https://github.com/dezihh/my-harmony-card/blob/master/pictures/my-favorites.png" width="256" style="margin-right: 10px;"/>
 </div>
+
+# In short words
+The [Harmony Card My-Harmony-Card](https://github.com/dezihh/my-harmony-card/) is a customizable remote control for managing a Harmony Remote Hub, offering flexible button assignments and configurable color design. It allows the remote's height to be adjusted based on the selected activity and provides the option to save favorites and other specific functions. Configured activities can be automatically imported and linked to specific device IDs for a easy setup process. Special buttons can be assigned individual commands or service calls for each activity. Additionally, it includes aa scaling of the size of the remote for best fitting.
 
 ## Introduction
 
@@ -42,10 +47,15 @@ At least the following entries must be present for the card to work:
 | `type` | string | **Required** | `custom:my-harmony-card` | Type of the card |
 | `entity` | string | **Required** | remote.myharmonydevice | harmony entity |
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
+| `activities` | Opject | **Required** | see [activities](##Activities) | name of harmony device in HA, ie. living room |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
-| `favsize` | int | Option | 80 | Size of the icons in the favorites popup |
-| `faviconpath` | path | Option | /local/icons/ | Path were your station logos reside. Default it is a directory below this card (/local/community/my-harmony-card/stations/), but you can change it to a different directory i.e. /local/icons. This directory is not the physical directory, it is the directory, you can reach through Home Assistant. In my example the physical directory of /local/icons would be ~/www/icons.  |
-| `debug` | bool | Option | true | Provide debugging information in the browser's console.log if set to true |
+| `Special` | object | **Option** | see [Button\[A-D\]](###Button\[A-DD\]) | Free global select: 5th configurable global Button -  works on all activities same  |
+| `Button[A-D]` | object | **Option** | see [Button\[A-D\]](###Button\[A-DD\]) | 4 Buttons for global use. You can add to each service one service all. If not configured, the buttons disappear and the remote will get smaller  |
+| `favsize` | int | **Option** | 80 | Size of the icons in the favorites popup |
+| `faviconpath` | path | **Option** | /local/icons/ | Path were your station logos reside. Default it is a directory below this card (/local/community/my-harmony-card/stations/), but you can change it to a different directory i.e. /local/icons. This directory is not the physical directory, it is the directory, you can reach through Home Assistant. In my example the physical directory of /local/icons would be ~/www/icons.  |
+| `dimensions` | object | **Option** | see [Dimensions]() | Scale total size of remote and size of border |
+| `colors` | object | **Option** | see [colors]() | Color setup of the remote (background, buttons,...) |
+| `debug` | bool | **Option** | true | Provide debugging information in the browser's console.log if set to true |
 
 ### Import activities
 
@@ -103,7 +113,7 @@ For each defined activity under the activities section, the following options ar
 | `Button[1-4]` | enum | **Optional** | Button1: | See explanation below |
 | `favorites` | enum | **Optional** | favorites: | See explanation below |
 
-### Button Options
+### Numeric Button Options
 
 Below each selected activity you can have up to 4 individual buttons. You can name it as you like (max. 3 Chars) and you can add an idividual command for each of these buttons (Button\[1-4\]).  
 If you don't do, the buttons are invisible.
@@ -115,6 +125,9 @@ If you don't do, the buttons are invisible.
 | `command` | string | **Required** | DVR | Command to send to device\_id of activity |
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
 | `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead for the named button |
+
+### Button\[A-D\]
+Lorem Lipsum
 
 ### Favorites
 
