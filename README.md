@@ -47,7 +47,7 @@ At least the following entries must be present for the card to work:
 | `type` | string | **Required** | `custom:my-harmony-card` | Type of the card |
 | `entity` | string | **Required** | remote.myharmonydevice | harmony entity |
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
-| `activities` | Opject | **Required** | see [activities](##Activities) | name of harmony device in HA, ie. living room |
+| `activities` | Opject | **Required** | see [activities](##Activities-Optopns) | name of harmony device in HA, ie. living room |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
 | `Special` | object | **Option** | see [Button\[A-D\]](###Button\[A-DD\]) | Free global select: 5th configurable global Button -  works on all activities same  |
 | `Button[A-D]` | object | **Option** | see [Button\[A-D\]](###Button\[A-DD\]) | 4 Buttons for global use. You can add to each service one service all. If not configured, the buttons disappear and the remote will get smaller  |
