@@ -110,8 +110,9 @@ For each defined activity under the activities section, the following options ar
 | `Info` | string | **Optional** | Favorite | See comments to 'Guide'. Command to send instead of 'Info' |
 | `OK` | string | **Optional** | Enter | See comments to 'Guide'. Command to send instead of 'OK' |
 | `player_name` | media\_player entitiy | **Optional** | media\_player.anlage | You can add a media\_player entitiy for each activity. If you press log the 'Menu' button, it opens 'more-info of the defined media\_player |
-| `Button[1-4]` | enum | **Optional** | Button1: | See explanation below |
-| `favorites` | enum | **Optional** | favorites: | See explanation below |
+| `activateCButtons` |bool| **Optional** | true | Enable or disable color button for the actual activity | 
+| `Button[1-4]` | Object | **Optional** | Button1: | See explanation below |
+| `favorites` | Object | **Optional** | favorites: | See explanation below |
 
 ### Numeric Button Options
 
@@ -121,13 +122,23 @@ If you don't do, the buttons are invisible.
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
 | `Button[1-4]` | enum | **Required** | Button1 | Only Button1, Button2, Button3, Button4 are possible |
-| `name` | 3 Char | **Required** | DVR | Name on button |
-| `command` | string | **Required** | DVR | Command to send to device\_id of activity |
+| `name` | Char | **Required** | DVR | Name on button |
+| `service`| Object | **Required** | DVR | Command to send to device\_id of activity |
+| `command`| string | **Required** | DVR | Command to send to device\_id of activity |
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
 | `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead for the named button |
 
 ### Button\[A-D\]
 Lorem Lipsum
+
+### Services
+| Name | Type | Default | Example | Description |
+| --- | --- | --- | --- | --- |
+| `service` | string | **Required** | light.toggle | Service to call at Home Assistant |
+| `name` | String | **Required** | DD | Name to display on remote button |
+| `icon` | String | **Required** | mdi:access-point | Image to display on remote button |
+| `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
+| `data` | Object | **Required** | mdi:netflix | Data send to Home Assistant for service. i.e. channel and entity_id |
 
 ### Favorites
 
