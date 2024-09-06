@@ -105,32 +105,60 @@ For each defined activity under the activities section, the following options ar
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
 | `device_id` | number | **Required** | 77085993 | This is the device id below each defined individual activity |
-| `volume_device_id` | number | **Optional** | 59107742 | Special: If you define this, you can send VolumeUp and VolumeDown to a different device. I.e. If you have an AV Receiver and you watch TV, you want to send all commands to TV, but volume change has to be send to AV Receier. In this case, enter the device\_id of AV Receiver as volume\_device\_id here |
+| `volume_device_id` | number | **Optional** | 59107742 | Special: If you define this, you can send VolumeUp and VolumeDown command to a different device. I.e. If you have an AV Receiver and you watch TV, you want to send all commands to TV, but volume change has to be send to AV Receier. In this case, enter the device\_id of AV Receiver as volume\_device\_id here |
 | `Guide` | string | **Optional** | InputCD | Below each activity you can define this option. In this example "InputCD" will be send to default device\_id instead of 'Guide'. Remove the option for default. |
 | `Home` | string | **Optional** | InputGame | See comments to 'Guide'. Command to send instead of 'Home' |
 | `Info` | string | **Optional** | Favorite | See comments to 'Guide'. Command to send instead of 'Info' |
 | `OK` | string | **Optional** | Enter | See comments to 'Guide'. Command to send instead of 'OK' |
 | `player_name` | media\_player entitiy | **Optional** | media\_player.anlage | You can add a media\_player entitiy for each activity. If you press log the 'Menu' button, it opens 'more-info of the defined media\_player |
-| `activateCButtons` |bool| **Optional** | true | Enable or disable color button for the actual activity | 
-| `Button[1-4]` | Object | **Optional** | Button1: | See explanation below |
-| `favorites` | Object | **Optional** | favorites: | See explanation below |
+| `activateCButtons` |bool| **Optional** | true | Enable or disable color (red, yellow, blue, green) buttons for the actual activity | 
+| `Button[1-4]` | Object | **Optional** | Button1 | [see explanation below](#numeric-button-options)  |
+| `favorites` | Object | **Optional** | favorites | [see explanation below](#favorites) |
 
 ### Numeric Button Options
 
-Below each selected activity you can have up to 4 individual buttons. You can name it as you like (max. 3 Chars) and you can add an idividual command for each of these buttons (Button\[1-4\]).  
-If you don't do, the buttons are invisible.
+Each activitiy has as option it's own 4 individual buttons. You can add up to additional commands _or_ service calls on it. This means the activity "Watch Tv" may have other commands on these buttons as the activity "Listen to Music". You can name it as you like (aprx. 3 Chars), or give instead a mdi: image to the button, and you can add an idividual command or service call to each of these buttons (Button\[1-4\]).  
+If you don't do, the buttons are invisible for this activity.
 
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
-| `Button[1-4]` | enum | **Required** | Button1 | Only Button1, Button2, Button3, Button4 are possible |
+| `Button[1-4]` | Object | **Required** | Button1 | Only Button1, Button2, Button3, Button4 are possible |
 | `name` | Char | **Required** | DVR | Name on button |
-| `service`| Object | **Required** | DVR | Command to send to device\_id of activity |
-| `command`| string | **Required** | DVR | Command to send to device\_id of activity |
+| `service`| Object | **Required or** | [see below](#services) | Service to call.<br>Cannot be used together with ```command``` |
+| `command`| string | **Required or** | DVR | Command to send to device\_id of activity.<br>Cannot be used together with ```service```  |
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
-| `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead for the named button |
+| `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead |
+
+#### A basic example configured with one Button for activiy Watch Tv:
+
+```
+~~~
+type: custom:my-harmony-card
+name: Wohnen
+entity: remote.harmony_wohnzimmer
+activities:
+  Watch Tv:
+    device_id: 77085993
+    volume_device_id: 59107742
+    Button1:
+      icon: mdi:gesture-two-double-tap
+      command: Settings
+      tooltip: 'Settings for my TV'
+~~~~
+```
 
 ### Button\[A-D\]
-Lorem Lipsum
+You find 5 free configurable global buttons on this remote. ``Buttons A-D`` and ``Special``. These buttons have no link to the current activity and are working on all activities in the same way (even at power off)
+If you don't configure them, they dissapear on the remote control.
+
+| Name | Type | Default | Example | Description |
+| --- | --- | --- | --- | --- |
+| `Button[A-D]` or `Special` | Object | **Required** | ButtonA | Only `ButtonA`, `ButtonB`, `ButtonC`, `ButtonD` and `Special` are possible |
+| `name` | String | **Required** | DVR | Name on button |
+| `service`| Object | **Required or** | [see below](#services) | Service to call.|
+| `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
+| `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead for the name on the button |
+
 
 ### Services
 | Name | Type | Default | Example | Description |
@@ -139,7 +167,23 @@ Lorem Lipsum
 | `name` | String | **Required** | DD | Name to display on remote button |
 | `icon` | String | **Required** | mdi:access-point | Image to display on remote button |
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
-| `data` | Object | **Required** | mdi:netflix | Data send to Home Assistant for service. i.e. channel and entity_id |
+| `data` | Object | **Required** | Data sent to service | Data send to Home Assistant for service. i.e. channel and entity_id |
+
+#### A basic example configured with one global Button:
+
+```
+~~~
+type: custom:my-harmony-card
+name: Wohnen
+entity: remote.harmony_wohnzimmer
+ButtonA:
+  service: light.toggle
+  name: Iri
+  tooltip: 'Toogle Iris Hue Light'
+  data:
+    entity_id: light.leuchtstab
+~~~~
+```
 
 ### Favorites
 
@@ -149,6 +193,12 @@ For each selected activity, you can define individual favorites. By long-pressin
 | --- | --- | --- | --- | --- |
 | `number` | integer | **Required** | 103 | Number which should be called by remote control |
 | `image` | icon | **Required** | ndr\_hd.png | Name of the icon (see below) |
+
+### Dimensions
+lorem ipsum
+
+### Colors
+lorem ipsum
 
 #### Icons for Favorite Popup
 `
