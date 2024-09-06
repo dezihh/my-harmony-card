@@ -17,7 +17,7 @@ This project is inspired by the LG WebOS Remote Card based on (madmicio's [repos
 </div>
 
 # In short words
-The [Harmony Card My-Harmony-Card](https://github.com/dezihh/my-harmony-card/) is a customizable remote control for managing a Harmony Remote Hub, offering flexible button assignments and configurable color design. It allows the remote's height to be adjusted based on the selected activity and provides the option to save favorites and other specific functions. Configured activities can be automatically imported and linked to specific device IDs for a easy setup process. Special buttons can be assigned individual commands or service calls for each activity. Additionally, it includes aa scaling of the size of the remote for best fitting.
+The [Harmony Card My-Harmony-Card](https://github.com/dezihh/my-harmony-card/) is a highly customizable remote control for managing a Harmony Remote Hub, offering flexible button assignments and configurable color design. It allows the remote's height to be adjusted based on the selected activity and provides the option to save favorites and other specific functions. Configured activities can be automatically imported and linked to specific device IDs for a easy setup process. Special buttons can be assigned individual commands or service calls for each activity. Additionally, it includes a scaling of the size of the remote for best fitting.
 
 ## Introduction
 
@@ -41,6 +41,7 @@ At least the following entries must be present for the card to work:
 ```
 
 ### Main Options
+You can find a screnshot of the remote with some button nameing [here](https://github.com/dezihh/my-harmony-card/blob/master/pictures/Harmony_desc.png)
 
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
@@ -49,12 +50,12 @@ At least the following entries must be present for the card to work:
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
 | `activities` | Opject | **Required** | see [activities](#activities-options) | name of harmony device in HA, ie. living room |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
-| `Special` | object | **Option** | see [Button\[A-D\]](#Buttona-d) | Free global select: 5th configurable global Button -  works on all activities same  |
-| `Button[A-D]` | object | **Option** | see [Button\[A-D\]](#Buttona-a) | 4 Buttons for global use. You can add to each service one service all. If not configured, the buttons disappear and the remote will get smaller  |
+| `Special` | object | **Option** | see [Button\[A-D\]](#buttona-d) | Free global select: 5th configurable global Button -  works on all activities same  |
+| `Button[A-D]` | object | **Option** | see [Button\[A-D\]](#buttona-d) | 4 Buttons for global use. You can add to each button one service call. If all 4 buttons not configured, the buttons disappear and the remote will get smaller - works on all activities same  |
 | `favsize` | int | **Option** | 80 | Size of the icons in the favorites popup |
 | `faviconpath` | path | **Option** | /local/icons/ | Path were your station logos reside. Default it is a directory below this card (/local/community/my-harmony-card/stations/), but you can change it to a different directory i.e. /local/icons. This directory is not the physical directory, it is the directory, you can reach through Home Assistant. In my example the physical directory of /local/icons would be ~/www/icons.  |
-| `dimensions` | object | **Option** | see [Dimensions]() | Scale total size of remote and size of border |
-| `colors` | object | **Option** | see [colors]() | Color setup of the remote (background, buttons,...) |
+| `dimensions` | object | **Option** | see [Dimensions](#dimensions) | Scale total size of remote and size of border |
+| `colors` | object | **Option** | see [Colors](#colors) | Color setup of the remote (background, buttons,...) |
 | `debug` | bool | **Option** | true | Provide debugging information in the browser's console.log if set to true |
 
 ### Import activities
