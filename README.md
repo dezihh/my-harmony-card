@@ -60,7 +60,7 @@ You can find a screnshot of the remote with some button nameing [here](https://g
 
 ### Import activities
 
-You can import your configured activities by checking the import box in the configuration menu. This will automatically import your activities and assign -1 as the device_id for each new device. You can edit the device\_id directly if needed.
+You can import your configured activities by checking the import box in the configuration menu. This will automatically import your activities and assign 0 as the device_id for each new device. You can edit the device\_id directly if needed.
 
 If your Harmony configuration changes (e.g., adding a new activity, renaming, etc.), you can re-import the activities by clicking 'Import Activities.' This will remove any unused activities and add new ones. Unchanged activities won't be affected, so you won't lose any data if you click the button again. :-)
 
@@ -163,11 +163,11 @@ If you don't configure them, they dissapear on the remote control.
 ### Services
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
-| `service` | string | **Required** | light.toggle | Service to call at Home Assistant |
+| `service` | Object | **Required** | light.toggle | Service to call at Home Assistant |
 | `name` | String | **Required** | DD | Name to display on remote button |
 | `icon` | String | **Required** | mdi:access-point | Image to display on remote button |
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
-| `data` | Object | **Required** | Data sent to service | Data send to Home Assistant for service. i.e. channel and entity_id |
+| `data` | Object | **Required** | Data sent to service | Data send to Home Assistant for service. i.e. channel and entity_id<br>Please be aware, you can sent only ``data`` to a sevice. Other optiones (i.e. ``target``) cannot be sent to service. |
 
 #### A basic example configured with one global Button:
 
@@ -187,22 +187,86 @@ ButtonA:
 
 ### Favorites
 
-For each selected activity, you can define individual favorites. By long-pressing the '123' button, a popup will appear with your predefined favorites. If you click one of the displayed icons in the popup, the channel number associated with that icon will be selected. The dialog will remain open for continued use until you manually close it (useful for channel surfing).
+For each selected activity, you can define individual favorites. By long-pressing the '123' button, a popup will appear with your predefined favorites for the actual selected activity. If you click one of the displayed icons in the popup, the channel number associated with that icon will be selected. The dialog will remain open for continued use until you manually close it (useful for channel surfing).
 
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
-| `number` | integer | **Required** | 103 | Number which should be called by remote control |
-| `image` | icon | **Required** | ndr\_hd.png | Name of the icon (see below) |
-
-### Dimensions
-lorem ipsum
-
-### Colors
-lorem ipsum
+| `number` | integer | **Required** | 103 | Number which should be called by remote control<br>**Cannot** be used with ``service``  |
+| `service` | Object | **Required** | light.toggle | Service to call at Home Assistant.<br>**Cannot** be used with ``number`` |
+| `data` | Object | **Required** | Data sent to service | Data send to Home Assistant for service. i.e. channel and entity_id<br>Please be aware, you can sent only ``data`` to a sevice. Other optiones (i.e. ``target``) cannot be sent to service. |
+| `image` | icon | **Required** | ndr\_hd.png | Name auf the icon as stored in your icon directory. (See below) |
 
 #### Icons for Favorite Popup
-`
-If you install this card automatically through HACS, all icons in the repository's `icons directory will be installed as well. If you need additional icons, you can manually add them to the _icons_ directory within the installation folder of this card. Typically, this is located at `~/www/community/my-harmony-card/icons`.
+If you install this card automatically through HACS, all icons in the repository's dist/stations directory will be installed as well. If you need additional icons, you can manually add them to the _stations_ directory within the installation folder of this card. Typically, this is located at `~/www/community/my-harmony-card/stations`.
+If you prefer a different directory, see remark on the the chapter Main options.
+
+#### A basic example favorites for activiy Watch TV:
+
+```
+~~~
+type: custom:my-harmony-card
+name: Wohnen
+entity: remote.harmony_wohnzimmer
+activities:
+  Watch Tv:
+    device_id: 77085993
+    volume_device_id: 59107742
+    favorites:
+      - number: 1
+        image: das_erste.png
+      - number: 2
+        image: zdf.png
+      - service: harmony.change_channel
+        image: ndr.png
+        data:
+          channel: 3
+          entity_id: remote.wohnzimmer
+      - service: media_player.play_media
+        image: 1Live.png
+        data:
+          device_id: 0c2d3d4f089a165d8313ada64a29fddf
+          media_content_id: >-
+            https://wdr-1live-live.icecastssl.wdr.de/wdr/1live/live/mp3/128/stream.mp3
+          media_content_type: music
+~~~~
+```
+
+### Dimensions
+Optional Object to change size of the remote.
+| Name | Type | Default | Example | Description |
+| --- | --- | --- | --- | --- |
+| `dimensions` | Object | **Optional** | see example | Object for size and border size of remote  |
+| `scale` | Float | **Optional** | 0.63 | With this parameter you scale the size of the remote. I not set it defaults to '1' |
+| `border_width` | Size | **Optional** | 2px | You can have a borderyaround the remote. With this option you can define how thick the border is. If used '0px' it is set to ``none`` |
+
+### Colors
+Optional object to configure the colors, used by this remote.
+| Name | Type | Default | Example | Description |
+| --- | --- | --- | --- | --- |
+| `colors` | Object | **Optional** | see example | Object for customize the colors for this remote |
+| `background` | html color | **Optional** | #565a67 | The color of the background of this remote control |
+| `buttons` | html color | **Optional** | #393232 | Color of the buttons - to differentiate to background color |
+| `popup` | html color | **Optional** | #585555 | Background color for the favorite popup |
+| `buttons` | html color | **Optional** | ##0d0c0c | Color of the border of this remote |
+
+#### A basic example configured with one global Button:
+
+```
+~~~
+type: custom:my-harmony-card
+name: Wohnen
+entity: remote.harmony_wohnzimmer
+dimensions:
+  scale: '0.63'
+  border_width: 2px
+colors:
+  background: '#565a67'
+  text: '#f8f7f7'
+  buttons: '#393232'
+  popup: '#585555'
+  border: '#0d0c0c'
+~~~~
+```
 
 ### Complete Example
 ```
@@ -264,18 +328,20 @@ dimensions:
 
 ## More Functions
 
-The buttons Forward and rewind have two functions:
+<b>The buttons Forward and rewind have two functions:</b>
 *   Short pressed: FastForward or Rewind
 *   Long pressed: SkipForward or SkipBack
+  
+<b>Activty selector:</b>
+*   Actual activity now shown on top
+*   If the name of your activity is wider then the size of the activity field, the name will bump left to right, to make the hole text visible
 
 ## Troubleshooting
 
-After installing the card and adding the default configuration along with your Harmony entity, you should immediately see your configured activities when you press the _ACT_ button.
+After installing the card and adding the default configuration along with your Harmony entity, you should immediately see your configured activities when you press the _Activity_ button on top.
 In PowerOff mode, the power button will appear red; otherwise, it will be green.
 If you've configured your activities as described above, you should be able to perform basic actions (e.g., Volume Up, Guide, Home, Number, etc.) at once.
 If this isn't working, try pressing the 'Synchronize' button again.
-
-**Relevant for mapping activity is the name (ie. NetFlix sehen: in the example above),** _**not**_ **the named number!**
 
 If you not know, which button is for which functionallity be default, look [here](pictures/Harmony_desc.jpg)
 
