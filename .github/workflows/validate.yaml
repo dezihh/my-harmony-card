@@ -15,6 +15,12 @@ jobs:
   hacs: # https://github.com/hacs/action
     name: "HACS Validation"
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: write  # Berechtigung zum Lesen und Schreiben von Repository-Inhalten
+      issues: write    # Berechtigung für Issues
+      pull-requests: write # Berechtigung für Pull Requests
+      packages: read   # Zugriff auf GitHub Packages
+      actions: write   # Berechtigung für GitHub Actions
     steps:
         - name: "Checkout the repository"
           uses: "actions/checkout@v4"
