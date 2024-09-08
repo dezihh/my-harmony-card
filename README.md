@@ -249,7 +249,7 @@ Optional object to configure the colors, used by this remote.
 | `popup` | html color | **Optional** | #585555 | Background color for the favorite popup |
 | `buttons` | html color | **Optional** | ##0d0c0c | Color of the border of this remote |
 
-#### A basic example configured with one global Button:
+#### A basic example configured with colors a dimensions:
 
 ```
 ~~~
