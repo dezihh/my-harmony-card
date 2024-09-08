@@ -27,6 +27,8 @@ jobs:
 
         - name: "Run HACS validation"
           uses: "hacs/action@main"
+          env:
+            TOKEN: ${{ secrets.GITHUB_TOKEN }}
           with:
             category: "plugin"
             # Remove this 'ignore' key when you have added brand images for your integration to https://github.com/home-assistant/brands
