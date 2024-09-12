@@ -110,6 +110,7 @@ For each defined activity under the activities section, the following options ar
 | `Home` | string | **Optional** | InputGame | See comments to 'Guide'. Command to send instead of 'Home' |
 | `Info` | string | **Optional** | Favorite | See comments to 'Guide'. Command to send instead of 'Info' |
 | `OK` | string | **Optional** | Enter | See comments to 'Guide'. Command to send instead of 'OK' |
+| `Back` | string | **Optional** | Undo | See comments to 'Guide'. Command to send instead of 'Back' |
 | `player_name` | media\_player entitiy | **Optional** | media\_player.anlage | You can add a media\_player entitiy for each activity. If you press log the 'Menu' button, it opens 'more-info of the defined media\_player |
 | `activateCButtons` |bool| **Optional** | true | Enable or disable color (red, yellow, blue, green) buttons for the actual activity | 
 | `Button[1-4]` | Object | **Optional** | Button1 | [see explanation below](#numeric-button-options)  |
