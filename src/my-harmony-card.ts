@@ -65,25 +65,40 @@ class MyHarmony extends LitElement {
 
   _getFavorites(): {
     number?: string;
-    service?: string;
+    service?: {
+      name: string;
+      data?: any;
+      target?: any;
+      [key: string]: any; // Weitere mögliche Service-Parameter
+    };
     contextPath?: string;
     image: string;
-    data?: any;
   }[] {
     const currentActivityConfig =
       this.config.activities?.[this._current_activity];
     const favorites = currentActivityConfig?.favorites || [];
-
-    return favorites.map((favorite, index) => ({
-      number: favorite.number,
-      service: favorite.service,
-      contextPath: favorite.service
-        ? `activities.${this._current_activity}.favorites[${index}]`
-        : undefined,
-      image: favorite.image,
-      data: favorite.data,
-    }));
+  
+    return favorites.map((favorite, index) => {
+      const { number, service, image, data, target, ...otherParams } = favorite;
+  
+      return {
+        number,
+        service: service
+          ? {
+              name: typeof service === 'string' ? service : service.name,// Service-Name
+              data: service.data,           // `data` als Unterobjekt von `service`
+              target: service.target,         // `target` als Unterobjekt von `service`
+              ...otherParams  // Weitere Parameter als Unterobjekte von `service`
+            }
+          : undefined,
+        contextPath: service
+          ? `activities.${this._current_activity}.favorites[${index}]`
+          : undefined,
+        image,
+      };
+    });
   }
+  
 
   // Shot and Longpress button handling
   public isButtonPressed = false;
@@ -200,8 +215,9 @@ class MyHarmony extends LitElement {
       ${favorites.map((favorite) => {
         if (favorite.service && this.debug === true) {
           console.log(
-            `Func: _renderTable.Service: ${favorite.service}, Data: ${JSON.stringify(favorite.data)}`
+            `Func: _renderTable.Service: ${JSON.stringify(favorite.service)}` 
           );
+          
         }
         return html`
           ${favorite.number
@@ -215,13 +231,13 @@ class MyHarmony extends LitElement {
               `
             : favorite.service
               ? html`
-                  <img
-                    style="max-height: ${favsize}px;"
-                    src="${faviconpath}${favorite.image}"
-                    alt="${favorite.service}"
-                    @click=${() =>
-                      this._service(favorite.service, favorite.data)}
-                  />
+              <!-- ANCHOR v1.40 -->
+                <img
+                  style="max-height: ${favsize}px;"
+                  src="${faviconpath}${favorite.image}"
+                  
+                  @click=${() => this._service(favorite.service)}
+                />
                 `
               : ""}
         `;
@@ -230,6 +246,7 @@ class MyHarmony extends LitElement {
     `;
   }
 
+  //alt="${favorite.service?.name || 'Default Alt Text'}"
   // Render the component
   render() {
     const stateObj = this.hass.states[this.config.entity];
@@ -310,7 +327,8 @@ class MyHarmony extends LitElement {
                         class="btn ripple  button-style"
                         @click=${() => {
                           if (config.service) {
-                            this._service(config.service, config.data);
+                            
+                            this._service(config.service);
                           } else if (config.command) {
                             this._button(config.command);
                           }
@@ -623,8 +641,7 @@ class MyHarmony extends LitElement {
                                        @click=${() => {
                                          if (buttonConfig.service) {
                                            this._service(
-                                             buttonConfig.service,
-                                             buttonConfig.data
+                                             buttonConfig.service
                                            );
                                          } else if (buttonConfig.command) {
                                            this._button(buttonConfig.command);
@@ -654,8 +671,7 @@ class MyHarmony extends LitElement {
                                        @click=${() => {
                                          if (buttonConfig.service) {
                                            this._service(
-                                             buttonConfig.service,
-                                             buttonConfig.data
+                                             buttonConfig.service
                                            );
                                          } else if (buttonConfig.command) {
                                            this._button(buttonConfig.command);
@@ -685,8 +701,7 @@ class MyHarmony extends LitElement {
                                        @click=${() => {
                                          if (buttonConfig.service) {
                                            this._service(
-                                             buttonConfig.service,
-                                             buttonConfig.data
+                                             buttonConfig.service
                                            );
                                          } else if (buttonConfig.command) {
                                            this._button(buttonConfig.command);
@@ -716,8 +731,7 @@ class MyHarmony extends LitElement {
                                        @click=${() => {
                                          if (buttonConfig.service) {
                                            this._service(
-                                             buttonConfig.service,
-                                             buttonConfig.data
+                                             buttonConfig.service
                                            );
                                          } else if (buttonConfig.command) {
                                            this._button(buttonConfig.command);
@@ -758,8 +772,7 @@ class MyHarmony extends LitElement {
                                          @click=${() => {
                                            if (config.service) {
                                              this._service(
-                                               config.service,
-                                               config.data
+                                               config.service
                                              );
                                            } else if (config.command) {
                                              this._button(config.command);
@@ -784,8 +797,7 @@ class MyHarmony extends LitElement {
                                          @click=${() => {
                                            if (config.service) {
                                              this._service(
-                                               config.service,
-                                               config.data
+                                               config.service
                                              );
                                            } else if (config.command) {
                                              this._button(config.command);
@@ -810,8 +822,7 @@ class MyHarmony extends LitElement {
                                          @click=${() => {
                                            if (config.service) {
                                              this._service(
-                                               config.service,
-                                               config.data
+                                               config.service
                                              );
                                            } else if (config.command) {
                                              this._button(config.command);
@@ -836,8 +847,7 @@ class MyHarmony extends LitElement {
                                          @click=${() => {
                                            if (config.service) {
                                              this._service(
-                                               config.service,
-                                               config.data
+                                               config.service
                                              );
                                            } else if (config.command) {
                                              this._button(config.command);
@@ -986,19 +996,30 @@ class MyHarmony extends LitElement {
       );
     }
   }
-  _service(serviceName, data) {
+
+  _service(service) {
     if (this.debug) {
       console.log(
-        `Func:_service: ${serviceName}, Data: ${JSON.stringify(data)}`
+        `Func:_service: ${JSON.stringify(service)}`
       );
     }
-
-    this.hass.callService(
-      serviceName.split(".")[0],
-      serviceName.split(".")[1],
-      data || {}
-    );
+  
+    if (service?.name) {
+      const [domain, serviceName] = service.name.split('.');
+  
+      // Extrahiere nur die erlaubten Parameter `data` und `target`
+      const serviceData = {
+        ...service.data,      // Füge data hinzu, wenn vorhanden
+        ...service.target     // Füge target hinzu, wenn vorhanden
+      };
+  
+      // Rufe den Service mit den bereinigten Parametern auf
+      this.hass.callService(domain, serviceName, serviceData);
+    }
   }
+  
+  
+  
 
   // Switch on specific activity
   _select_activity(activity) {
