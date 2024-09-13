@@ -317,7 +317,6 @@ class MyHarmony extends LitElement {
                     ${this._current_activity}
                   </span>
                 </button>
-               
                 <div class="grid-container-power" style="--remotewidth: ${remoteWidth}">                            
                 <!-- FIXME New Function for this button is waiting?-->
                 ${(() => {
@@ -365,6 +364,124 @@ class MyHarmony extends LitElement {
 
 
                 </div>
+<!-- Buttons row -->
+                       <!-- Extra BUTTONS #2  -->
+                       ${(() => {
+                         const hasButtons =
+                           this.config?.ButtonA ||
+                           this.config?.ButtonB ||
+                           this.config?.ButtonC ||
+                           this.config?.ButtonD;
+                         return hasButtons
+                           ? html`
+                               <div class="grid-container-extra_2">
+                                 ${(() => {
+                                   const config = this.config.ButtonA;
+                                   return config
+                                     ? html` <button
+                                         class="ripple btn-extra button-style"
+                                         @click=${() => {
+                                           if (config.service) {
+                                             this._service(
+                                               config.service
+                                             );
+                                           } else if (config.command) {
+                                             this._button(config.command);
+                                           }
+                                         }}
+                                         title=${config.tooltip || ""}
+                                       >
+                                         ${config.icon
+                                           ? html`<ha-icon
+                                               class="mdi-extra button-style"
+                                               icon="${config.icon}"
+                                             ></ha-icon>`
+                                           : config.name}
+                                       </button>`
+                                     : "";
+                                 })()}
+                                 ${(() => {
+                                   const config = this.config.ButtonB;
+                                   return config
+                                     ? html` <button
+                                         class="ripple btn-extra button-style"
+                                         @click=${() => {
+                                           if (config.service) {
+                                             this._service(
+                                               config.service
+                                             );
+                                           } else if (config.command) {
+                                             this._button(config.command);
+                                           }
+                                         }}
+                                         title=${config.tooltip || ""}
+                                       >
+                                         ${config.icon
+                                           ? html`<ha-icon
+                                               class="mdi-extra button-style"
+                                               icon="${config.icon}"
+                                             ></ha-icon>`
+                                           : config.name}
+                                       </button>`
+                                     : "";
+                                 })()}
+                                 ${(() => {
+                                   const config = this.config.ButtonC;
+                                   return config
+                                     ? html` <button
+                                         class="ripple btn-extra button-style"
+                                         @click=${() => {
+                                           if (config.service) {
+                                             this._service(
+                                               config.service
+                                             );
+                                           } else if (config.command) {
+                                             this._button(config.command);
+                                           }
+                                         }}
+                                         title=${config.tooltip || ""}
+                                       >
+                                         ${config.icon
+                                           ? html`<ha-icon
+                                               class="mdi-extra button-style"
+                                               icon="${config.icon}"
+                                             ></ha-icon>`
+                                           : config.name}
+                                       </button>`
+                                     : "";
+                                 })()}
+                                 ${(() => {
+                                   const config = this.config.ButtonD;
+                                   return config
+                                     ? html` <button
+                                         class="ripple btn-extra button-style"
+                                         @click=${() => {
+                                           if (config.service) {
+                                             this._service(
+                                               config.service
+                                             );
+                                           } else if (config.command) {
+                                             this._button(config.command);
+                                           }
+                                         }}
+                                         title=${config.tooltip || ""}
+                                       >
+                                         ${config.icon
+                                           ? html`<ha-icon
+                                               class="mdi-extra button-style"
+                                               icon="${config.icon}"
+                                             ></ha-icon>`
+                                           : config.name}
+                                       </button>`
+                                     : "";
+                                 })()}
+                               </div>
+                             `
+                           : html``;
+                       })()}                       
+                       <!--  Extra buttons end -->
+<!-- Remote buttons -->
+
 
                 ${
                   this._show_activity
@@ -544,13 +661,13 @@ class MyHarmony extends LitElement {
                           <button
                             class="btn ripple item_act button-style"
                             @mousedown=${(e: MouseEvent) =>
-                              this._handleButtonDown("Menu", "media")}
+                              this._handleButtonDown(this.config.activities[this._current_activity]?.Menu ?? "Menu", "media")}
                             @mouseup=${(e: MouseEvent) =>
-                              this._handleButtonUp("Menu")}
+                              this._handleButtonUp(this.config.activities[this._current_activity]?.Menu ?? "Menu")}
                             @touchstart=${(e: TouchEvent) =>
-                              this._handleButtonDown("Menu", "media")}
+                              this._handleButtonDown(this.config.activities[this._current_activity]?.Menu ?? "Menu", "media")}
                             @touchend=${(e: TouchEvent) =>
-                              this._handleButtonUp("menu")}
+                              this._handleButtonUp(this.config.activities[this._current_activity]?.Menu ?? "Menu")}
                             title=${this.config.tooltip
                               ? "Menu/Mediaplayer"
                               : ""}
@@ -753,122 +870,144 @@ class MyHarmony extends LitElement {
                            : html``;
                        })()}
                        <!--  Extra buttons end -->
-                       
-                       <!-- Extra BUTTONS #2  -->
+                       <!-- Extra BUTTONS  -->
                        ${(() => {
+                         const activityConfig =
+                           this.config.activities?.[this._current_activity];
                          const hasButtons =
-                           this.config?.ButtonA ||
-                           this.config?.ButtonB ||
-                           this.config?.ButtonC ||
-                           this.config?.ButtonD;
+                           activityConfig?.Button5 ||
+                           activityConfig?.Button6 ||
+                           activityConfig?.Button7 ||
+                           activityConfig?.Button8;
                          return hasButtons
                            ? html`
-                               <div class="grid-container-extra_2">
+                               <div class="grid-container-extra">
                                  ${(() => {
-                                   const config = this.config.ButtonA;
-                                   return config
-                                     ? html` <button
-                                         class="ripple btn-extra button-style"
-                                         @click=${() => {
-                                           if (config.service) {
-                                             this._service(
-                                               config.service
-                                             );
-                                           } else if (config.command) {
-                                             this._button(config.command);
-                                           }
-                                         }}
-                                         title=${config.tooltip || ""}
-                                       >
-                                         ${config.icon
-                                           ? html`<ha-icon
-                                               class="mdi-extra button-style"
-                                               icon="${config.icon}"
-                                             ></ha-icon>`
-                                           : config.name}
-                                       </button>`
-                                     : "";
+                                   const activityConfig =
+                                     this.config.activities?.[
+                                       this._current_activity
+                                     ];
+                                   const buttonConfig = activityConfig?.Button5;
+                                   if (!buttonConfig) return html``;
+                                   return html`
+                                     <button
+                                       class="ripple btn-extra button-style"
+                                       @click=${() => {
+                                         if (buttonConfig.service) {
+                                           this._service(
+                                             buttonConfig.service
+                                           );
+                                         } else if (buttonConfig.command) {
+                                           this._button(buttonConfig.command);
+                                         }
+                                       }}
+                                       title=${buttonConfig.tooltip || ""}
+                                     >
+                                       ${buttonConfig.icon
+                                         ? html`<ha-icon
+                                             class="mdi-extra button-style"
+                                             icon="${buttonConfig.icon}"
+                                           ></ha-icon>`
+                                         : buttonConfig.name}
+                                     </button>
+                                   `;
                                  })()}
                                  ${(() => {
-                                   const config = this.config.ButtonB;
-                                   return config
-                                     ? html` <button
-                                         class="ripple btn-extra button-style"
-                                         @click=${() => {
-                                           if (config.service) {
-                                             this._service(
-                                               config.service
-                                             );
-                                           } else if (config.command) {
-                                             this._button(config.command);
-                                           }
-                                         }}
-                                         title=${config.tooltip || ""}
-                                       >
-                                         ${config.icon
-                                           ? html`<ha-icon
-                                               class="mdi-extra button-style"
-                                               icon="${config.icon}"
-                                             ></ha-icon>`
-                                           : config.name}
-                                       </button>`
-                                     : "";
+                                   const activityConfig =
+                                     this.config.activities?.[
+                                       this._current_activity
+                                     ];
+                                   const buttonConfig = activityConfig?.Button6;
+                                   if (!buttonConfig) return html``;
+                                   return html`
+                                     <button
+                                       class="ripple btn-extra button-style"
+                                       @click=${() => {
+                                         if (buttonConfig.service) {
+                                           this._service(
+                                             buttonConfig.service
+                                           );
+                                         } else if (buttonConfig.command) {
+                                           this._button(buttonConfig.command);
+                                         }
+                                       }}
+                                       title=${buttonConfig.tooltip || ""}
+                                     >
+                                       ${buttonConfig.icon
+                                         ? html`<ha-icon
+                                             class="mdi-extra button-style"
+                                             icon="${buttonConfig.icon}"
+                                           ></ha-icon>`
+                                         : buttonConfig.name}
+                                     </button>
+                                   `;
                                  })()}
                                  ${(() => {
-                                   const config = this.config.ButtonC;
-                                   return config
-                                     ? html` <button
-                                         class="ripple btn-extra button-style"
-                                         @click=${() => {
-                                           if (config.service) {
-                                             this._service(
-                                               config.service
-                                             );
-                                           } else if (config.command) {
-                                             this._button(config.command);
-                                           }
-                                         }}
-                                         title=${config.tooltip || ""}
-                                       >
-                                         ${config.icon
-                                           ? html`<ha-icon
-                                               class="mdi-extra button-style"
-                                               icon="${config.icon}"
-                                             ></ha-icon>`
-                                           : config.name}
-                                       </button>`
-                                     : "";
+                                   const activityConfig =
+                                     this.config.activities?.[
+                                       this._current_activity
+                                     ];
+                                   const buttonConfig = activityConfig?.Button7;
+                                   if (!buttonConfig) return html``;
+                                   return html`
+                                     <button
+                                       class="ripple btn-extra button-style"
+                                       @click=${() => {
+                                         if (buttonConfig.service) {
+                                           this._service(
+                                             buttonConfig.service
+                                           );
+                                         } else if (buttonConfig.command) {
+                                           this._button(buttonConfig.command);
+                                         }
+                                       }}
+                                       title=${buttonConfig.tooltip || ""}
+                                     >
+                                       ${buttonConfig.icon
+                                         ? html`<ha-icon
+                                             class="mdi-extra button-style"
+                                             icon="${buttonConfig.icon}"
+                                           ></ha-icon>`
+                                         : buttonConfig.name}
+                                     </button>
+                                   `;
                                  })()}
                                  ${(() => {
-                                   const config = this.config.ButtonD;
-                                   return config
-                                     ? html` <button
-                                         class="ripple btn-extra button-style"
-                                         @click=${() => {
-                                           if (config.service) {
-                                             this._service(
-                                               config.service
-                                             );
-                                           } else if (config.command) {
-                                             this._button(config.command);
-                                           }
-                                         }}
-                                         title=${config.tooltip || ""}
-                                       >
-                                         ${config.icon
-                                           ? html`<ha-icon
-                                               class="mdi-extra button-style"
-                                               icon="${config.icon}"
-                                             ></ha-icon>`
-                                           : config.name}
-                                       </button>`
-                                     : "";
+                                   const activityConfig =
+                                     this.config.activities?.[
+                                       this._current_activity
+                                     ];
+                                   const buttonConfig = activityConfig?.Button8;
+                                   if (!buttonConfig) return html``;
+                                   return html`
+                                     <button
+                                       class="ripple btn-extra button-style"
+                                       @click=${() => {
+                                         if (buttonConfig.service) {
+                                           this._service(
+                                             buttonConfig.service
+                                           );
+                                         } else if (buttonConfig.command) {
+                                           this._button(buttonConfig.command);
+                                         }
+                                       }}
+                                       title=${buttonConfig.tooltip || ""}
+                                     >
+                                       ${buttonConfig.icon
+                                         ? html`<ha-icon
+                                             class="mdi-extra button-style"
+                                             icon="${buttonConfig.icon}"
+                                           ></ha-icon>`
+                                         : buttonConfig.name}
+                                     </button>
+                                   `;
                                  })()}
                                </div>
                              `
                            : html``;
-                       })()}                       
-                       <!--  Extra buttons end -->
+                       })()}
+                       <!--  Extra buttons_2 end -->                       
+                       
 
                        <!-- COLORED BUTTONS -->
                         ${(() => {
@@ -1017,9 +1156,6 @@ class MyHarmony extends LitElement {
       this.hass.callService(domain, serviceName, serviceData);
     }
   }
-  
-  
-  
 
   // Switch on specific activity
   _select_activity(activity) {
