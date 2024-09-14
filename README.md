@@ -82,7 +82,7 @@ The device_id is one of the most important parameters. It specifies which device
 
 ## How to find the device\_id?
 
-The device\_id: of each device can be found in the harmony???.conf at the end of the respective device definition and begins with _"id":_ . Please only accept the respective number.  
+The device\_id: of each device can be found in the harmony???.conf at the end of the respective device definition and begins with _"id":_ . Please only use the respective number.  
 Example: device\_id: 77085993
 
 ```
@@ -106,6 +106,7 @@ For each defined activity under the activities section, the following options ar
 | --- | --- | --- | --- | --- |
 | `device_id` | number | **Required** | 77085993 | This is the device id below each defined individual activity |
 | `volume_device_id` | number | **Optional** | 59107742 | Special: If you define this, you can send VolumeUp and VolumeDown command to a different device. I.e. If you have an AV Receiver and you watch TV, you want to send all commands to TV, but volume change has to be send to AV Receier. In this case, enter the device\_id of AV Receiver as volume\_device\_id here |
+| `Menu` | string | **Optional** | Enter | Below each activity you can define this option. In this example "Enter" will be send to default device\_id instead of 'Menu'. Remove the option for default. |
 | `Guide` | string | **Optional** | InputCD | Below each activity you can define this option. In this example "InputCD" will be send to default device\_id instead of 'Guide'. Remove the option for default. |
 | `Home` | string | **Optional** | InputGame | See comments to 'Guide'. Command to send instead of 'Home' |
 | `Info` | string | **Optional** | Favorite | See comments to 'Guide'. Command to send instead of 'Info' |
@@ -113,17 +114,17 @@ For each defined activity under the activities section, the following options ar
 | `Back` | string | **Optional** | Undo | See comments to 'Guide'. Command to send instead of 'Back' |
 | `player_name` | media\_player entitiy | **Optional** | media\_player.anlage | You can add a media\_player entitiy for each activity. If you press log the 'Menu' button, it opens 'more-info of the defined media\_player |
 | `activateCButtons` |bool| **Optional** | true | Enable or disable color (red, yellow, blue, green) buttons for the actual activity | 
-| `Button[1-4]` | Object | **Optional** | Button1 | [see explanation below](#numeric-button-options)  |
+| `Button[1-8]` | Object | **Optional** | Button1 | [see explanation below](#numeric-button-options)  |
 | `favorites` | Object | **Optional** | favorites | [see explanation below](#favorites) |
 
 ### Numeric Button Options
 
-Each activitiy has as option it's own 4 individual buttons. You can add up to additional commands _or_ service calls on it. This means the activity "Watch Tv" may have other commands on these buttons as the activity "Listen to Music". You can name it as you like (aprx. 3 Chars), or give instead a mdi: image to the button, and you can add an idividual command or service call to each of these buttons (Button\[1-4\]).  
+Each activitiy has as option it's own 8 individual buttons. You can add up to additional commands _or_ service calls on it. This means the activity "Watch Tv" may have other commands on these buttons as the activity "Listen to Music". You can name it as you like (aprx. 3 Chars), or give instead a mdi: image to the button, and you can add an idividual command or service call to each of these buttons (Button\[1-4\]).  
 If you don't do, the buttons are invisible for this activity.
 
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
-| `Button[1-4]` | Object | **Required** | Button1 | Only Button1, Button2, Button3, Button4 are possible |
+| `Button[1-8]` | Object | **Required** | Button1 | Only Button1, Button2, Button3, Button4, Button5, Button6, Button7, Button8 are possible, where Button[1-4] and Button[5-8] are grouped |
 | `name` | Char | **Required** | DVR | Name on button |
 | `service`| Object | **Required or** | [see below](#services) | Service to call.<br>Cannot be used together with ```command``` |
 | `command`| string | **Required or** | DVR | Command to send to device\_id of activity.<br>Cannot be used together with ```service```  |
@@ -156,7 +157,7 @@ If you don't configure them, they dissapear on the remote control.
 | --- | --- | --- | --- | --- |
 | `Button[A-D]` or `Special` | Object | **Required** | ButtonA | Only `ButtonA`, `ButtonB`, `ButtonC`, `ButtonD` and `Special` are possible |
 | `name` | String | **Required** | DVR | Name on button |
-| `service`| Object | **Required or** | [see below](#services) | Service to call.|
+| `service`| Object | **Required or** | [see below Services](#services) | Service to call.|
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
 | `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead for the name on the button |
 
@@ -164,11 +165,17 @@ If you don't configure them, they dissapear on the remote control.
 ### Services
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
-| `service` | Object | **Required** | light.toggle | Service to call at Home Assistant |
-| `name` | String | **Required** | DD | Name to display on remote button |
+| `service` | Object | **Required** | service | [see below Service object](#service-object) |
+| `name` | String | **Required** | NRJ | Name to display on remote button |
 | `icon` | String | **Required** | mdi:access-point | Image to display on remote button |
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
-| `data` | Object | **Required** | Data sent to service | Data send to Home Assistant for service. i.e. channel and entity_id<br>Please be aware, you can sent only ``data`` to a sevice. Other optiones (i.e. ``target``) cannot be sent to service. |
+
+### Service object
+| Name | Type | Default | Example | Description |
+| --- | --- | --- | --- | --- |
+| `name` | Object | **Required** | light.toggle | Service to call, as defined in developer tools in Home Assistant |
+| `data` | Object | **Required** | media_player.select_source | Data send to Home Assistant for service. |
+| `target` | Object | **Optional** | entity_id: media_player.firetv | target send data to. |
 
 #### A basic example configured with one global Button:
 
@@ -177,12 +184,30 @@ If you don't configure them, they dissapear on the remote control.
 type: custom:my-harmony-card
 name: Wohnen
 entity: remote.harmony_wohnzimmer
-ButtonA:
-  service: light.toggle
-  name: Iri
-  tooltip: 'Toogle Iris Hue Light'
-  data:
-    entity_id: light.leuchtstab
+activities:
+  Fernsehen:
+    device_id: 1234546
+    Button1:
+      service:
+        name: media_player.play_media
+        target:
+          device_id: 96d27872d32e49ba71f0da491e629818
+        data:
+          media_content_id: >-
+            https://wdr-1live-live.icecastssl.wdr.de/wdr/1live/live/mp3/128/stream.mp3
+          media_content_type: music
+      name: Wdr
+    Button2:
+      name: Hue
+      service:
+        name: light.toggle
+        data:
+          rgb_color:
+          - 225
+          - 55
+          - 55
+        target:
+          entity_id: light.leuchtstab_1
 ~~~~
 ```
 
@@ -192,9 +217,8 @@ For each selected activity, you can define individual favorites. By long-pressin
 
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
-| `number` | integer | **Required** | 103 | Number which should be called by remote control<br>**Cannot** be used with ``service``  |
-| `service` | Object | **Required** | light.toggle | Service to call at Home Assistant.<br>**Cannot** be used with ``number`` |
-| `data` | Object | **Required** | Data sent to service | Data send to Home Assistant for service. i.e. channel and entity_id<br>Please be aware, you can sent only ``data`` to a sevice. Other optiones (i.e. ``target``) cannot be sent to service. |
+| `number` | integer | **Required or** | 103 | Number which should be called by remote control<br>**Cannot** be used with ``service``  |
+| `service` | Object | **Required or** | [see below Service object](#service-object) | Service to call at Home Assistant.<br>**Cannot** be used with ``number`` |
 | `image` | icon | **Required** | ndr\_hd.png | Name auf the icon as stored in your icon directory. (See below) |
 
 #### Icons for Favorite Popup
@@ -215,20 +239,16 @@ activities:
     favorites:
       - number: 1
         image: das_erste.png
-      - number: 2
-        image: zdf.png
-      - service: harmony.change_channel
-        image: ndr.png
-        data:
-          channel: 3
-          entity_id: remote.wohnzimmer
-      - service: media_player.play_media
-        image: 1Live.png
-        data:
-          device_id: 0c2d3d4f089a165d8313ada64a29fddf
-          media_content_id: >-
-            https://wdr-1live-live.icecastssl.wdr.de/wdr/1live/live/mp3/128/stream.mp3
-          media_content_type: music
+      - service:
+          name: light.toggle
+          target:
+            entity_id: light.leuchtstab_1
+          data:
+            rgb_color:
+            - 225
+            - 55
+            - 55 
+        image: hue.png
 ~~~~
 ```
 
@@ -269,7 +289,7 @@ colors:
 ~~~~
 ```
 
-### Complete Example
+### More Complete Example
 ```
 type: custom:my-harmony-card
 name: Harmony
@@ -277,6 +297,20 @@ entity: remote.harmony_wohnzimmer
 tooltip: true
 faviconpath: /local/icons/
 favsize: 80
+Special:
+  icon: mdi:lightbulb-group
+  service: 
+    name: automation.trigger
+    data:
+      entity_id: automation.harmony_wohnzimmer_cine_lights
+  tooltip: Scene Honululu mit Backlight
+ButtonA:
+  service: 
+    name: automation.trigger
+    data:
+      entity_id: automation.harmony_wz_aud
+  tooltip: 'Audio: Multi/DD/Stereo/Std'
+  icon: mdi:bookmark-music
 activities:
   Musik hören:
     name: 36830123
@@ -298,20 +332,23 @@ activities:
       name: Eco
       command: Eco
       tooltip: Eco Mode
-  WatchTv:
-    name: 37038020
-    device_id: 43935598
+  Watch Tv:
+    device_id: 77085993
     volume_device_id: 59107742
-    player_name: media_player.lg_webos_smart_tv
     favorites:
       - number: 1
-        image: das_erste_hd.png
-      - number: 2
-        image: zdf_hd.png
-      - number: 3
-        image: das_vierte.png
-      - number: 104
-        image: zdf_neo.png
+        image: das_erste.png
+      - service:
+          name: light.toggle
+          target:
+            entity_id: light.leuchtstab_1
+          data:
+            rgb_color:
+            - 225
+            - 55
+            - 55 
+        image: hue.png
+        Menu: Enter
     Button1:
       name: Set
       command: Settings
