@@ -680,7 +680,7 @@ class MyHarmony extends LitElement {
 
                           <button
                             class="btn ripple item_2_sx button-style"
-                            @click=${() => this._button("Left")}
+                            @click=${() => this._button("DirectionLeft")}
                           >
                             <ha-icon class="msc " icon="mdi:chevron-left" />
                           </button>
