@@ -1117,7 +1117,7 @@ class MyHarmony extends LitElement {
     let deviceId;
 
     // Is there a special device vor Volume?
-    if (button === "VolumeUp" || button === "VolumeDown") {
+    if (button === "VolumeUp" || button === "VolumeDown" || button === "Mute") {
       deviceId = activityConfig.volume_device_id
         ? activityConfig.volume_device_id
         : activityConfig.device_id;
