@@ -383,6 +383,33 @@ If this isn't working, try pressing the 'Synchronize' button again.
 
 If you not know, which button is for which functionallity be default, look [here](pictures/Harmony_desc.jpg)
 
+### Button Compatibility & Remapping
+
+**Important:** Not all devices support the same commands, even for commonly used buttons like **"OK"**. If most buttons are working fine but some (e.g., **OK**, **Back**, **Menu**) do not respond as expected, it's likely that your device uses a different command name for that function.
+
+#### What to do if a button doesn't work:
+
+1. **Check your device configuration:**  
+   Open your `harmony_*.conf` file (this contains the configuration for your Harmony setup). Look for the section related to the specific device where the button isn't working.
+
+2. **Look for supported commands:**  
+   Search the file for the button name (e.g., `"OK"`). If the command `"OK"` is not listed, then your device does not support it and it won't work.
+
+3. **Use Button Remapping:**  
+   You can use the built-in **Button Remapping** feature to map the non-working button to a command that *is* supported by your device.
+
+   For example, many devices use `"Select"` instead of `"OK"`.
+
+#### Example Remapping
+```yaml
+button_remapping:
+  OK: Select
+```
+This configuration will send the "Select" command when the OK button is pressed.
+
+**Tip:** If you're unsure which commands are available for a device, check your harmony_*.conf file — all supported commands are listed there for each device.
+
+
 ### Debugging
 
 Launch the Chrome browser on your computer and access my-harmony-card.
