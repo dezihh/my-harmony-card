@@ -82,7 +82,7 @@ The device_id is one of the most important parameters. It specifies which device
 
 ## How to find the device\_id?
 
-The device\_id: of each device can be found in the harmony???.conf at the end of the respective device definition and begins with _"id":_ . Please only use the respective number.  
+The device\_id: of each device can be found in the harmony_???.conf at the end of the respective device definition and begins with _"id":_ . Please only use the respective number. This file itself resides in the root directory of you Home Assistant installation (same directory as for configuration.yaml)
 Example: device\_id: 77085993
 
 ```
