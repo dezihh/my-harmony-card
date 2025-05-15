@@ -381,7 +381,7 @@ In PowerOff mode, the power button will appear red; otherwise, it will be green.
 If you've configured your activities as described above, you should be able to perform basic actions (e.g., Volume Up, Guide, Home, Number, etc.) at once.
 If this isn't working, try pressing the 'Synchronize' button again.
 
-If you not know, which button is for which functionallity be default, look [here](pictures/Harmony_desc.jpg)
+If you not know, which button is for which functionallity be default, look [here](pictures/Harmony_desc.png)
 
 ### Button Compatibility & Remapping
 
