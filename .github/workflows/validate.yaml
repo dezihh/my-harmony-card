@@ -1,22 +1,18 @@
 name: Validate
-
 on:
-  push: 
-      branches:
+  push:
+    branches:
       - "master"
+    paths:
+      - "custom_components/**"
+      - "hacs.json"
+      - ".github/workflows/validate.yml"
   pull_request:
-      branches:
+    branches:
       - "master"
-  schedule:
-    - cron: "0 0 * * *"
+    paths:
+      - "custom_components/**"
+      - "hacs.json"
+      - ".github/workflows/validate.yml"
   workflow_dispatch:
 
-jobs:
-  validate-hacs:
-    runs-on: "ubuntu-latest"
-    steps:
-      - uses: "actions/checkout@v3"
-      - name: HACS validation
-        uses: "hacs/action@main"
-        with:
-          category: plugin
