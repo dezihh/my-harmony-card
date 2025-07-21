@@ -1194,11 +1194,7 @@ class MyHarmony extends LitElement {
               break;
       }
 
-      if (!deviceId) {
-          deviceId = activityConfig.alt_device_id
-                  ? activityConfig.alt_device_id
-                  : activityConfig.device_id;
-      }
+      deviceId = deviceId || activityConfig.alt_device_id || activityConfig.device_id;
 
       this.hass.callService("remote", "send_command", {
           entity_id: this.config.entity,
