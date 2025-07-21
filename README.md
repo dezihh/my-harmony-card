@@ -117,7 +117,7 @@ For each defined activity under the activities section, the following options ar
 | `info_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `media_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `color_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
-| `useChangeChannel` | bool | **Optional** | false | Special: Choose between sending numeric keys as channel change command or number values |
+| `useChangeChannel` | bool | **Optional** | false | Choose between sending numeric keys as channel change command or number values |
 | `Menu` | string | **Optional** | Enter | Below each activity you can define this option. In this example "Enter" will be send to default device\_id instead of 'Menu'. Remove the option for default. |
 | `Guide` | string | **Optional** | InputCD | Below each activity you can define this option. In this example "InputCD" will be send to default device\_id instead of 'Guide'. Remove the option for default. |
 | `Home` | string | **Optional** | InputGame | See comments to 'Guide'. Command to send instead of 'Home' |
