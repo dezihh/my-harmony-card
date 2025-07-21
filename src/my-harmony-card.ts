@@ -1238,7 +1238,10 @@ class MyHarmony extends LitElement {
   }
 
   _chanchange(chan) {
-    const useChangeChannel = this.config.activities[this._current_activity].useChangeChannel === false;
+    const activityConfig = this.config.activities[this._current_activity];
+    const useChangeChannel = activityConfig.useChangeChannel
+      ? activityConfig.useChangeChannel
+      : false;
     if (useChangeChannel) {
       // Use harmony.change_channel service
       this.hass.callService("harmony", "change_channel", {
