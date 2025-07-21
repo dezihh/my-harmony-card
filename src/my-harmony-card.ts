@@ -1131,6 +1131,7 @@ class MyHarmony extends LitElement {
                   ? activityConfig.channel_device_id
                   : activityConfig.device_id;
               break;
+          case "OneGuide":
           case "Guide":
               deviceId = activityConfig.guide_device_id
                   ? activityConfig.guide_device_id
