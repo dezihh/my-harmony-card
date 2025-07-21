@@ -1237,14 +1237,23 @@ class MyHarmony extends LitElement {
     });
   }
 
-  // Channel change is implemented global in aioharmony, let's use it
   _chanchange(chan) {
-    console.log("Kanal:", chan);
-    this.hass.callService("harmony", "change_channel", {
-      entity_id: this.config.entity,
-      channel: chan,
-    });
+    const useChangeChannel = this.config.activities[this._current_activity].useChangeChannel === false;
+    if (useChangeChannel) {
+      // Use harmony.change_channel service
+      this.hass.callService("harmony", "change_channel", {
+        entity_id: this.config.entity,
+        channel: chan,
+      });
+      if (this.debug) {
+        console.log(`_chanchange - entity_id: ${this.config.entity} - Channel: ${chan}`);
+      }
+    } else {
+      // Send channel number as button command
+      this._button(chan);
+    }
   }
+
 
   // Set configuration for the card
   setConfig(config) {
