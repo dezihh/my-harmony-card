@@ -1123,38 +1123,38 @@ class MyHarmony extends LitElement {
           case "Mute":
               deviceId = activityConfig.volume_device_id
                   ? activityConfig.volume_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "ChannelUp":
           case "ChannelDown":
               deviceId = activityConfig.channel_device_id
                   ? activityConfig.channel_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Guide":
               deviceId = activityConfig.guide_device_id
                   ? activityConfig.guide_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Menu":
               deviceId = activityConfig.menu_device_id
                   ? activityConfig.menu_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "OK":
               deviceId = activityConfig.ok_device_id
                   ? activityConfig.ok_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Back":
               deviceId = activityConfig.back_device_id
                   ? activityConfig.back_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Exit":
               deviceId = activityConfig.exit_device_id
                   ? activityConfig.exit_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "DirectionUp":
           case "DirectionDown":
@@ -1162,17 +1162,17 @@ class MyHarmony extends LitElement {
           case "DirectionRight":
               deviceId = activityConfig.direction_device_id
                   ? activityConfig.direction_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Home":
               deviceId = activityConfig.home_device_id
                   ? activityConfig.home_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Info":
               deviceId = activityConfig.info_device_id
                   ? activityConfig.info_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Play":
           case "Pause":
@@ -1182,7 +1182,7 @@ class MyHarmony extends LitElement {
           case "Record":
               deviceId = activityConfig.media_device_id
                   ? activityConfig.media_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
           case "Red":
           case "Green":
@@ -1190,7 +1190,7 @@ class MyHarmony extends LitElement {
           case "Blue":
               deviceId = activityConfig.color_device_id
                   ? activityConfig.color_device_id
-                  : activityConfig.device_id;
+                  : undefined;
               break;
       }
 
