@@ -1131,7 +1131,6 @@ class MyHarmony extends LitElement {
                   ? activityConfig.channel_device_id
                   : activityConfig.device_id;
               break;
-          case "OneGuide":
           case "Guide":
               deviceId = activityConfig.guide_device_id
                   ? activityConfig.guide_device_id
@@ -1165,7 +1164,6 @@ class MyHarmony extends LitElement {
                   ? activityConfig.direction_device_id
                   : activityConfig.device_id;
               break;
-          case "XboxHome":
           case "Home":
               deviceId = activityConfig.home_device_id
                   ? activityConfig.home_device_id
@@ -1194,15 +1192,12 @@ class MyHarmony extends LitElement {
                   ? activityConfig.color_device_id
                   : activityConfig.device_id;
               break;
-          default:
-              deviceId = activityConfig.device_id
-                  ? activityConfig.device_id
-                  : undefined;
-              break;
       }
 
       if (!deviceId) {
-          deviceId = activityConfig.device_id;
+          deviceId = activityConfig.alt_device_id
+                  ? activityConfig.alt_device_id
+                  : activityConfig.device_id;
       }
 
       this.hass.callService("remote", "send_command", {
