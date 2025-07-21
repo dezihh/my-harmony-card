@@ -41,14 +41,14 @@ At least the following entries must be present for the card to work:
 ```
 
 ### Main Options
-You can find a screnshot of the remote with some button nameing [here](https://github.com/dezihh/my-harmony-card/blob/master/pictures/Harmony_desc.png)
+You can find a screenshot of the remote with some button naming [here](https://github.com/dezihh/my-harmony-card/blob/master/pictures/Harmony_desc.png)
 
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
 | `type` | string | **Required** | `custom:my-harmony-card` | Type of the card |
 | `entity` | string | **Required** | remote.myharmonydevice | harmony entity |
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
-| `activities` | Opject | **Required** | see [activities](#activities-options) | name of harmony device in HA, ie. living room |
+| `activities` | Object | **Required** | see [activities](#activities-options) | name of harmony device in HA, ie. living room |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
 | `Special` | object | **Option** | see [Button\[A-D\]](#buttona-d) | Free global select: 5th configurable global Button -  works on all activities same  |
 | `Button[A-D]` | object | **Option** | see [Button\[A-D\]](#buttona-d) | 4 Buttons for global use. You can add to each button one service call. If all 4 buttons not configured, the buttons disappear and the remote will get smaller - works on all activities same  |
@@ -105,21 +105,33 @@ For each defined activity under the activities section, the following options ar
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
 | `device_id` | number | **Required** | 77085993 | This is the device id below each defined individual activity |
-| `volume_device_id` | number | **Optional** | 59107742 | Special: If you define this, you can send VolumeUp and VolumeDown and Mute command to a different device. I.e. If you have an AV Receiver and you watch TV, you want to send all commands to TV, but volume change has to be send to AV Receier. In this case, enter the device\_id of AV Receiver as volume\_device\_id here |
+| `alt_device_id` | number | **Optional** | 59107742 | If you define this, you can send all button commands to an alternate device\_id. The following device\_id settings will take precedence. |
+| `volume_device_id` | number | **Optional** | 59107742 | If you define this, you can send VolumeUp and VolumeDown and Mute command to a different device. I.e. If you have an AV Receiver and you watch TV, you want to send all commands to TV, but volume change has to be send to AV Receiver. In this case, enter the device\_id of AV Receiver as volume\_device\_id here |
+| `channel_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `guide_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `menu_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `ok_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `back_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `exit_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `home_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `info_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `media_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `color_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `useChangeChannel` | bool | **Optional** | false | Special: Choose between sending numeric keys as channel change command or number values |
 | `Menu` | string | **Optional** | Enter | Below each activity you can define this option. In this example "Enter" will be send to default device\_id instead of 'Menu'. Remove the option for default. |
 | `Guide` | string | **Optional** | InputCD | Below each activity you can define this option. In this example "InputCD" will be send to default device\_id instead of 'Guide'. Remove the option for default. |
 | `Home` | string | **Optional** | InputGame | See comments to 'Guide'. Command to send instead of 'Home' |
 | `Info` | string | **Optional** | Favorite | See comments to 'Guide'. Command to send instead of 'Info' |
 | `OK` | string | **Optional** | Enter | See comments to 'Guide'. Command to send instead of 'OK' |
 | `Back` | string | **Optional** | Undo | See comments to 'Guide'. Command to send instead of 'Back' |
-| `player_name` | media\_player entitiy | **Optional** | media\_player.anlage | You can add a media\_player entitiy for each activity. If you press log the 'Menu' button, it opens 'more-info of the defined media\_player |
+| `player_name` | media\_player entity | **Optional** | media\_player.anlage | You can add a media\_player entity for each activity. If you press log the 'Menu' button, it opens 'more-info of the defined media\_player |
 | `activateCButtons` |bool| **Optional** | true | Enable or disable color (red, yellow, blue, green) buttons for the actual activity | 
 | `Button[1-8]` | Object | **Optional** | Button1 | [see explanation below](#numeric-button-options)  |
 | `favorites` | Object | **Optional** | favorites | [see explanation below](#favorites) |
 
 ### Numeric Button Options
 
-Each activitiy has as option it's own 8 individual buttons. You can add up to additional commands _or_ service calls on it. This means the activity "Watch Tv" may have other commands on these buttons as the activity "Listen to Music". You can name it as you like (aprx. 3 Chars), or give instead a mdi: image to the button, and you can add an idividual command or service call to each of these buttons (Button\[1-4\]).  
+Each activity has as option it's own 8 individual buttons. You can add up to additional commands _or_ service calls on it. This means the activity "Watch Tv" may have other commands on these buttons as the activity "Listen to Music". You can name it as you like (aprx. 3 Chars), or give instead a mdi: image to the button, and you can add an individual command or service call to each of these buttons (Button\[1-4\]).  
 If you don't do, the buttons are invisible for this activity.
 
 | Name | Type | Default | Example | Description |
@@ -129,9 +141,9 @@ If you don't do, the buttons are invisible for this activity.
 | `service`| Object | **Required or** | [see below](#services) | Service to call.<br>Cannot be used together with ```command``` |
 | `command`| string | **Required or** | DVR | Command to send to device\_id of activity.<br>Cannot be used together with ```service```  |
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
-| `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead |
+| `icon` | icon | **Optional** | mdi:netflix | Instead of naming a button, you can set an image instead |
 
-#### A basic example configured with one Button for activiy Watch Tv:
+#### A basic example configured with one Button for activity Watch Tv:
 
 ```
 ~~~
@@ -142,6 +154,8 @@ activities:
   Watch Tv:
     device_id: 77085993
     volume_device_id: 59107742
+    useChangeChannel: true
+
     Button1:
       icon: mdi:gesture-two-double-tap
       command: Settings
@@ -151,7 +165,7 @@ activities:
 
 ### Button\[A-D\]
 You find 5 free configurable global buttons on this remote. ``Buttons A-D`` and ``Special``. These buttons have no link to the current activity and are working on all activities in the same way (even at power off)
-If you don't configure them, they dissapear on the remote control.
+If you don't configure them, they disappear on the remote control.
 
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
@@ -159,7 +173,7 @@ If you don't configure them, they dissapear on the remote control.
 | `name` | String | **Required** | DVR | Name on button |
 | `service`| Object | **Required or** | [see below Services](#services) | Service to call.|
 | `tooltip` | string | **Optional** | Digital Video Recorder | Tooltip information to this button (long text) inside of this activity |
-| `icon` | icon | **Optional** | mdi:netflix | Instead of nameing a button, you can set an image instead for the name on the button |
+| `icon` | icon | **Optional** | mdi:netflix | Instead of naming a button, you can set an image instead for the name on the button |
 
 
 ### Services
@@ -225,7 +239,7 @@ For each selected activity, you can define individual favorites. By long-pressin
 If you install this card automatically through HACS, all icons in the repository's dist/stations directory will be installed as well. If you need additional icons, you can manually add them to the _stations_ directory within the installation folder of this card. Typically, this is located at `~/www/community/my-harmony-card/stations`.
 If you prefer a different directory, see remark on the the chapter Main options.
 
-#### A basic example favorites for activiy Watch TV:
+#### A basic example favorites for activity Watch TV:
 
 ```
 ~~~
@@ -236,6 +250,7 @@ activities:
   Watch Tv:
     device_id: 77085993
     volume_device_id: 59107742
+    useChangeChannel: true
     favorites:
       - number: 1
         image: das_erste.png
@@ -335,6 +350,7 @@ activities:
   Watch Tv:
     device_id: 77085993
     volume_device_id: 59107742
+    useChangeChannel: true
     favorites:
       - number: 1
         image: das_erste.png
@@ -359,6 +375,13 @@ activities:
       tooltip: SmartMenu
     Button3: null
     Button4: null
+  Play Xbox:
+    device_id: 14579539
+    volume_device_id: 59107742
+    alt_device_id: 18589926
+    Guide: OneGuide
+    Home: XboxHome
+
 dimensions:
   scale: '0.59'
   border_width: 2px
@@ -370,7 +393,7 @@ dimensions:
 *   Short pressed: FastForward or Rewind
 *   Long pressed: SkipForward or SkipBack
   
-<b>Activty selector:</b>
+<b>Activity selector:</b>
 *   Actual activity now shown on top
 *   If the name of your activity is wider then the size of the activity field, the name will bump left to right, to make the hole text visible
 
@@ -435,7 +458,7 @@ The log will display the following information:
 Example output:  
 `_button Pressed: DeviceID: 43632597 - Command: VolumeUp - entity_id: remote.harmony_wohnzimmer`
 
-As well you can see the current Activitty and the used DeviceID:  
+As well you can see the current Activity and the used DeviceID:  
 `Current Activity Fernsehen - DeviceID: 43935597`
 
 **Have fun!**
