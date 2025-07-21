@@ -1165,6 +1165,7 @@ class MyHarmony extends LitElement {
                   ? activityConfig.direction_device_id
                   : activityConfig.device_id;
               break;
+          case "XboxHome":
           case "Home":
               deviceId = activityConfig.home_device_id
                   ? activityConfig.home_device_id
