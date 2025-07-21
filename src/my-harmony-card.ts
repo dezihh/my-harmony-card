@@ -1113,27 +1113,106 @@ class MyHarmony extends LitElement {
 
   //Send command to device
   _button(button) {
-    const activityConfig = this.config.activities[this._current_activity];
-    let deviceId;
+      const activityConfig = this.config.activities[this._current_activity];
+      let deviceId;
 
-    // Is there a special device vor Volume?
-    if (button === "VolumeUp" || button === "VolumeDown" || button === "Mute") {
-      deviceId = activityConfig.volume_device_id
-        ? activityConfig.volume_device_id
-        : activityConfig.device_id;
-    } else {
-      deviceId = activityConfig.device_id;
-    }
-    this.hass.callService("remote", "send_command", {
-      entity_id: this.config.entity,
-      device: deviceId,
-      command: button,
-    });
-    if (this.debug) {
-      console.log(
-        `_button Pressed - DeviceId: ${deviceId} - Command: ${button} - entity_id: ${this.config.entity}`
-      );
-    }
+      // Set deviceId for each button type
+      switch (button) {
+          case "VolumeUp":
+          case "VolumeDown":
+          case "Mute":
+              deviceId = activityConfig.volume_device_id
+                  ? activityConfig.volume_device_id
+                  : activityConfig.device_id;
+              break;
+          case "ChannelUp":
+          case "ChannelDown":
+              deviceId = activityConfig.channel_device_id
+                  ? activityConfig.channel_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Guide":
+              deviceId = activityConfig.guide_device_id
+                  ? activityConfig.guide_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Menu":
+              deviceId = activityConfig.menu_device_id
+                  ? activityConfig.menu_device_id
+                  : activityConfig.device_id;
+              break;
+          case "OK":
+              deviceId = activityConfig.ok_device_id
+                  ? activityConfig.ok_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Back":
+              deviceId = activityConfig.back_device_id
+                  ? activityConfig.back_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Exit":
+              deviceId = activityConfig.exit_device_id
+                  ? activityConfig.exit_device_id
+                  : activityConfig.device_id;
+              break;
+          case "DirectionUp":
+          case "DirectionDown":
+          case "DirectionLeft":
+          case "DirectionRight":
+              deviceId = activityConfig.direction_device_id
+                  ? activityConfig.direction_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Home":
+              deviceId = activityConfig.home_device_id
+                  ? activityConfig.home_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Info":
+              deviceId = activityConfig.info_device_id
+                  ? activityConfig.info_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Play":
+          case "Pause":
+          case "Stop":
+          case "Rewind":
+          case "FastForward":
+          case "Record":
+              deviceId = activityConfig.media_device_id
+                  ? activityConfig.media_device_id
+                  : activityConfig.device_id;
+              break;
+          case "Red":
+          case "Green":
+          case "Yellow":
+          case "Blue":
+              deviceId = activityConfig.color_device_id
+                  ? activityConfig.color_device_id
+                  : activityConfig.device_id;
+              break;
+          default:
+              deviceId = activityConfig.device_id
+                  ? activityConfig.device_id
+                  : undefined;
+              break;
+      }
+
+      if (!deviceId) {
+          deviceId = activityConfig.device_id;
+      }
+
+      this.hass.callService("remote", "send_command", {
+          entity_id: this.config.entity,
+          device: deviceId,
+          command: button,
+      });
+      if (this.debug) {
+          console.log(
+              `_button Pressed - DeviceId: ${deviceId} - Command: ${button} - entity_id: ${this.config.entity}`
+          );
+      }
   }
 
   _service(service) {
