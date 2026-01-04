@@ -66,7 +66,9 @@ const st=t=>(e,i)=>{void 0!==i?i.addInitializer((()=>{customElements.define(t,e)
     font-weight: normal;
     padding: calc(var(--remotewidth)/52) calc(var(--remotewidth)/26);
     border-radius: calc(var(--remotewidth)/10);
-    background-color: var(--remote-button-color);            
+    background-color: var(--remote-button-color);
+    position: relative;
+    z-index: 10;            
   }
 
   /* Button for actual activity above Power*/
@@ -89,6 +91,8 @@ const st=t=>(e,i)=>{void 0!==i?i.addInitializer((()=>{customElements.define(t,e)
       overflow: hidden; /* Ensures text stays within the defined area */
       white-space: nowrap;
       transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out, filter 0.1s ease-in-out;
+      position: relative;
+      z-index: 10;
   }
 
  .ripple {
@@ -137,6 +141,8 @@ const st=t=>(e,i)=>{void 0!==i?i.addInitializer((()=>{customElements.define(t,e)
     border: var(--main-border-width) solid var(--main-border-color);
     border-radius: calc(var(--remotewidth)/7.5);
     padding: calc(var(--remotewidth)/37.5) calc(var(--remotewidth)/15.2) calc(var(--remotewidth)/11);
+    position: relative;
+    z-index: 10;
   }
 
   .grid-container-power {
