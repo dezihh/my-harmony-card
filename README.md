@@ -1,7 +1,7 @@
 
 # My-Harmony-Card
 
-Not [yet only another Remote Control](https://github.com/dezihh/my-harmony-card/) for Logitech HARMONY COMPANION Hub
+A full Harmony Companion remote for Home Assistant – customizable buttons, favorites and any Home Assistant action.
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)  
 [![buymeacoffee_badge](https://img.shields.io/badge/Donate-buymeacoffe-ff813f?style=flat)](https://buymeacoffee.com/dezi)
@@ -66,8 +66,7 @@ If your Harmony configuration changes (e.g., adding a new activity, renaming, et
 
 ## A very basic example:
 
-```
-~~~
+```yaml
 type: 'custom:my-harmony-card'
 entity: remote.harmony_wohnzimmer
 activities:
@@ -75,10 +74,9 @@ activities:
     device_id: 59107742
   Watch TV:
     device_id: 59107742
-~~~~
 ```
 
-The device_id is one of the most important parameters. It specifies which device is targeted when a command is sent. The number of the device that the remote control primarily interacts with should be entered as the device\_id." 
+The device_id is one of the most important parameters. It specifies which device is targeted when a command is sent. The number of the device that the remote control primarily interacts with should be entered as the device\_id. 
 
 ## How to find the device\_id?
 
@@ -107,7 +105,7 @@ For each defined activity under the activities section, the following options ar
 | `device_id` | number | **Required** | 77085993 | This is the device id below each defined individual activity |
 | `alt_device_id` | number | **Optional** | 59107742 | If you define this, you can send all button commands to an alternate device\_id. The following device\_id settings will take precedence. |
 | `volume_device_id` | number | **Optional** | 59107742 | If you define this, you can send VolumeUp and VolumeDown and Mute command to a different device. I.e. If you have an AV Receiver and you watch TV, you want to send all commands to TV, but volume change has to be send to AV Receiver. In this case, enter the device\_id of AV Receiver as volume\_device\_id here |
-| `channel_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
+| `channel_device_id` | number | **Optional** | 59107742 | Device for `ChannelUp` and `ChannelDown`. Channel numbers typed on the keypad are **not** sent to this device: with `useChangeChannel: true` the hub picks the device, with `false` the digits go to `alt_device_id`/`device_id`. |
 | `guide_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `menu_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `ok_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
@@ -117,14 +115,16 @@ For each defined activity under the activities section, the following options ar
 | `info_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `media_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `color_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
-| `useChangeChannel` | bool | **Optional** | false | Choose between sending numeric keys as channel change command or number values |
+| `direction_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings, used for the direction pad (up, down, left, right) |
+| `useChangeChannel` | bool | **Optional** | false | `true` sends channel numbers through the `harmony.change_channel` service (the hub decides which device to use), `false` sends the digits as key commands to `alt_device_id`/`device_id` |
 | `Menu` | string | **Optional** | Enter | Below each activity you can define this option. In this example "Enter" will be send to default device\_id instead of 'Menu'. Remove the option for default. |
 | `Guide` | string | **Optional** | InputCD | Below each activity you can define this option. In this example "InputCD" will be send to default device\_id instead of 'Guide'. Remove the option for default. |
 | `Home` | string | **Optional** | InputGame | See comments to 'Guide'. Command to send instead of 'Home' |
 | `Info` | string | **Optional** | Favorite | See comments to 'Guide'. Command to send instead of 'Info' |
 | `OK` | string | **Optional** | Enter | See comments to 'Guide'. Command to send instead of 'OK' |
 | `Back` | string | **Optional** | Undo | See comments to 'Guide'. Command to send instead of 'Back' |
-| `player_name` | media\_player entity | **Optional** | media\_player.anlage | You can add a media\_player entity for each activity. If you press log the 'Menu' button, it opens 'more-info of the defined media\_player |
+| `Exit` | string | **Optional** | Home | See comments to 'Guide'. Command to send instead of 'Exit' |
+| `player_name` | media\_player entity | **Optional** | media\_player.anlage | You can add a media\_player entity for each activity. If you long-press the 'Menu' button, it opens the more-info dialog of the defined media\_player |
 | `activateCButtons` |bool| **Optional** | true | Enable or disable color (red, yellow, blue, green) buttons for the actual activity | 
 | `Button[1-8]` | Object | **Optional** | Button1 | [see explanation below](#numeric-button-options)  |
 | `favorites` | Object | **Optional** | favorites | [see explanation below](#favorites) |
@@ -145,8 +145,7 @@ If you don't do, the buttons are invisible for this activity.
 
 #### A basic example configured with one Button for activity Watch Tv:
 
-```
-~~~
+```yaml
 type: custom:my-harmony-card
 name: Wohnen
 entity: remote.harmony_wohnzimmer
@@ -160,7 +159,6 @@ activities:
       icon: mdi:gesture-two-double-tap
       command: Settings
       tooltip: 'Settings for my TV'
-~~~~
 ```
 
 ### Button\[A-D\]
@@ -191,38 +189,33 @@ If you don't configure them, they disappear on the remote control.
 | `data` | Object | **Required** | media_player.select_source | Data send to Home Assistant for service. |
 | `target` | Object | **Optional** | entity_id: media_player.firetv | target send data to. |
 
-#### A basic example configured with one global Button:
+#### A basic example configured with two global Buttons:
 
-```
-~~~
+```yaml
 type: custom:my-harmony-card
 name: Wohnen
 entity: remote.harmony_wohnzimmer
-activities:
-  Fernsehen:
-    device_id: 1234546
-    Button1:
-      service:
-        name: media_player.play_media
-        target:
-          device_id: 96d27872d32e49ba71f0da491e629818
-        data:
-          media_content_id: >-
-            https://wdr-1live-live.icecastssl.wdr.de/wdr/1live/live/mp3/128/stream.mp3
-          media_content_type: music
-      name: Wdr
-    Button2:
-      name: Hue
-      service:
-        name: light.toggle
-        data:
-          rgb_color:
-          - 225
-          - 55
-          - 55
-        target:
-          entity_id: light.leuchtstab_1
-~~~~
+ButtonA:
+  name: Wdr
+  service:
+    name: media_player.play_media
+    target:
+      entity_id: media_player.wohnzimmer
+    data:
+      media_content_id: >-
+        https://wdr-1live-live.icecastssl.wdr.de/wdr/1live/live/mp3/128/stream.mp3
+      media_content_type: music
+ButtonB:
+  name: Hue
+  service:
+    name: light.toggle
+    target:
+      entity_id: light.leuchtstab_1
+    data:
+      rgb_color:
+        - 225
+        - 55
+        - 55
 ```
 
 ### Favorites
@@ -241,8 +234,7 @@ If you prefer a different directory, see remark on the the chapter Main options.
 
 #### A basic example favorites for activity Watch TV:
 
-```
-~~~
+```yaml
 type: custom:my-harmony-card
 name: Wohnen
 entity: remote.harmony_wohnzimmer
@@ -260,20 +252,19 @@ activities:
             entity_id: light.leuchtstab_1
           data:
             rgb_color:
-            - 225
-            - 55
-            - 55 
+              - 225
+              - 55
+              - 55
         image: hue.png
-~~~~
 ```
 
 ### Dimensions
-Optional Object to change size of the remote.
+Optional object to change the size of the remote.
 | Name | Type | Default | Example | Description |
 | --- | --- | --- | --- | --- |
 | `dimensions` | Object | **Optional** | see example | Object for size and border size of remote  |
-| `scale` | Float | **Optional** | 0.63 | With this parameter you scale the size of the remote. I not set it defaults to '1' |
-| `border_width` | Size | **Optional** | 2px | You can have a borderyaround the remote. With this option you can define how thick the border is. If used '0px' it is set to ``none`` |
+| `scale` | Float | **Optional** | 0.63 | Scales the size of the remote. If not set, it defaults to `1` |
+| `border_width` | Size | **Optional** | 2px | Thickness of the border around the remote. If set to `0px`, the border is `none` |
 
 ### Colors
 Optional object to configure the colors, used by this remote.
@@ -282,13 +273,13 @@ Optional object to configure the colors, used by this remote.
 | `colors` | Object | **Optional** | see example | Object for customize the colors for this remote |
 | `background` | html color | **Optional** | #565a67 | The color of the background of this remote control |
 | `buttons` | html color | **Optional** | #393232 | Color of the buttons - to differentiate to background color |
+| `text` | html color | **Optional** | #f8f7f7 | Color of the text and icons on the remote |
 | `popup` | html color | **Optional** | #585555 | Background color for the favorite popup |
-| `buttons` | html color | **Optional** | ##0d0c0c | Color of the border of this remote |
+| `border` | html color | **Optional** | #0d0c0c | Color of the border of this remote |
 
 #### A basic example configured with colors a dimensions:
 
-```
-~~~
+```yaml
 type: custom:my-harmony-card
 name: Wohnen
 entity: remote.harmony_wohnzimmer
@@ -301,7 +292,6 @@ colors:
   buttons: '#393232'
   popup: '#585555'
   border: '#0d0c0c'
-~~~~
 ```
 
 ### More Complete Example
@@ -418,17 +408,28 @@ If you not know, which button is for which functionallity be default, look [here
 2. **Look for supported commands:**  
    Search the file for the button name (e.g., `"OK"`). If the command `"OK"` is not listed, then your device does not support it and it won't work.
 
-3. **Use Button Remapping:**  
-   You can use the built-in **Button Remapping** feature to map the non-working button to a command that *is* supported by your device.
+3. **Override the command for the activity:**  
+   You can remap a non-working button to a command that *is* supported by your device. There is no separate remapping section – the override belongs to the activity (see [Activities Options](#activities-options)).
 
    For example, many devices use `"Select"` instead of `"OK"`.
 
-#### Example Remapping
+#### Example remapping
+
 ```yaml
-button_remapping:
-  OK: Select
+type: custom:my-harmony-card
+entity: remote.harmony_wohnzimmer
+activities:
+  Watch TV:
+    device_id: 77085993
+    OK: Select
+    Back: Return
+    Exit: Home
 ```
-This configuration will send the "Select" command when the OK button is pressed.
+
+While `Watch TV` is the active activity, this sends `Select` instead of `OK`,
+`Return` instead of `Back` and `Home` instead of `Exit`. All other activities
+keep the defaults. Supported keys: `OK`, `Back`, `Menu`, `Guide`, `Home`,
+`Info`, `Exit`.
 
 **Tip:** If you're unsure which commands are available for a device, check your harmony_*.conf file — all supported commands are listed there for each device.
 
