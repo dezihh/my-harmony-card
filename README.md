@@ -48,7 +48,7 @@ You can find a screenshot of the remote with some button naming [here](https://g
 | `type` | string | **Required** | `custom:my-harmony-card` | Type of the card |
 | `entity` | string | **Required** | remote.myharmonydevice | harmony entity |
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
-| `activities` | Object | **Required** | see [activities](#activities-options) | name of harmony device in HA, ie. living room |
+| `activities` | Object | **Option** | see [activities](#activities-options) | Per-activity settings (device ids, favorites). Without it the card still works, but has no favorites and no activity-specific device mapping. |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
 | `Special` | object | **Option** | see [Button\[A-D\]](#buttona-d) | Free global select: 5th configurable global Button -  works on all activities same  |
 | `Button[A-D]` | object | **Option** | see [Button\[A-D\]](#buttona-d) | 4 Buttons for global use. You can add to each button one service call. If all 4 buttons not configured, the buttons disappear and the remote will get smaller - works on all activities same  |
