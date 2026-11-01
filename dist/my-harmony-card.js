@@ -15,7 +15,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const w=globalThis,x=t=>t,k=w.trustedTypes,A=k?k.createPolicy("lit-html",{createHTML:t=>t}):void 0,C="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,O="?"+E,S=`<${O}>`,B=document,P=()=>B.createComment(""),D=t=>null===t||"object"!=typeof t&&"function"!=typeof t,T=Array.isArray,R="[ \t\n\f\r]",U=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,N=/-->/g,H=/>/g,M=RegExp(`>|${R}(?:([^\\s"'>=/]+)(${R}*=${R}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),j=/'/g,z=/"/g,I=/^(?:script|style|textarea|title)$/i,F=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),L=Symbol.for("lit-noChange"),W=Symbol.for("lit-nothing"),K=new WeakMap,V=B.createTreeWalker(B,129);function q(t,e){if(!T(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==A?A.createHTML(e):e}const G=(t,e)=>{const i=t.length-1,o=[];let n,s=2===e?"<svg>":3===e?"<math>":"",r=U;for(let e=0;e<i;e++){const i=t[e];let a,c,l=-1,d=0;for(;d<i.length&&(r.lastIndex=d,c=r.exec(i),null!==c);)d=r.lastIndex,r===U?"!--"===c[1]?r=N:void 0!==c[1]?r=H:void 0!==c[2]?(I.test(c[2])&&(n=RegExp("</"+c[2],"g")),r=M):void 0!==c[3]&&(r=M):r===M?">"===c[0]?(r=n??U,l=-1):void 0===c[1]?l=-2:(l=r.lastIndex-c[2].length,a=c[1],r=void 0===c[3]?M:'"'===c[3]?z:j):r===z||r===j?r=M:r===N||r===H?r=U:(r=M,n=void 0);const h=r===M&&t[e+1].startsWith("/>")?" ":"";s+=r===U?i+S:l>=0?(o.push(a),i.slice(0,l)+C+i.slice(l)+E+h):i+E+(-2===l?e:h)}return[q(t,s+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class Y{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let n=0,s=0;const r=t.length-1,a=this.parts,[c,l]=G(t,e);if(this.el=Y.createElement(c,i),V.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=V.nextNode())&&a.length<r;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(C)){const e=l[s++],i=o.getAttribute(t).split(E),r=/([.?@])?(.*)/.exec(e);a.push({type:1,index:n,name:r[2],strings:i,ctor:"."===r[1]?tt:"?"===r[1]?et:"@"===r[1]?it:Q}),o.removeAttribute(t)}else t.startsWith(E)&&(a.push({type:6,index:n}),o.removeAttribute(t));if(I.test(o.tagName)){const t=o.textContent.split(E),e=t.length-1;if(e>0){o.textContent=k?k.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],P()),V.nextNode(),a.push({type:2,index:++n});o.append(t[e],P())}}}else if(8===o.nodeType)if(o.data===O)a.push({type:2,index:n});else{let t=-1;for(;-1!==(t=o.data.indexOf(E,t+1));)a.push({type:7,index:n}),t+=E.length-1}n++}}static createElement(t,e){const i=B.createElement("template");return i.innerHTML=t,i}}function J(t,e,i=t,o){if(e===L)return e;let n=void 0!==o?i._$Co?.[o]:i._$Cl;const s=D(e)?void 0:e._$litDirective$;return n?.constructor!==s&&(n?._$AO?.(!1),void 0===s?n=void 0:(n=new s(t),n._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=n:i._$Cl=n),void 0!==n&&(e=J(t,n._$AS(t,e.values),n,o)),e}class X{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??B).importNode(e,!0);V.currentNode=o;let n=V.nextNode(),s=0,r=0,a=i[0];for(;void 0!==a;){if(s===a.index){let e;2===a.type?e=new Z(n,n.nextSibling,this,t):1===a.type?e=new a.ctor(n,a.name,a.strings,this,t):6===a.type&&(e=new ot(n,this,t)),this._$AV.push(e),a=i[++r]}s!==a?.index&&(n=V.nextNode(),s++)}return V.currentNode=B,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class Z{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=W,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=J(this,t,e),D(t)?t===W||null==t||""===t?(this._$AH!==W&&this._$AR(),this._$AH=W):t!==this._$AH&&t!==L&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>T(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==W&&D(this._$AH)?this._$AA.nextSibling.data=t:this.T(B.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=Y.createElement(q(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new X(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=K.get(t.strings);return void 0===e&&K.set(t.strings,e=new Y(t)),e}k(t){T(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const n of t)o===e.length?e.push(i=new Z(this.O(P()),this.O(P()),this,this.options)):i=e[o],i._$AI(n),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=x(t).nextSibling;x(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Q{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,n){this.type=1,this._$AH=W,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=n,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=W}_$AI(t,e=this,i,o){const n=this.strings;let s=!1;if(void 0===n)t=J(this,t,e,0),s=!D(t)||t!==this._$AH&&t!==L,s&&(this._$AH=t);else{const o=t;let r,a;for(t=n[0],r=0;r<n.length-1;r++)a=J(this,o[i+r],e,r),a===L&&(a=this._$AH[r]),s||=!D(a)||a!==this._$AH[r],a===W?t=W:t!==W&&(t+=(a??"")+n[r+1]),this._$AH[r]=a}s&&!o&&this.j(t)}j(t){t===W?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Q{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===W?void 0:t}}class et extends Q{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==W)}}class it extends Q{constructor(t,e,i,o,n){super(t,e,i,o,n),this.type=5}_$AI(t,e=this){if((t=J(this,t,e,0)??W)===L)return;const i=this._$AH,o=t===W&&i!==W||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,n=t!==W&&(i===W||o);o&&this.element.removeEventListener(this.name,this,i),n&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){J(this,t)}}const nt=w.litHtmlPolyfillSupport;nt?.(Y,Z),(w.litHtmlVersions??=[]).push("3.3.2");const st=globalThis;
+const w=globalThis,x=t=>t,k=w.trustedTypes,A=k?k.createPolicy("lit-html",{createHTML:t=>t}):void 0,C="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,O="?"+E,S=`<${O}>`,B=document,P=()=>B.createComment(""),D=t=>null===t||"object"!=typeof t&&"function"!=typeof t,T=Array.isArray,R="[ \t\n\f\r]",U=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,H=/-->/g,N=/>/g,M=RegExp(`>|${R}(?:([^\\s"'>=/]+)(${R}*=${R}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),j=/'/g,z=/"/g,I=/^(?:script|style|textarea|title)$/i,F=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),L=Symbol.for("lit-noChange"),W=Symbol.for("lit-nothing"),K=new WeakMap,V=B.createTreeWalker(B,129);function q(t,e){if(!T(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==A?A.createHTML(e):e}const G=(t,e)=>{const i=t.length-1,o=[];let n,s=2===e?"<svg>":3===e?"<math>":"",r=U;for(let e=0;e<i;e++){const i=t[e];let a,c,l=-1,d=0;for(;d<i.length&&(r.lastIndex=d,c=r.exec(i),null!==c);)d=r.lastIndex,r===U?"!--"===c[1]?r=H:void 0!==c[1]?r=N:void 0!==c[2]?(I.test(c[2])&&(n=RegExp("</"+c[2],"g")),r=M):void 0!==c[3]&&(r=M):r===M?">"===c[0]?(r=n??U,l=-1):void 0===c[1]?l=-2:(l=r.lastIndex-c[2].length,a=c[1],r=void 0===c[3]?M:'"'===c[3]?z:j):r===z||r===j?r=M:r===H||r===N?r=U:(r=M,n=void 0);const h=r===M&&t[e+1].startsWith("/>")?" ":"";s+=r===U?i+S:l>=0?(o.push(a),i.slice(0,l)+C+i.slice(l)+E+h):i+E+(-2===l?e:h)}return[q(t,s+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class Y{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let n=0,s=0;const r=t.length-1,a=this.parts,[c,l]=G(t,e);if(this.el=Y.createElement(c,i),V.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=V.nextNode())&&a.length<r;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(C)){const e=l[s++],i=o.getAttribute(t).split(E),r=/([.?@])?(.*)/.exec(e);a.push({type:1,index:n,name:r[2],strings:i,ctor:"."===r[1]?tt:"?"===r[1]?et:"@"===r[1]?it:Q}),o.removeAttribute(t)}else t.startsWith(E)&&(a.push({type:6,index:n}),o.removeAttribute(t));if(I.test(o.tagName)){const t=o.textContent.split(E),e=t.length-1;if(e>0){o.textContent=k?k.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],P()),V.nextNode(),a.push({type:2,index:++n});o.append(t[e],P())}}}else if(8===o.nodeType)if(o.data===O)a.push({type:2,index:n});else{let t=-1;for(;-1!==(t=o.data.indexOf(E,t+1));)a.push({type:7,index:n}),t+=E.length-1}n++}}static createElement(t,e){const i=B.createElement("template");return i.innerHTML=t,i}}function J(t,e,i=t,o){if(e===L)return e;let n=void 0!==o?i._$Co?.[o]:i._$Cl;const s=D(e)?void 0:e._$litDirective$;return n?.constructor!==s&&(n?._$AO?.(!1),void 0===s?n=void 0:(n=new s(t),n._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=n:i._$Cl=n),void 0!==n&&(e=J(t,n._$AS(t,e.values),n,o)),e}class X{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??B).importNode(e,!0);V.currentNode=o;let n=V.nextNode(),s=0,r=0,a=i[0];for(;void 0!==a;){if(s===a.index){let e;2===a.type?e=new Z(n,n.nextSibling,this,t):1===a.type?e=new a.ctor(n,a.name,a.strings,this,t):6===a.type&&(e=new ot(n,this,t)),this._$AV.push(e),a=i[++r]}s!==a?.index&&(n=V.nextNode(),s++)}return V.currentNode=B,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class Z{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=W,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=J(this,t,e),D(t)?t===W||null==t||""===t?(this._$AH!==W&&this._$AR(),this._$AH=W):t!==this._$AH&&t!==L&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>T(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==W&&D(this._$AH)?this._$AA.nextSibling.data=t:this.T(B.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=Y.createElement(q(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new X(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=K.get(t.strings);return void 0===e&&K.set(t.strings,e=new Y(t)),e}k(t){T(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const n of t)o===e.length?e.push(i=new Z(this.O(P()),this.O(P()),this,this.options)):i=e[o],i._$AI(n),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=x(t).nextSibling;x(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Q{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,n){this.type=1,this._$AH=W,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=n,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=W}_$AI(t,e=this,i,o){const n=this.strings;let s=!1;if(void 0===n)t=J(this,t,e,0),s=!D(t)||t!==this._$AH&&t!==L,s&&(this._$AH=t);else{const o=t;let r,a;for(t=n[0],r=0;r<n.length-1;r++)a=J(this,o[i+r],e,r),a===L&&(a=this._$AH[r]),s||=!D(a)||a!==this._$AH[r],a===W?t=W:t!==W&&(t+=(a??"")+n[r+1]),this._$AH[r]=a}s&&!o&&this.j(t)}j(t){t===W?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Q{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===W?void 0:t}}class et extends Q{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==W)}}class it extends Q{constructor(t,e,i,o,n){super(t,e,i,o,n),this.type=5}_$AI(t,e=this){if((t=J(this,t,e,0)??W)===L)return;const i=this._$AH,o=t===W&&i!==W||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,n=t!==W&&(i===W||o);o&&this.element.removeEventListener(this.name,this,i),n&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){J(this,t)}}const nt=w.litHtmlPolyfillSupport;nt?.(Y,Z),(w.litHtmlVersions??=[]).push("3.3.2");const st=globalThis;
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -130,6 +130,29 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
   .card {
     display: flex;
     justify-content: center;
+  }
+
+/* Hint shown when the configured entity is missing */
+  .error {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    align-self: center;
+    max-width: 260px;
+    padding: 16px;
+    font-size: 0.9em;
+    color: var(--primary-text-color);
+    border: 2px solid var(--error-color, #db4437);
+    border-radius: 8px;
+  }
+
+  .error ha-icon {
+    flex: 0 0 auto;
+    color: var(--error-color, #db4437);
+  }
+
+  .error code {
+    word-break: break-all;
   } 
 
   .page {
@@ -826,30 +849,44 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                 `:""}
         `))}
       <!-- </tbody>-->
-    `}render(){var t,e;const i=this.hass.states[this.config.entity];this._current_activity=i.attributes.current_activity;const o=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],n="PowerOff"===this._current_activity?"red":"green";this.debug&&console.log(`Func: render - Current Activity ${(null===(e=null==i?void 0:i.attributes)||void 0===e?void 0:e.current_activity)||"N/A"} - DeviceID: ${(null==o?void 0:o.device_id)||"N/A"}`);const s=this.config.dimensions&&this.config.dimensions.border_width?this.config.dimensions.border_width:"1px",r=this.config.dimensions&&this.config.dimensions.scale?this.config.dimensions.scale:1,a=Math.round(260*r)+"px",c=this.config.colors&&this.config.colors.background?this.config.colors.background:"var( --ha-card-background, var(--card-background-color, white) )",l=this.config.colors&&this.config.colors.border?this.config.colors.border:"var(--primary-text-color)",d=this.config.colors&&this.config.colors.buttons?this.config.colors.buttons:"var(--secondary-background-color)",h=this.config.colors&&this.config.colors.text?this.config.colors.text:"var(--primary-text-color)",u=this.config.colors&&this.config.colors.popup?this.config.colors.popup:"var(--popup-color)";return F`
+    `}_renderMissingEntity(){return F`
+      <div class="card">
+        <div class="error">
+          <ha-icon icon="mdi:alert-circle-outline"></ha-icon>
+          <div>
+            <strong>Entity not found</strong>
+            <div><code>${this.config.entity}</code></div>
+            <div>
+              Check the entity id in the card configuration and whether the
+              Harmony integration is loaded.
+            </div>
+          </div>
+        </div>
+      </div>
+    `}render(){var t,e,i,o;if(!this.hass||!this.config)return F``;const n=this.hass.states[this.config.entity];if(!n)return this.debug&&console.warn(`Func: render - Entity ${this.config.entity} not found in hass.states`),this._renderMissingEntity();this._current_activity=null!==(e=null===(t=n.attributes)||void 0===t?void 0:t.current_activity)&&void 0!==e?e:"";const s=null===(i=this.config.activities)||void 0===i?void 0:i[this._current_activity],r="PowerOff"===this._current_activity?"red":"green";this.debug&&console.log(`Func: render - Current Activity ${(null===(o=null==n?void 0:n.attributes)||void 0===o?void 0:o.current_activity)||"N/A"} - DeviceID: ${(null==s?void 0:s.device_id)||"N/A"}`);const a=this.config.dimensions&&this.config.dimensions.border_width?this.config.dimensions.border_width:"1px",c=this.config.dimensions&&this.config.dimensions.scale?this.config.dimensions.scale:1,l=Math.round(260*c)+"px",d=this.config.colors&&this.config.colors.background?this.config.colors.background:"var( --ha-card-background, var(--card-background-color, white) )",h=this.config.colors&&this.config.colors.border?this.config.colors.border:"var(--primary-text-color)",u=this.config.colors&&this.config.colors.buttons?this.config.colors.buttons:"var(--secondary-background-color)",p=this.config.colors&&this.config.colors.text?this.config.colors.text:"var(--primary-text-color)",b=this.config.colors&&this.config.colors.popup?this.config.colors.popup:"var(--popup-color)";return F`
 
         <div class="card">
             <div class="page"
-                 style="--remote-button-color: ${d};
-                        --remote-text-color: ${h};
-                        --remote-color: ${c};
-                        --popup-color: ${u};
-                        --remotewidth: ${a};
-                        --main-border-color: ${l};
-                        --main-border-width: ${s};
-                        --scale: ${r}">
+                 style="--remote-button-color: ${u};
+                        --remote-text-color: ${p};
+                        --remote-color: ${d};
+                        --popup-color: ${b};
+                        --remotewidth: ${l};
+                        --main-border-color: ${h};
+                        --main-border-width: ${a};
+                        --scale: ${c}">
 
                 <!-- Power row -->
-                ${this.config.name?F` <div class="tv_title" style="color:${h}">${this.config.name}</div> `:""}
+                ${this.config.name?F` <div class="tv_title" style="color:${p}">${this.config.name}</div> `:""}
                     
-                <button class="btn-act-action button-style" style="color:${h}"
+                <button class="btn-act-action button-style" style="color:${p}"
                   @click=${()=>this._show_activity=!this._show_activity} 
                   title=${this.config.tooltip?"Action Selector":""}>
                   <span class="scrolling-text ${this._current_activity.length>19?"btn-act-scroll":""}">
                     ${this._current_activity}
                   </span>
                 </button>
-                <div class="grid-container-power" style="--remotewidth: ${a}">                            
+                <div class="grid-container-power" style="--remotewidth: ${l}">                            
                 <!-- FIXME New Function for this button is waiting?-->
                 ${(()=>{const t=this.config.Special;return t?F` <button
                         class="btn ripple  button-style"
@@ -867,7 +904,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                       ></button>`})()}
                     <button class="btn ripple button-style"
                       @click=${()=>this._select_activity("PowerOff")}>
-                      <ha-icon class="msc" icon="mdi:power"  style="color: ${n};"/
+                      <ha-icon class="msc" icon="mdi:power"  style="color: ${r};"/
                       title=${this.config.tooltip?this._current_activity:"Off"}></button>
 
                     <button class="btn-flat flat-high ripple btn-text button-style"
@@ -942,15 +979,15 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                             <ha-icon icon="mdi:undo-variant" />
                           </button>
 
-                          <p class="act_text" style="color:${h}">
+                          <p class="act_text" style="color:${p}">
                             <b>ACTIONS</b>
                           </p>
 
                           <div class="grid-item-act">
-                            ${i.attributes.activity_list.map(t=>F`
+                            ${n.attributes.activity_list.map(t=>F`
                                 <button
                                   class="button-style 
-                                          ${i.attributes.current_activity===t?"btn-act-on":"btn-act ripple overlay"}"
+                                          ${n.attributes.current_activity===t?"btn-act-on":"btn-act ripple overlay"}"
                                   @click=${()=>{this._select_activity(t),this._show_activity=!1}}
                                 >
                                   <span
@@ -1108,7 +1145,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
 
                           <div
                             class="ok_button ripple item_2_c button-style"
-                            style="border: solid 2px ${c}"
+                            style="border: solid 2px ${d}"
                             @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.OK)&&void 0!==e?e:"OK")}}
                           >
                             OK
