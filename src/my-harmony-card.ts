@@ -758,7 +758,11 @@ class MyHarmony extends LitElement {
 
                           <button
                             class="btn ripple item_exit button-style"
-                            @click=${() => this._button("Exit")}
+                            @click=${() =>
+                              this._button(
+                                this.config.activities[this._current_activity]
+                                  ?.Exit ?? "Exit"
+                              )}
                           >
                             EXIT
                           </button>
