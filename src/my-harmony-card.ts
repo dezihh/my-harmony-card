@@ -69,7 +69,7 @@ class MyHarmony extends LitElement {
       name: string;
       data?: any;
       target?: any;
-      [key: string]: any; // Weitere mögliche Service-Parameter
+      [key: string]: any; // Additional possible service parameters
     };
     contextPath?: string;
     image: string;
@@ -246,11 +246,45 @@ class MyHarmony extends LitElement {
     `;
   }
 
+  // Show a hint instead of throwing when the configured entity does not exist
+  // (typo, integration removed, entity not loaded yet)
+  _renderMissingEntity() {
+    return html`
+      <div class="card">
+        <div class="error">
+          <ha-icon icon="mdi:alert-circle-outline"></ha-icon>
+          <div>
+            <strong>Entity not found</strong>
+            <div><code>${this.config.entity}</code></div>
+            <div>
+              Check the entity id in the card configuration and whether the
+              Harmony integration is loaded.
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   //alt="${favorite.service?.name || 'Default Alt Text'}"
   // Render the component
   render() {
+    if (!this.hass || !this.config) {
+      return html``;
+    }
+
     const stateObj = this.hass.states[this.config.entity];
-    this._current_activity = stateObj.attributes.current_activity;
+
+    if (!stateObj) {
+      if (this.debug) {
+        console.warn(
+          `Func: render - Entity ${this.config.entity} not found in hass.states`
+        );
+      }
+      return this._renderMissingEntity();
+    }
+
+    this._current_activity = stateObj.attributes?.current_activity ?? "";
 
     const currentActivityConfig =
       this.config.activities?.[this._current_activity];

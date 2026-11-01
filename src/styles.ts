@@ -104,6 +104,29 @@ export const styles = css`
   .card {
     display: flex;
     justify-content: center;
+  }
+
+/* Hint shown when the configured entity is missing */
+  .error {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    align-self: center;
+    max-width: 260px;
+    padding: 16px;
+    font-size: 0.9em;
+    color: var(--primary-text-color);
+    border: 2px solid var(--error-color, #db4437);
+    border-radius: 8px;
+  }
+
+  .error ha-icon {
+    flex: 0 0 auto;
+    color: var(--error-color, #db4437);
+  }
+
+  .error code {
+    word-break: break-all;
   } 
 
   .page {
