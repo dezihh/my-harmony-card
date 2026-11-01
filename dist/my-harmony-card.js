@@ -1174,7 +1174,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
 
                           <button
                             class="btn ripple item_exit button-style"
-                            @click=${()=>this._button("Exit")}
+                            @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.Exit)&&void 0!==e?e:"Exit")}}
                           >
                             EXIT
                           </button>
