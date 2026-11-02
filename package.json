@@ -45,6 +45,7 @@
     "typescript": "^5.5.4"
   },
   "scripts": {
+    "test": "node --test --experimental-strip-types test/*.test.mjs",
     "start": "rollup -c rollup.config.mjs --watch",
     "build": "npm run rollup && npm run add-version",
     "add-version": "node -e \"const fs = require('fs'); const content = fs.readFileSync('dist/my-harmony-card.js', 'utf8'); fs.writeFileSync('dist/my-harmony-card.js', content.replace(/@MY_HARMONY_CARD_PLACEHOLDER@/g, process.env.npm_package_version));\"",
