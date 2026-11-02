@@ -7,6 +7,20 @@ import "./editor";
 import { styles } from "./styles"; // Importing styles
 import { HomeAssistantFixed, WindowWithCards } from "./types";
 import { CARD_TAG_NAME, CARD_VERSION, EDITOR_CARD_TAG_NAME } from "./const";
+import {
+  isRoutedAway,
+  resolveCommand,
+  resolveDevice,
+  usesChangeChannel,
+} from "./lib/commands";
+import { normalizeFavorites } from "./lib/favorites";
+import type { Favorite } from "./lib/favorites";
+import {
+  activityConfigFor,
+  directDeviceLabel,
+  hasDirectDevice,
+  modeLabel,
+} from "./lib/mode";
 
 // Card information to be displayed in the console
 const line1 = "  My Harmony Remote Control Card  ";
@@ -37,7 +51,17 @@ class MyHarmony extends LitElement {
   private _show_keypad: boolean;
   private _show_activity: boolean;
   private _current_activity: string;
+  private _directActive: boolean;
+  private _lastHubActivity: string | undefined;
   private _dialogOpen: boolean;
+
+  private get _hasDirectDevice(): boolean {
+    return hasDirectDevice(this.config);
+  }
+
+  private _directLabel(): string {
+    return directDeviceLabel(this.config);
+  }
 
   static get styles() {
     return styles; // Use of imported styles
@@ -63,40 +87,16 @@ class MyHarmony extends LitElement {
     };
   }
 
-  _getFavorites(): {
-    number?: string;
-    service?: {
-      name: string;
-      data?: any;
-      target?: any;
-      [key: string]: any; // Additional possible service parameters
-    };
-    contextPath?: string;
-    image: string;
-  }[] {
-    const currentActivityConfig =
-      this.config.activities?.[this._current_activity];
-    const favorites = currentActivityConfig?.favorites || [];
-  
-    return favorites.map((favorite, index) => {
-      const { number, service, image, data, target, ...otherParams } = favorite;
-  
-      return {
-        number,
-        service: service
-          ? {
-              name: typeof service === 'string' ? service : service.name,// Service-Name
-              data: service.data,           // `data` als Unterobjekt von `service`
-              target: service.target,         // `target` als Unterobjekt von `service`
-              ...otherParams  // Weitere Parameter als Unterobjekte von `service`
-            }
-          : undefined,
-        contextPath: service
-          ? `activities.${this._current_activity}.favorites[${index}]`
-          : undefined,
-        image,
-      };
-    });
+  _getFavorites(): Favorite[] {
+    const activityConfig = activityConfigFor(
+      this.config,
+      this._current_activity
+    );
+
+    return normalizeFavorites(
+      activityConfig?.favorites,
+      this._current_activity
+    );
   }
   
 
@@ -165,6 +165,7 @@ class MyHarmony extends LitElement {
       config: {},
       _show_keypad: {},
       _show_activity: {},
+      _directActive: { type: Boolean },
       _show_vol_text: {},
       _current_activity: { type: String },
     };
@@ -175,6 +176,8 @@ class MyHarmony extends LitElement {
     super();
     this._show_keypad = false;
     this._show_activity = false;
+    this._directActive = false;
+    this._lastHubActivity = undefined;
     this._current_activity = "";
     this.debug = false;
     this._dialogOpen = false;
@@ -192,8 +195,11 @@ class MyHarmony extends LitElement {
   }
   //Open properties of media player if defined
   private _moreMediaPlayer() {
-    const activityConfig = this.config.activities[this._current_activity];
-    const playerName = activityConfig.player_name;
+    const activityConfig = activityConfigFor(
+      this.config,
+      this._current_activity
+    );
+    const playerName = activityConfig?.player_name as string | undefined;
     if (playerName) {
       fireEvent(this, "hass-more-info", { entityId: playerName });
     }
@@ -286,6 +292,16 @@ class MyHarmony extends LitElement {
 
     this._current_activity = stateObj.attributes?.current_activity ?? "";
 
+    // An activity changed elsewhere (hub, app, another client) ends direct
+    // mode, so the card always reflects what the hub is actually doing.
+    if (
+      this._lastHubActivity !== undefined &&
+      this._lastHubActivity !== this._current_activity
+    ) {
+      this._directActive = false;
+    }
+    this._lastHubActivity = this._current_activity;
+
     const currentActivityConfig =
       this.config.activities?.[this._current_activity];
     const powerButtonColor =
@@ -342,13 +358,15 @@ class MyHarmony extends LitElement {
                         --scale: ${scale}">
 
                 <!-- Power row -->
-                ${this.config.name ? html` <div class="tv_title" style="color:${textColor}">${this.config.name}</div> ` : ""}
-                    
+                ${this.config.name
+                  ? html` <div class="tv_title" style="color:${textColor}">${this.config.name}</div> `
+                  : ""}
+
                 <button class="btn-act-action button-style" style="color:${textColor}"
                   @click=${() => (this._show_activity = !this._show_activity)} 
                   title=${this.config.tooltip ? "Action Selector" : ""}>
-                  <span class="scrolling-text ${this._current_activity.length > 19 ? "btn-act-scroll" : ""}">
-                    ${this._current_activity}
+                  <span class="scrolling-text ${modeLabel(this.config, this._current_activity, this._directActive).length > 19 ? "btn-act-scroll" : ""}">
+                    ${modeLabel(this.config, this._current_activity, this._directActive)}
                   </span>
                 </button>
                 <div class="grid-container-power" style="--remotewidth: ${remoteWidth}">                            
@@ -538,8 +556,9 @@ class MyHarmony extends LitElement {
                               (activity) => html`
                                 <button
                                   class="button-style 
-                                          ${stateObj.attributes
-                                    .current_activity === activity
+                                          ${!this._directActive &&
+                                    stateObj.attributes
+                                      .current_activity === activity
                                     ? "btn-act-on"
                                     : "btn-act ripple overlay"}"
                                   @click=${() => {
@@ -559,6 +578,33 @@ class MyHarmony extends LitElement {
                                 </button>
                               `
                             )}
+                            ${this._hasDirectDevice
+                              ? html`
+                                  <button
+                                    class="button-style act-direct ${this._directActive
+                                      ? "btn-act-on"
+                                      : "btn-act ripple overlay"}"
+                                    @click=${() => {
+                                      this._select_direct();
+                                      this._show_activity = false;
+                                    }}
+                                  >
+                                    <ha-icon
+                                      class="act-direct-icon"
+                                      icon="mdi:remote"
+                                    ></ha-icon>
+                                    <span
+                                      class="${this._directLabel().length > 18
+                                        ? "btn-act-scroll"
+                                        : ""}"
+                                    >
+                                      <div class="scrolling-text">
+                                        ${this._directLabel()}
+                                      </div>
+                                    </span>
+                                  </button>
+                                `
+                              : ""}
                           </div>
                         </div>
 
@@ -572,62 +618,62 @@ class MyHarmony extends LitElement {
                         <!--  Keypad Overlay  -->
                         <div class="grid-container-keypad">
                           <button
-                            class="btn-keypad ripple button-style"
+                            class="btn-keypad ripple button-style${this._routedClass("1")}"
                             @click=${() => this._chanchange("1")}
                           >
                             1
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("2")}"
                             @click=${() => this._chanchange("2")}
                           >
                             2
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("3")}"
                             @click=${() => this._chanchange("3")}
                           >
                             3
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("4")}"
                             @click=${() => this._chanchange("4")}
                           >
                             4
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("5")}"
                             @click=${() => this._chanchange("5")}
                           >
                             5
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("6")}"
                             @click=${() => this._chanchange("6")}
                           >
                             6
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("7")}"
                             @click=${() => this._chanchange("7")}
                           >
                             7
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("8")}"
                             @click=${() => this._chanchange("8")}
                           >
                             8
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("9")}"
                             @click=${() => this._chanchange("9")}
                           >
                             9
                           </button>
                           <button class="btn-keypad"></button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("0")}"
                             @click=${() => this._chanchange("0")}
                           >
                             0
@@ -674,34 +720,31 @@ class MyHarmony extends LitElement {
                             </svg>
                           </div>
                           <button
-                            class="btn ripple item_guide button-style"
+                            class="btn ripple item_guide button-style${this._routedClass("Guide")}"
                             @click=${() =>
-                              this._button(
-                                this.config.activities[this._current_activity]
-                                  ?.Guide ?? "Guide"
-                              )}
+                              this._button("Guide")}
                             title=${this.config.tooltip ? "Guide" : ""}
                           >
                             <ha-icon class="msc" icon="mdi:television-guide" />
                           </button>
 
                           <button
-                            class="btn ripple item_up button-style"
+                            class="btn ripple item_up button-style${this._routedClass("DirectionUp")}"
                             @click=${() => this._button("DirectionUp")}
                           >
                             <ha-icon class="msc" icon="mdi:chevron-up" />
                           </button>
                           <!-- ANCHOR Menu-->
                           <button
-                            class="btn ripple item_act button-style"
+                            class="btn ripple item_act button-style${this._routedClass("Menu")}"
                             @mousedown=${(e: MouseEvent) =>
-                              this._handleButtonDown(this.config.activities[this._current_activity]?.Menu ?? "Menu", "media")}
+                              this._handleButtonDown("Menu", "media")}
                             @mouseup=${(e: MouseEvent) =>
-                              this._handleButtonUp(this.config.activities[this._current_activity]?.Menu ?? "Menu")}
+                              this._handleButtonUp("Menu")}
                             @touchstart=${(e: TouchEvent) =>
-                              this._handleButtonDown(this.config.activities[this._current_activity]?.Menu ?? "Menu", "media")}
+                              this._handleButtonDown("Menu", "media")}
                             @touchend=${(e: TouchEvent) =>
-                              this._handleButtonUp(this.config.activities[this._current_activity]?.Menu ?? "Menu")}
+                              this._handleButtonUp("Menu")}
                             title=${this.config.tooltip
                               ? "Menu/Mediaplayer"
                               : ""}
@@ -713,56 +756,47 @@ class MyHarmony extends LitElement {
                           </button>
 
                           <button
-                            class="btn ripple item_2_sx button-style"
+                            class="btn ripple item_2_sx button-style${this._routedClass("DirectionLeft")}"
                             @click=${() => this._button("DirectionLeft")}
                           >
                             <ha-icon class="msc " icon="mdi:chevron-left" />
                           </button>
 
                           <div
-                            class="ok_button ripple item_2_c button-style"
+                            class="ok_button ripple item_2_c button-style${this._routedClass("OK")}"
                             style="border: solid 2px ${backgroundColor}"
                             @click=${() =>
-                              this._button(
-                                this.config.activities[this._current_activity]
-                                  ?.OK ?? "OK"
-                              )}
+                              this._button("OK")}
                           >
                             OK
                           </div>
 
                           <button
-                            class="btn ripple item_right button-style"
+                            class="btn ripple item_right button-style${this._routedClass("DirectionRight")}"
                             @click=${() => this._button("DirectionRight")}
                           >
                             <ha-icon class="msc" icon="mdi:chevron-right" />
                           </button>
 
                           <button
-                            class="btn ripple item_back button-style"
+                            class="btn ripple item_back button-style${this._routedClass("Back")}"
                             @click=${() =>
-                              this._button(
-                                this.config.activities[this._current_activity]
-                                  ?.Back ?? "Back"
-                              )}
+                              this._button("Back")}
                           >
                             <ha-icon class="msc" icon="mdi:undo-variant" />
                           </button>
 
                           <button
-                            class="btn ripple item_down button-style"
+                            class="btn ripple item_down button-style${this._routedClass("DirectionDown")}"
                             @click=${() => this._button("DirectionDown")}
                           >
                             <ha-icon class="msc" icon="mdi:chevron-down" />
                           </button>
 
                           <button
-                            class="btn ripple item_exit button-style"
+                            class="btn ripple item_exit button-style${this._routedClass("Exit")}"
                             @click=${() =>
-                              this._button(
-                                this.config.activities[this._current_activity]
-                                  ?.Exit ?? "Exit"
-                              )}
+                              this._button("Exit")}
                           >
                             EXIT
                           </button>
@@ -1056,22 +1090,22 @@ class MyHarmony extends LitElement {
                             ? html`
                                 <div class="grid-container-color_btn">
                                   <button
-                                    class="btn-color ripple btn-red button-style"
+                                    class="btn-color ripple btn-red button-style${this._routedClass("Red")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${() => this._button("Red")}
                                   ></button>
                                   <button
-                                    class="btn-color ripple btn-green button-style"
+                                    class="btn-color ripple btn-green button-style${this._routedClass("Green")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${() => this._button("Green")}
                                   ></button>
                                   <button
-                                    class="btn-color ripple btn-yellow button-style"
+                                    class="btn-color ripple btn-yellow button-style${this._routedClass("Yellow")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${() => this._button("Yellow")}
                                   ></button>
                                   <button
-                                    class="btn-color ripple btn-blue button-style"
+                                    class="btn-color ripple btn-blue button-style${this._routedClass("Blue")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${() => this._button("Blue")}
                                   ></button>
@@ -1083,58 +1117,58 @@ class MyHarmony extends LitElement {
 
 
                     <div class="grid-container-volume-channel-control" >
-                         <button class="btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("VolumeUp")} btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%"
                             @click=${() => this._button("VolumeUp")}>
                           <ha-icon class="msc" icon="mdi:plus"/></button>
 
-                         <button class="btn-flat flat-high ripple button-style" style="margin-top: 0px; height: 65%;"
-                            @click=${() => this._button(this.config.activities[this._current_activity]?.Home ?? "Home")}
+                         <button class="${this._routedClass("Home")} btn-flat flat-high ripple button-style" style="margin-top: 0px; height: 65%"
+                            @click=${() => this._button("Home")}
                             title=${this.config.tooltip ? "Home" : ""}>
                            <ha-icon class="msc" icon="mdi:home" ></ha-icon> </button>
 
-                         <button class="btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("ChannelUp")} btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%"
                             @click=${() => this._button("ChannelUp")}>
                           <ha-icon class="msc" icon="mdi:chevron-up"/></button>
 
                          <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;">
                           <ha-icon class="msc" icon="mdi:volume-high"/></button>
 
-                         <button class="btn ripple button-style" Style="height: 100%;"
+                         <button class="${this._routedClass("Mute")} btn ripple button-style" Style="height: 100%"
                             @click=${() => this._button("Mute")}><span>
                           <ha-icon class="msc" icon="mdi:volume-mute"></span></button>
 
                          <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;">
                           <ha-icon class="msc" icon="mdi:parking"/></button>
 
-                         <button class="btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("VolumeDown")} btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%"
                             @click=${() => this._button("VolumeDown")}>
                           <ha-icon class="msc" icon="mdi:minus"/></button>
 
-                         <button class="btn-flat flat-high ripple button-style" style="margin-bottom: 0px; height: 65%;"
-                            @click=${() => this._button(this.config.activities[this._current_activity]?.Info ?? "Info")}
+                         <button class="${this._routedClass("Info")} btn-flat flat-high ripple button-style" style="margin-bottom: 0px; height: 65%"
+                            @click=${() => this._button("Info")}
                             title=${this.config.tooltip ? "Info" : ""}>
                           <ha-icon class="msc" icon="mdi:information-variant"/></button>
 
-                         <button class="btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("ChannelDown")} btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%"
                             @click=${() => this._button("ChannelDown")}>
                           <ha-icon class="msc" icon="mdi:chevron-down"/></button>
                         </div>
 
                     <!--  MEDIA CONTROL -->
                     <div class="grid-container-media-control">
-                         <button class="btn-flat flat-low ripple button-style" @click=${() => this._button("Play")}><ha-icon class="msc" icon="mdi:play"/></button>
-                         <button class="btn-flat flat-low ripple button-style"  @click=${() => this._button("Pause")}><ha-icon class="msc" icon="mdi:pause"/></button>
-                         <button class="btn-flat flat-low ripple button-style"  @click=${() => this._button("Stop")}><ha-icon class="msc" icon="mdi:stop"/></button>
-                         <button class="btn-flat flat-low ripple button-style"
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Play")}" @click=${() => this._button("Play")}><ha-icon class="msc" icon="mdi:play"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Pause")}"  @click=${() => this._button("Pause")}><ha-icon class="msc" icon="mdi:pause"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Stop")}"  @click=${() => this._button("Stop")}><ha-icon class="msc" icon="mdi:stop"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Rewind")}"
                             @mousedown=${(e: MouseEvent) => this._handleButtonDown("Rewind", "SkipBack")}
                             @mouseup=${(e: MouseEvent) => this._handleButtonUp("Rewind")}
                             @touchstart=${(e: TouchEvent) => this._handleButtonDown("Rewind", "SkipBack")}
                             @touchend=${(e: TouchEvent) => this._handleButtonUp("Rewind")}>
                           <ha-icon class="msc" icon="mdi:skip-backward" /> </button>
 
-                         <button class="btn-flat flat-low ripple button-style" style="color: red;" @click=${() => this._button("Record")}><ha-icon class="msc" icon="mdi:record"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Record")}" style="color: red;" @click=${() => this._button("Record")}><ha-icon class="msc" icon="mdi:record"/></button>
 
-                         <button class="btn-flat flat-low ripple button-style"
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("FastForward")}"
                            @mousedown=${(e: MouseEvent) => this._handleButtonDown("FastForward", "SkipForward")}
                            @mouseup=${(e: MouseEvent) => this._handleButtonUp("FastForward")}
                            @touchstart=${(e: TouchEvent) => this._handleButtonDown("FastForward", "SkipForward")}
@@ -1149,101 +1183,50 @@ class MyHarmony extends LitElement {
          </div> `;
   }
 
-  //Send command to device
-  _button(button) {
-      const activityConfig = this.config.activities[this._current_activity];
-      let deviceId;
+  // Buttons that go to another device than the activity default get a
+  // subtle marker; the suffix is appended to the button's class list.
+  private _routedClass(button: string): string {
+    if (this._directActive) {
+      return "";
+    }
+    const activityConfig = activityConfigFor(
+      this.config,
+      this._current_activity
+    );
+    return isRoutedAway(activityConfig, button) ? " routed-away" : "";
+  }
 
-      // Set deviceId for each button type
-      switch (button) {
-          case "VolumeUp":
-          case "VolumeDown":
-          case "Mute":
-              deviceId = activityConfig.volume_device_id
-                  ? activityConfig.volume_device_id
-                  : undefined;
-              break;
-          case "ChannelUp":
-          case "ChannelDown":
-              deviceId = activityConfig.channel_device_id
-                  ? activityConfig.channel_device_id
-                  : undefined;
-              break;
-          case "Guide":
-              deviceId = activityConfig.guide_device_id
-                  ? activityConfig.guide_device_id
-                  : undefined;
-              break;
-          case "Menu":
-              deviceId = activityConfig.menu_device_id
-                  ? activityConfig.menu_device_id
-                  : undefined;
-              break;
-          case "OK":
-              deviceId = activityConfig.ok_device_id
-                  ? activityConfig.ok_device_id
-                  : undefined;
-              break;
-          case "Back":
-              deviceId = activityConfig.back_device_id
-                  ? activityConfig.back_device_id
-                  : undefined;
-              break;
-          case "Exit":
-              deviceId = activityConfig.exit_device_id
-                  ? activityConfig.exit_device_id
-                  : undefined;
-              break;
-          case "DirectionUp":
-          case "DirectionDown":
-          case "DirectionLeft":
-          case "DirectionRight":
-              deviceId = activityConfig.direction_device_id
-                  ? activityConfig.direction_device_id
-                  : undefined;
-              break;
-          case "Home":
-              deviceId = activityConfig.home_device_id
-                  ? activityConfig.home_device_id
-                  : undefined;
-              break;
-          case "Info":
-              deviceId = activityConfig.info_device_id
-                  ? activityConfig.info_device_id
-                  : undefined;
-              break;
-          case "Play":
-          case "Pause":
-          case "Stop":
-          case "Rewind":
-          case "FastForward":
-          case "Record":
-              deviceId = activityConfig.media_device_id
-                  ? activityConfig.media_device_id
-                  : undefined;
-              break;
-          case "Red":
-          case "Green":
-          case "Yellow":
-          case "Blue":
-              deviceId = activityConfig.color_device_id
-                  ? activityConfig.color_device_id
-                  : undefined;
-              break;
-      }
+  // Send command to the device resolved for this button
+  _button(button: string) {
+    const activityConfig = activityConfigFor(
+      this.config,
+      this._current_activity
+    );
+    const command = resolveCommand(activityConfig, button);
+    const deviceId = resolveDevice(
+      activityConfig,
+      button,
+      this._directActive ? this.config.device : undefined
+    );
 
-      deviceId = deviceId || activityConfig.alt_device_id || activityConfig.device_id;
+    // No device resolved: let Home Assistant send the command to the
+    // current activity (same behaviour as before the routing refactor).
+    if (deviceId === undefined && this.debug) {
+      console.warn(
+        `_button: no device for "${button}" - sending to activity (${this.config.entity})`
+      );
+    }
 
-      this.hass.callService("remote", "send_command", {
-          entity_id: this.config.entity,
-          device: deviceId,
-          command: button,
-      });
-      if (this.debug) {
-          console.log(
-              `_button Pressed - DeviceId: ${deviceId} - Command: ${button} - entity_id: ${this.config.entity}`
-          );
-      }
+    this.hass.callService("remote", "send_command", {
+      entity_id: this.config.entity,
+      device: deviceId,
+      command,
+    });
+    if (this.debug) {
+      console.log(
+        `_button Pressed - DeviceId: ${deviceId} - Command: ${command} - button: ${button} - entity_id: ${this.config.entity}`
+      );
+    }
   }
 
   _service(service) {
@@ -1269,18 +1252,24 @@ class MyHarmony extends LitElement {
 
   // Switch on specific activity
   _select_activity(activity) {
+    this._directActive = false;
     this.hass.callService("remote", "turn_on", {
       entity_id: this.config.entity,
       activity: activity,
     });
   }
 
+  // Route all buttons to the configured device, without touching the hub
+  _select_direct() {
+    this._directActive = true;
+  }
+
   _chanchange(chan) {
-    const activityConfig = this.config.activities[this._current_activity];
-    const useChangeChannel = activityConfig.useChangeChannel
-      ? activityConfig.useChangeChannel
-      : false;
-    if (useChangeChannel) {
+    const activityConfig = activityConfigFor(
+      this.config,
+      this._current_activity
+    );
+    if (usesChangeChannel(activityConfig, this._directActive)) {
       // Use harmony.change_channel service
       this.hass.callService("harmony", "change_channel", {
         entity_id: this.config.entity,
