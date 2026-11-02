@@ -49,6 +49,8 @@ You can find a screenshot of the remote with some button naming [here](https://g
 | `entity` | string | **Required** | remote.myharmonydevice | harmony entity |
 | `name` | string | **Option** | Living | name of harmony device in HA, ie. living room |
 | `activities` | Object | **Option** | see [activities](#activities-options) | Per-activity settings (device ids, favorites). Without it the card still works, but has no favorites and no activity-specific device mapping. |
+| `device` | string | **Option** | `LG-Fernseher` | Adds a *direct device* entry to the activity list: all buttons go to this device while it is selected. Accepts a device name from `devices_list` or a numeric id. See [Device mode](#device-mode). |
+| `device_name` | string | **Option** | Wohnzimmer-TV | Label for the direct entry. Defaults to the device name/id. |
 | `tooltip` | bool | **Option** | false | Displays tooltip on hoover on buttons Guide, Menu, Home, Info, Keypad, and 'ACT' (Actions). |
 | `Special` | object | **Option** | see [Button\[A-D\]](#buttona-d) | Free global select: 5th configurable global Button -  works on all activities same  |
 | `Button[A-D]` | object | **Option** | see [Button\[A-D\]](#buttona-d) | 4 Buttons for global use. You can add to each button one service call. If all 4 buttons not configured, the buttons disappear and the remote will get smaller - works on all activities same  |
@@ -80,7 +82,14 @@ The device_id is one of the most important parameters. It specifies which device
 
 ## How to find the device\_id?
 
-The device\_id: of each device can be found in the harmony_???.conf at the end of the respective device definition and begins with _"id":_ . Please only use the respective number. This file itself resides in the root directory of you Home Assistant installation (same directory as for configuration.yaml)
+The easiest way is the card editor: the device fields are suggestions filled
+from the hub's `devices_list`, so you can pick a device by name. Home Assistant
+resolves those names to the device id before sending the command; numeric ids
+keep working exactly as before.
+
+The device\_id of each device can also be found in the harmony_???.conf at the
+end of the respective device definition and begins with _"id":_ . Please only
+use the respective number. This file itself resides in the root directory of you Home Assistant installation (same directory as for configuration.yaml)
 Example: device\_id: 77085993
 
 ```
@@ -94,6 +103,94 @@ Example: device\_id: 77085993
  ~~~next device~~~
 ```
 
+## Device mode
+
+The overlay lists the Harmony activities and, if `device` is set, one extra
+entry for direct control of a single device. Activities remain hub macros;
+the direct entry only changes where the buttons are sent.
+
+```yaml
+type: custom:my-harmony-card
+entity: remote.harmony_wohnung
+device: LG TV
+device_name: TV direkt
+```
+
+```yaml
+type: custom:my-harmony-card
+entity: remote.harmony_wohnung
+device: 77085993
+```
+
+### Choosing the device
+
+`device` takes the label the Harmony hub reports for the device (the
+`devices_list` attribute of the entity, offered as suggestions in the card
+editor) or the numeric device id. Home Assistant matches labels
+case-insensitively; ids always work. A label that matches no hub device makes
+the `remote.send_command` call fail, so check the log if a key does nothing.
+`device_name` is only the label of the entry in the list.
+
+Behavior:
+
+- Selecting the direct entry sends all buttons (d-pad, digits, volume,
+  playback, colors) to `device`, without talking to the hub.
+- The hub activity keeps running in the background. Selecting a Harmony
+  activity in the list, or an activity change made elsewhere (hub, app,
+  another client), returns the card to activity mode.
+- `activities`, remaps and favorites follow the current activity, because the
+  activity keeps running. Remapped keys keep their command; their
+  `*_device_id` only applies in activity mode.
+- `useChangeChannel` is an activity feature; it is ignored while the direct
+  entry is selected, so the digits go to `device` there.
+- The selection is local to the card instance: two cards (e.g. tablet and
+  phone) can be in different modes. A reload shows the hub activity again.
+- The hub does not expose which commands a device supports. Unsupported
+  commands are sent and dropped by the hub; the card cannot hide them.
+- In activity mode, buttons that go to a device other than the activity's
+  `device_id` get a thin accent ring, so the routing is visible (see
+  [Routing indicator](#routing-indicator)).
+- Power still uses `remote.turn_off` on the harmony entity, so it ends the
+  running activity.
+- `entity` stays required, because commands are sent through
+  `remote.send_command`.
+
+### Routing indicator
+
+In activity mode a thin ring is drawn inside every button that is routed to a
+device other than the activity's `device_id`:
+
+| Buttons | Routing option |
+| --- | --- |
+| Volume up/down, Mute | `volume_device_id` |
+| Channel up/down and digits 0-9 | `channel_device_id` |
+| D-pad | `direction_device_id` |
+| OK, Back, Exit, Menu, Guide, Home, Info | the matching `*_device_id` |
+| Playback keys | `media_device_id` |
+| Red/green/yellow/blue | `color_device_id` |
+
+The ring never appears in the direct device entry, because there every button
+goes to the same device. The entry itself is set apart in the activity list:
+italic label in the accent color, with a small remote icon.
+
+The accent is `--act-direct-accent`, by default `--primary-color`. Both the
+ring and the accent can be themed; see [Routing indicator](#routing-indicator).
+
+The ring color is `--my-harmony-routed-ring`, by default 45 % of
+`--primary-color`. Override it in a theme or with card-mod, e.g. to hide the
+rings:
+
+```yaml
+card_mod:
+  style: |
+    :host {
+      --my-harmony-routed-ring: transparent;
+    }
+```
+
+Use the direct entry when you want to control one device by hand without
+ending the current activity. Leave `device` empty for activities only.
+
 ## Activities Options
 
 As mentioned earlier, due to certain limitations, we can only control individual devices and not actions (except for channel changes), unlike what the physical remote control can do. To address this issue, specific keys can be overridden with functions that better match the device and the particular key within an activity.
@@ -105,7 +202,7 @@ For each defined activity under the activities section, the following options ar
 | `device_id` | number | **Required** | 77085993 | This is the device id below each defined individual activity |
 | `alt_device_id` | number | **Optional** | 59107742 | If you define this, you can send all button commands to an alternate device\_id. The following device\_id settings will take precedence. |
 | `volume_device_id` | number | **Optional** | 59107742 | If you define this, you can send VolumeUp and VolumeDown and Mute command to a different device. I.e. If you have an AV Receiver and you watch TV, you want to send all commands to TV, but volume change has to be send to AV Receiver. In this case, enter the device\_id of AV Receiver as volume\_device\_id here |
-| `channel_device_id` | number | **Optional** | 59107742 | Device for `ChannelUp` and `ChannelDown`. Channel numbers typed on the keypad are **not** sent to this device: with `useChangeChannel: true` the hub picks the device, with `false` the digits go to `alt_device_id`/`device_id`. |
+| `channel_device_id` | number | **Optional** | 59107742 | Device for `ChannelUp`, `ChannelDown` and channel digits typed on the keypad. With `useChangeChannel: true` the digits are sent through `harmony.change_channel` instead, and the hub picks the device. |
 | `guide_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `menu_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `ok_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
@@ -116,7 +213,7 @@ For each defined activity under the activities section, the following options ar
 | `media_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `color_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings |
 | `direction_device_id` | number | **Optional** | 59107742 | Same as the above device\_id settings, used for the direction pad (up, down, left, right) |
-| `useChangeChannel` | bool | **Optional** | false | `true` sends channel numbers through the `harmony.change_channel` service (the hub decides which device to use), `false` sends the digits as key commands to `alt_device_id`/`device_id` |
+| `useChangeChannel` | bool | **Optional** | false | `true` sends channel numbers through the `harmony.change_channel` service (the hub decides which device to use), `false` sends the digits as key commands to `channel_device_id` (or `alt_device_id`/`device_id` if that is not set) |
 | `Menu` | string | **Optional** | Enter | Below each activity you can define this option. In this example "Enter" will be send to default device\_id instead of 'Menu'. Remove the option for default. |
 | `Guide` | string | **Optional** | InputCD | Below each activity you can define this option. In this example "InputCD" will be send to default device\_id instead of 'Guide'. Remove the option for default. |
 | `Home` | string | **Optional** | InputGame | See comments to 'Guide'. Command to send instead of 'Home' |
