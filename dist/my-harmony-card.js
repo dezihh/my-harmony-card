@@ -4,7 +4,7 @@ function t(t,e,i,o){var n,s=arguments.length,r=s<3?e:null===o?o=Object.getOwnPro
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,o=Symbol(),n=new WeakMap;let s=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==o)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(i&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=n.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&n.set(e,t))}return t}toString(){return this.cssText}};const r=i?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new s("string"==typeof t?t:t+"",void 0,o))(e)})(t):t,{is:a,defineProperty:c,getOwnPropertyDescriptor:l,getOwnPropertyNames:d,getOwnPropertySymbols:h,getPrototypeOf:u}=Object,p=globalThis,b=p.trustedTypes,m=b?b.emptyScript:"",g=p.reactiveElementPolyfillSupport,v=(t,e)=>t,f={toAttribute(t,e){switch(e){case Boolean:t=t?m:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},_=(t,e)=>!a(t,e),y={attribute:!0,type:String,converter:f,reflect:!1,useDefault:!1,hasChanged:_};
+const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,o=Symbol(),n=new WeakMap;let s=class{constructor(t,e,i){if(this._$cssResult$=!0,i!==o)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(i&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=n.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&n.set(e,t))}return t}toString(){return this.cssText}};const r=i?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new s("string"==typeof t?t:t+"",void 0,o))(e)})(t):t,{is:a,defineProperty:c,getOwnPropertyDescriptor:l,getOwnPropertyNames:d,getOwnPropertySymbols:h,getPrototypeOf:u}=Object,p=globalThis,m=p.trustedTypes,b=m?m.emptyScript:"",g=p.reactiveElementPolyfillSupport,v=(t,e)=>t,f={toAttribute(t,e){switch(e){case Boolean:t=t?b:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},_=(t,e)=>!a(t,e),y={attribute:!0,type:String,converter:f,reflect:!1,useDefault:!1,hasChanged:_};
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -15,12 +15,12 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const w=globalThis,x=t=>t,k=w.trustedTypes,A=k?k.createPolicy("lit-html",{createHTML:t=>t}):void 0,C="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,O="?"+E,S=`<${O}>`,B=document,P=()=>B.createComment(""),D=t=>null===t||"object"!=typeof t&&"function"!=typeof t,T=Array.isArray,R="[ \t\n\f\r]",U=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,H=/-->/g,N=/>/g,M=RegExp(`>|${R}(?:([^\\s"'>=/]+)(${R}*=${R}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),j=/'/g,z=/"/g,I=/^(?:script|style|textarea|title)$/i,F=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),L=Symbol.for("lit-noChange"),W=Symbol.for("lit-nothing"),K=new WeakMap,V=B.createTreeWalker(B,129);function q(t,e){if(!T(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==A?A.createHTML(e):e}const G=(t,e)=>{const i=t.length-1,o=[];let n,s=2===e?"<svg>":3===e?"<math>":"",r=U;for(let e=0;e<i;e++){const i=t[e];let a,c,l=-1,d=0;for(;d<i.length&&(r.lastIndex=d,c=r.exec(i),null!==c);)d=r.lastIndex,r===U?"!--"===c[1]?r=H:void 0!==c[1]?r=N:void 0!==c[2]?(I.test(c[2])&&(n=RegExp("</"+c[2],"g")),r=M):void 0!==c[3]&&(r=M):r===M?">"===c[0]?(r=n??U,l=-1):void 0===c[1]?l=-2:(l=r.lastIndex-c[2].length,a=c[1],r=void 0===c[3]?M:'"'===c[3]?z:j):r===z||r===j?r=M:r===H||r===N?r=U:(r=M,n=void 0);const h=r===M&&t[e+1].startsWith("/>")?" ":"";s+=r===U?i+S:l>=0?(o.push(a),i.slice(0,l)+C+i.slice(l)+E+h):i+E+(-2===l?e:h)}return[q(t,s+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class Y{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let n=0,s=0;const r=t.length-1,a=this.parts,[c,l]=G(t,e);if(this.el=Y.createElement(c,i),V.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=V.nextNode())&&a.length<r;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(C)){const e=l[s++],i=o.getAttribute(t).split(E),r=/([.?@])?(.*)/.exec(e);a.push({type:1,index:n,name:r[2],strings:i,ctor:"."===r[1]?tt:"?"===r[1]?et:"@"===r[1]?it:Q}),o.removeAttribute(t)}else t.startsWith(E)&&(a.push({type:6,index:n}),o.removeAttribute(t));if(I.test(o.tagName)){const t=o.textContent.split(E),e=t.length-1;if(e>0){o.textContent=k?k.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],P()),V.nextNode(),a.push({type:2,index:++n});o.append(t[e],P())}}}else if(8===o.nodeType)if(o.data===O)a.push({type:2,index:n});else{let t=-1;for(;-1!==(t=o.data.indexOf(E,t+1));)a.push({type:7,index:n}),t+=E.length-1}n++}}static createElement(t,e){const i=B.createElement("template");return i.innerHTML=t,i}}function J(t,e,i=t,o){if(e===L)return e;let n=void 0!==o?i._$Co?.[o]:i._$Cl;const s=D(e)?void 0:e._$litDirective$;return n?.constructor!==s&&(n?._$AO?.(!1),void 0===s?n=void 0:(n=new s(t),n._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=n:i._$Cl=n),void 0!==n&&(e=J(t,n._$AS(t,e.values),n,o)),e}class X{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??B).importNode(e,!0);V.currentNode=o;let n=V.nextNode(),s=0,r=0,a=i[0];for(;void 0!==a;){if(s===a.index){let e;2===a.type?e=new Z(n,n.nextSibling,this,t):1===a.type?e=new a.ctor(n,a.name,a.strings,this,t):6===a.type&&(e=new ot(n,this,t)),this._$AV.push(e),a=i[++r]}s!==a?.index&&(n=V.nextNode(),s++)}return V.currentNode=B,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class Z{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=W,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=J(this,t,e),D(t)?t===W||null==t||""===t?(this._$AH!==W&&this._$AR(),this._$AH=W):t!==this._$AH&&t!==L&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>T(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==W&&D(this._$AH)?this._$AA.nextSibling.data=t:this.T(B.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=Y.createElement(q(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new X(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=K.get(t.strings);return void 0===e&&K.set(t.strings,e=new Y(t)),e}k(t){T(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const n of t)o===e.length?e.push(i=new Z(this.O(P()),this.O(P()),this,this.options)):i=e[o],i._$AI(n),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=x(t).nextSibling;x(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Q{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,n){this.type=1,this._$AH=W,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=n,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=W}_$AI(t,e=this,i,o){const n=this.strings;let s=!1;if(void 0===n)t=J(this,t,e,0),s=!D(t)||t!==this._$AH&&t!==L,s&&(this._$AH=t);else{const o=t;let r,a;for(t=n[0],r=0;r<n.length-1;r++)a=J(this,o[i+r],e,r),a===L&&(a=this._$AH[r]),s||=!D(a)||a!==this._$AH[r],a===W?t=W:t!==W&&(t+=(a??"")+n[r+1]),this._$AH[r]=a}s&&!o&&this.j(t)}j(t){t===W?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Q{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===W?void 0:t}}class et extends Q{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==W)}}class it extends Q{constructor(t,e,i,o,n){super(t,e,i,o,n),this.type=5}_$AI(t,e=this){if((t=J(this,t,e,0)??W)===L)return;const i=this._$AH,o=t===W&&i!==W||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,n=t!==W&&(i===W||o);o&&this.element.removeEventListener(this.name,this,i),n&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){J(this,t)}}const nt=w.litHtmlPolyfillSupport;nt?.(Y,Z),(w.litHtmlVersions??=[]).push("3.3.2");const st=globalThis;
+const w=globalThis,x=t=>t,k=w.trustedTypes,A=k?k.createPolicy("lit-html",{createHTML:t=>t}):void 0,C="$lit$",E=`lit$${Math.random().toFixed(9).slice(2)}$`,S="?"+E,O=`<${S}>`,B=document,D=()=>B.createComment(""),P=t=>null===t||"object"!=typeof t&&"function"!=typeof t,R=Array.isArray,H="[ \t\n\f\r]",U=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,T=/-->/g,N=/>/g,M=RegExp(`>|${H}(?:([^\\s"'>=/]+)(${H}*=${H}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),j=/'/g,z=/"/g,I=/^(?:script|style|textarea|title)$/i,L=(t=>(e,...i)=>({_$litType$:t,strings:e,values:i}))(1),F=Symbol.for("lit-noChange"),V=Symbol.for("lit-nothing"),K=new WeakMap,W=B.createTreeWalker(B,129);function q(t,e){if(!R(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==A?A.createHTML(e):e}const G=(t,e)=>{const i=t.length-1,o=[];let n,s=2===e?"<svg>":3===e?"<math>":"",r=U;for(let e=0;e<i;e++){const i=t[e];let a,c,l=-1,d=0;for(;d<i.length&&(r.lastIndex=d,c=r.exec(i),null!==c);)d=r.lastIndex,r===U?"!--"===c[1]?r=T:void 0!==c[1]?r=N:void 0!==c[2]?(I.test(c[2])&&(n=RegExp("</"+c[2],"g")),r=M):void 0!==c[3]&&(r=M):r===M?">"===c[0]?(r=n??U,l=-1):void 0===c[1]?l=-2:(l=r.lastIndex-c[2].length,a=c[1],r=void 0===c[3]?M:'"'===c[3]?z:j):r===z||r===j?r=M:r===T||r===N?r=U:(r=M,n=void 0);const h=r===M&&t[e+1].startsWith("/>")?" ":"";s+=r===U?i+O:l>=0?(o.push(a),i.slice(0,l)+C+i.slice(l)+E+h):i+E+(-2===l?e:h)}return[q(t,s+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),o]};class Y{constructor({strings:t,_$litType$:e},i){let o;this.parts=[];let n=0,s=0;const r=t.length-1,a=this.parts,[c,l]=G(t,e);if(this.el=Y.createElement(c,i),W.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(o=W.nextNode())&&a.length<r;){if(1===o.nodeType){if(o.hasAttributes())for(const t of o.getAttributeNames())if(t.endsWith(C)){const e=l[s++],i=o.getAttribute(t).split(E),r=/([.?@])?(.*)/.exec(e);a.push({type:1,index:n,name:r[2],strings:i,ctor:"."===r[1]?tt:"?"===r[1]?et:"@"===r[1]?it:Q}),o.removeAttribute(t)}else t.startsWith(E)&&(a.push({type:6,index:n}),o.removeAttribute(t));if(I.test(o.tagName)){const t=o.textContent.split(E),e=t.length-1;if(e>0){o.textContent=k?k.emptyScript:"";for(let i=0;i<e;i++)o.append(t[i],D()),W.nextNode(),a.push({type:2,index:++n});o.append(t[e],D())}}}else if(8===o.nodeType)if(o.data===S)a.push({type:2,index:n});else{let t=-1;for(;-1!==(t=o.data.indexOf(E,t+1));)a.push({type:7,index:n}),t+=E.length-1}n++}}static createElement(t,e){const i=B.createElement("template");return i.innerHTML=t,i}}function J(t,e,i=t,o){if(e===F)return e;let n=void 0!==o?i._$Co?.[o]:i._$Cl;const s=P(e)?void 0:e._$litDirective$;return n?.constructor!==s&&(n?._$AO?.(!1),void 0===s?n=void 0:(n=new s(t),n._$AT(t,i,o)),void 0!==o?(i._$Co??=[])[o]=n:i._$Cl=n),void 0!==n&&(e=J(t,n._$AS(t,e.values),n,o)),e}class X{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,o=(t?.creationScope??B).importNode(e,!0);W.currentNode=o;let n=W.nextNode(),s=0,r=0,a=i[0];for(;void 0!==a;){if(s===a.index){let e;2===a.type?e=new Z(n,n.nextSibling,this,t):1===a.type?e=new a.ctor(n,a.name,a.strings,this,t):6===a.type&&(e=new ot(n,this,t)),this._$AV.push(e),a=i[++r]}s!==a?.index&&(n=W.nextNode(),s++)}return W.currentNode=B,o}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class Z{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,o){this.type=2,this._$AH=V,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=o,this._$Cv=o?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=J(this,t,e),P(t)?t===V||null==t||""===t?(this._$AH!==V&&this._$AR(),this._$AH=V):t!==this._$AH&&t!==F&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):(t=>R(t)||"function"==typeof t?.[Symbol.iterator])(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==V&&P(this._$AH)?this._$AA.nextSibling.data=t:this.T(B.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,o="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=Y.createElement(q(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===o)this._$AH.p(e);else{const t=new X(o,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=K.get(t.strings);return void 0===e&&K.set(t.strings,e=new Y(t)),e}k(t){R(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,o=0;for(const n of t)o===e.length?e.push(i=new Z(this.O(D()),this.O(D()),this,this.options)):i=e[o],i._$AI(n),o++;o<e.length&&(this._$AR(i&&i._$AB.nextSibling,o),e.length=o)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t!==this._$AB;){const e=x(t).nextSibling;x(t).remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class Q{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,o,n){this.type=1,this._$AH=V,this._$AN=void 0,this.element=t,this.name=e,this._$AM=o,this.options=n,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=V}_$AI(t,e=this,i,o){const n=this.strings;let s=!1;if(void 0===n)t=J(this,t,e,0),s=!P(t)||t!==this._$AH&&t!==F,s&&(this._$AH=t);else{const o=t;let r,a;for(t=n[0],r=0;r<n.length-1;r++)a=J(this,o[i+r],e,r),a===F&&(a=this._$AH[r]),s||=!P(a)||a!==this._$AH[r],a===V?t=V:t!==V&&(t+=(a??"")+n[r+1]),this._$AH[r]=a}s&&!o&&this.j(t)}j(t){t===V?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class tt extends Q{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===V?void 0:t}}class et extends Q{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==V)}}class it extends Q{constructor(t,e,i,o,n){super(t,e,i,o,n),this.type=5}_$AI(t,e=this){if((t=J(this,t,e,0)??V)===F)return;const i=this._$AH,o=t===V&&i!==V||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,n=t!==V&&(i===V||o);o&&this.element.removeEventListener(this.name,this,i),n&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class ot{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){J(this,t)}}const nt=w.litHtmlPolyfillSupport;nt?.(Y,Z),(w.litHtmlVersions??=[]).push("3.3.2");const st=globalThis;
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */class rt extends ${constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let n=o._$litPart$;if(void 0===n){const t=i?.renderBefore??null;o._$litPart$=n=new Z(e.insertBefore(P(),t),t,void 0,i??{})}return n._$AI(t),n})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return L}}rt._$litElement$=!0,rt.finalized=!0,st.litElementHydrateSupport?.({LitElement:rt});const at=st.litElementPolyfillSupport;at?.({LitElement:rt}),(st.litElementVersions??=[]).push("4.2.2");
+ */class rt extends ${constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const o=i?.renderBefore??e;let n=o._$litPart$;if(void 0===n){const t=i?.renderBefore??null;o._$litPart$=n=new Z(e.insertBefore(D(),t),t,void 0,i??{})}return n._$AI(t),n})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return F}}rt._$litElement$=!0,rt.finalized=!0,st.litElementHydrateSupport?.({LitElement:rt});const at=st.litElementPolyfillSupport;at?.({LitElement:rt}),(st.litElementVersions??=[]).push("4.2.2");
 /**
  * @license
  * Copyright 2017 Google LLC
@@ -306,7 +306,9 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
     background-color: var(--remote-button-color);
     margin: auto;
     margin-top: calc(var(--remotewidth)/2.6);
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
     height: calc(var(--remotewidth)*2.01);
     width: calc(var(--remotewidth) - 9%);
     border-radius: calc(var(--remotewidth)/12); }
@@ -640,7 +642,36 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
 
   .popup-dialog img:hover {
     transform: scale(1.1); 
-  }   `;let bt=class extends rt{static get properties(){return{hass:{},_config:{}}}setConfig(t){this._config=t}configChanged(t){const e=Object.assign({},this._config);e[t.target.name.toString()]=t.target.value,this._config=e;const i=new CustomEvent("config-changed",{detail:{config:e},bubbles:!0,composed:!0});this.dispatchEvent(i)}colorsConfigChanged(t){var e;const i=Object.assign({},this._config);if(i.colors=Object.assign({},null!==(e=i.colors)&&void 0!==e?e:{}),"HA-ICON"===t.target.tagName){const e=t.target.getAttribute("data-input-name");if(e){const t=this.shadowRoot.querySelector(`[name="${e}"]`);t&&(t.value="",i.colors[e]="")}}else i.colors[t.target.name.toString()]=t.target.value;this._config=i;const o=new CustomEvent("config-changed",{detail:{config:i},bubbles:!0,composed:!0});this.dispatchEvent(o)}dimensionsConfigChanged(t){var e;const i=Object.assign({},this._config);i.dimensions=Object.assign({},null!==(e=i.dimensions)&&void 0!==e?e:{}),"border_width"===t.target.name?i.dimensions[t.target.name]=t.target.value+"px":i.dimensions[t.target.name]=t.target.value,this._config=i;const o=new CustomEvent("config-changed",{detail:{config:i},bubbles:!0,composed:!0});this.dispatchEvent(o)}getHarmonyEntityDropdown(t){let e=Object.keys(this.hass.states).filter(t=>t.startsWith("remote.")),i=F``;return""!=this._config.entity&&e.includes(t)||(i=F`<option value="" selected>- - - -</option>`),F`
+  }
+
+  /* Buttons routed to a device other than the activity default */
+  .routed-away {
+    box-shadow: inset 0 0 0 1px
+      var(
+        --my-harmony-routed-ring,
+        color-mix(in srgb, var(--primary-color, #03a9f4) 45%, transparent)
+      );
+  }
+
+  /* Icon in the activity overlay for the direct device entry */
+  .act-direct {
+    position: relative;
+    --act-direct-accent: var(--primary-color, #4fc3f7);
+  }
+
+  .act-direct .scrolling-text {
+    font-style: italic;
+    color: var(--act-direct-accent);
+  }
+
+  .act-direct-icon {
+    --mdc-icon-size: calc(var(--remotewidth) / 16);
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    color: var(--act-direct-accent);
+    pointer-events: none;
+  }   `;let mt=class extends rt{static get properties(){return{hass:{},_config:{}}}setConfig(t){this._config=t}configChanged(t){const e=Object.assign({},this._config);e[t.target.name.toString()]=t.target.value,this._config=e;const i=new CustomEvent("config-changed",{detail:{config:e},bubbles:!0,composed:!0});this.dispatchEvent(i)}colorsConfigChanged(t){var e;const i=Object.assign({},this._config);if(i.colors=Object.assign({},null!==(e=i.colors)&&void 0!==e?e:{}),"HA-ICON"===t.target.tagName){const e=t.target.getAttribute("data-input-name");if(e){const t=this.shadowRoot.querySelector(`[name="${e}"]`);t&&(t.value="",i.colors[e]="")}}else i.colors[t.target.name.toString()]=t.target.value;this._config=i;const o=new CustomEvent("config-changed",{detail:{config:i},bubbles:!0,composed:!0});this.dispatchEvent(o)}dimensionsConfigChanged(t){var e;const i=Object.assign({},this._config);i.dimensions=Object.assign({},null!==(e=i.dimensions)&&void 0!==e?e:{}),"border_width"===t.target.name?i.dimensions[t.target.name]=t.target.value+"px":i.dimensions[t.target.name]=t.target.value,this._config=i;const o=new CustomEvent("config-changed",{detail:{config:i},bubbles:!0,composed:!0});this.dispatchEvent(o)}getHarmonyEntityDropdown(t){let e=Object.keys(this.hass.states).filter(t=>t.startsWith("remote.")),i=L``;return""!=this._config.entity&&e.includes(t)||(i=L`<option value="" selected>- - - -</option>`),L`
       ${"Harmony Remote Entity"}:<br />
       <select
         name="entity"
@@ -651,14 +682,50 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         @change=${this.configChanged}
       >
         ${i}
-        ${e.map(t=>t!=this._config.entity?F`<option value="${t}">
+        ${e.map(t=>t!=this._config.entity?L`<option value="${t}">
               ${this.hass.states[t].attributes.friendly_name||t}
-            </option>`:F`<option value="${t}" selected>
+            </option>`:L`<option value="${t}" selected>
               ${this.hass.states[t].attributes.friendly_name||t}
             </option>`)}
       </select>
       <br /><br />
-    `}setRemoteName(t){return F`
+    `}getDeviceOptions(){var t,e,i,o;const n=null===(t=this._config)||void 0===t?void 0:t.entity,s=n?null===(i=null===(e=this.hass)||void 0===e?void 0:e.states)||void 0===i?void 0:i[n]:void 0,r=null===(o=null==s?void 0:s.attributes)||void 0===o?void 0:o.devices_list;return Array.isArray(r)?r:[]}renderDeviceInput(t,e,i){const o=this.getDeviceOptions();return L`
+      <input
+        type="text"
+        name="${t}"
+        id="${t}"
+        class="activity-input"
+        .value="${null!=e?e:""}"
+        list="devices-${t}"
+        placeholder="device name or id"
+        @change=${i}
+      />
+      <datalist id="devices-${t}">
+        ${o.map(t=>L`<option value="${t}"></option>`)}
+      </datalist>
+    `}deviceModeConfig(){var t;return L`
+      <hr
+        style="width: 100%; height: 1px; border: none; border-top: 1px solid #eeeeee;"
+      />
+      <div class="heading">Direct device (optional)</div>
+      ${this.renderDeviceInput("device",this._config.device,this.configChanged)}
+      <input
+        type="text"
+        name="device_name"
+        class="activity-input"
+        .value="${null!==(t=this._config.device_name)&&void 0!==t?t:""}"
+        placeholder="label for this entry (optional)"
+        @change=${this.configChanged}
+      />
+      <div style="margin-top: 4px">
+        <i
+          >Adds an extra entry to the activity list for direct control of this
+          device. Harmony activities keep working as macros. Leave empty to
+          show activities only.</i
+        >
+      </div>
+      <br />
+    `}setRemoteName(t){return L`
       ${"Remote Control Name (optional):"}<br />
       <input
         type="text"
@@ -669,7 +736,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         @input=${this.configChanged}
       />
       <br /><br />
-    `}selectColors(t){return t&&t.colors||(t={colors:{buttons:"",text:"",background:"",border:""}}),F`
+    `}selectColors(t){return t&&t.colors||(t={colors:{buttons:"",text:"",background:"",border:""}}),L`
       <hr style="width: 100%; height: 1px; border: none; border-top: 1px solid #eeeeee;">
       <div class="heading">Colors</div>
       <div>
@@ -691,7 +758,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
 
         <input type="color" name="popup" id="popup" .value="${t.colors.popup||""}"
             @input=${this.colorsConfigChanged}>
-        <ha-icon data-input-name="text" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
+        <ha-icon data-input-name="popup" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
         <label class="color-item" for="text">Popup Background Color</label>
       </div>
       <div>
@@ -700,7 +767,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         <ha-icon data-input-name="border" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
         <label class="color-item" for="border">Border Color</label>
       </div>
-    `}setDimensions(t){const e=Object.assign(Object.assign({},{scale:1,border_width:1}),t||{}),i=parseFloat(e.border_width);return F`
+    `}setDimensions(t){const e=Object.assign(Object.assign({},{scale:1,border_width:1}),t||{}),i=parseFloat(e.border_width);return L`
       <hr
         style="width: 100%; height: 1px; border: none; border-top: 1px solid #eeeeee;"
       />
@@ -735,7 +802,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         style="width: 40ch;"
       />
       <br />
-    `}importActivities(){return F`
+    `}importActivities(){return L`
       <hr
         style="width: 100%; height: 1px; border: none; border-top: 1px solid #eeeeee;"
       />
@@ -761,40 +828,34 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
       <hr
         style="width: 100%; height: 1px; border: none; border-top: 1px solid #eeeeee;"
       />
-    `}handleImportActivitiesCheckboxChange(t){const e=t.target;t.target.checked&&this.syncActivities(),setTimeout(()=>{e.checked=!1},200)}checkActivities(){const t=this._config.activities||{};if("object"!=typeof t||null===t)return F`
+    `}handleImportActivitiesCheckboxChange(t){const e=t.target;t.target.checked&&this.syncActivities(),setTimeout(()=>{e.checked=!1},200)}checkActivities(){const t=this._config.activities||{};if("object"!=typeof t||null===t)return L`
         <div class="import-activities">
           <label for="checkActivitiesNo">"No activities configured, yet"</label>
         </div>
-      `;const e=Object.keys(t);return e.length>0?F`
+      `;const e=Object.keys(t);return e.length>0?L`
         <div class="heading" style="margin-bottom: -10px;">Activities:</div>
         <br />
         <div class="outer-container">
-          ${e.map((e,i)=>{let o=Object.assign({},t[e]);if(!o.device_id){o.device_id="0";const t=Object.assign(Object.assign({},this._config.activities),{[e]:o});this._config=Object.assign(Object.assign({},this._config),{activities:t}),this.requestUpdate()}return F`
+          ${e.map((e,i)=>{const o=Object.assign({},t[e]);return L`
               <div class="activity-container">
                 <div class="form-group">
                   <label for="activity-${i}-key" class="activity-identifier"
                     >${e}:</label
                   >
-                  <input
-                    type="text"
-                    id="activity-${i}-device-id"
-                    .value="${o.device_id}"
-                    @input="${t=>this._updateDeviceId(e,t.target.value)}"
-                    maxlength="9"
-                    class="activity-input"
-                  />
+                  ${this.renderDeviceInput(`activity-${i}-device-id`,o.device_id,t=>this._updateDeviceId(e,t.target.value))}
                 </div>
               </div>
             `})}
         </div>
-      `:F`
+      `:L`
         <div class="import-activities">
           <label for="checkActivitiesNo">"No activities configured, yet"</label>
         </div>
-      `}_updateDeviceId(t,e){const i=Object.assign(Object.assign({},this._config.activities[t]),{device_id:e}),o=Object.assign(Object.assign({},this._config.activities),{[t]:i});this._config=Object.assign(Object.assign({},this._config),{activities:o}),this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}}))}syncActivities(){const t=this.hass.states[this._config.entity].attributes.activity_list||[],e=Object.assign({},this._config);e.activities?e.activities=Object.assign({},e.activities):e.activities={};const i=Object.keys(e.activities);t.filter(t=>!i.includes(t)).forEach(t=>{e.activities[t]={device_id:0}});i.filter(e=>!t.includes(e)).forEach(t=>{delete e.activities[t]}),this._config=e;const o=new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0});this.dispatchEvent(o)}render(){return this.hass&&this._config?F`
+      `}_updateDeviceId(t,e){const i=Object.assign(Object.assign({},this._config.activities[t]),{device_id:e}),o=Object.assign(Object.assign({},this._config.activities),{[t]:i});this._config=Object.assign(Object.assign({},this._config),{activities:o}),this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}}))}syncActivities(){const t=this.hass.states[this._config.entity].attributes.activity_list||[],e=Object.assign({},this._config);e.activities?e.activities=Object.assign({},e.activities):e.activities={};const i=Object.keys(e.activities);t.filter(t=>!i.includes(t)).forEach(t=>{e.activities[t]={device_id:0}});i.filter(e=>!t.includes(e)).forEach(t=>{delete e.activities[t]}),this._config=e;const o=new CustomEvent("config-changed",{detail:{config:this._config},bubbles:!0,composed:!0});this.dispatchEvent(o)}render(){return this.hass&&this._config?L`
       <div class="card-config">
         ${this.getHarmonyEntityDropdown(this._config.entity)}
         ${this.setRemoteName(this._config.name)}
+        ${this.deviceModeConfig()}
         ${this.selectColors(this._config)}
         ${this.setDimensions(this._config.dimensions)}
         ${this.importActivities()} ${this.checkActivities()}
@@ -827,18 +888,18 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
           </div>
         </div>
       </div>
-    `:F``}static get styles(){return pt}};bt=t([ct(ut)],bt);console.info("%c  My Harmony Remote Control Card  \n%c  version: 1.42.3  ","color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray");const mt=window;mt.customCards=mt.customCards||[],mt.customCards.push({type:ht,name:"My Harmony Remote Control Card",preview:!0,description:"Remote control card for Harmony Companion Remote Controllers"});let gt=class extends rt{static get styles(){return pt}static getConfigElement(){return document.createElement(ut)}static getStubConfig(t){let e=Object.keys(t.entities).filter(t=>t.startsWith("remote."));const i=e.length>0?e[0]:"";return{type:`custom:${ht}`,entity:i}}_getFavorites(){var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity];return((null==e?void 0:e.favorites)||[]).map((t,e)=>{const{number:i,service:o,image:n,data:s,target:r}=t,a=function(t,e){var i={};for(var o in t)Object.prototype.hasOwnProperty.call(t,o)&&e.indexOf(o)<0&&(i[o]=t[o]);if(null!=t&&"function"==typeof Object.getOwnPropertySymbols){var n=0;for(o=Object.getOwnPropertySymbols(t);n<o.length;n++)e.indexOf(o[n])<0&&Object.prototype.propertyIsEnumerable.call(t,o[n])&&(i[o[n]]=t[o[n]])}return i}(t,["number","service","image","data","target"]);return{number:i,service:o?Object.assign({name:"string"==typeof o?o:o.name,data:o.data,target:o.target},a):void 0,contextPath:o?`activities.${this._current_activity}.favorites[${e}]`:void 0,image:n}})}_handle123ButtonDown(t){"touchstart"===t.type&&t.touches.length>1||(t.preventDefault(),this.isButtonPressed=!0,this.buttonTimeout=setTimeout(()=>{this._popcard(),this.isButtonPressed=!1},500))}_handle123ButtonUp(t){t.preventDefault(),this.isButtonPressed&&(this._show_keypad=!this._show_keypad),this.buttonTimeout&&(clearTimeout(this.buttonTimeout),this.buttonTimeout=null),this.isButtonPressed=!1}_handleButtonDown(t,e){this.isButtonPressed=!0,this.buttonTimeout=setTimeout(()=>{this.isButtonPressed&&("media"===e?this._moreMediaPlayer():this._button(e),this.isButtonPressed=!1)},500)}_handleButtonUp(t){this.isButtonPressed&&this._button(t),this.buttonTimeout&&(clearTimeout(this.buttonTimeout),this.buttonTimeout=null),this.isButtonPressed=!1}static get properties(){return{hass:{},config:{},_show_keypad:{},_show_activity:{},_show_vol_text:{},_current_activity:{type:String}}}constructor(){super(),this.isButtonPressed=!1,this.buttonTimeout=null,this._show_keypad=!1,this._show_activity=!1,this._current_activity="",this.debug=!1,this._dialogOpen=!1}_toggleDialog(){this._dialogOpen=!this._dialogOpen,this.requestUpdate()}_popcard(){this._dialogOpen=!0,this.requestUpdate()}_moreMediaPlayer(){const t=this.config.activities[this._current_activity].player_name;t&&function(t,e,i,o){o=o||{},i=null==i?{}:i;var n=new Event(e,{bubbles:void 0===o.bubbles||o.bubbles,cancelable:Boolean(o.cancelable),composed:void 0===o.composed||o.composed});n.detail=i,t.dispatchEvent(n)}(this,"hass-more-info",{entityId:t}),this.debug&&console.log("More Info media_player called",t)}_renderTable(){const t=this._getFavorites(),e=this.config.favsize?this.config.favsize:50,i=this.config.faviconpath?this.config.faviconpath:"/local/community/my-harmony-card/stations/";return F`
+    `:L``}static get styles(){return pt}};mt=t([ct(ut)],mt);const bt=["Menu","Guide","Home","Info","OK","Back","Exit"],gt={VolumeUp:"volume_device_id",VolumeDown:"volume_device_id",Mute:"volume_device_id",ChannelUp:"channel_device_id",ChannelDown:"channel_device_id",Guide:"guide_device_id",Menu:"menu_device_id",OK:"ok_device_id",Back:"back_device_id",Exit:"exit_device_id",DirectionUp:"direction_device_id",DirectionDown:"direction_device_id",DirectionLeft:"direction_device_id",DirectionRight:"direction_device_id",Home:"home_device_id",Info:"info_device_id",Play:"media_device_id",Pause:"media_device_id",Stop:"media_device_id",Rewind:"media_device_id",FastForward:"media_device_id",Record:"media_device_id",Red:"color_device_id",Green:"color_device_id",Yellow:"color_device_id",Blue:"color_device_id"};function vt(t){return null!=t&&""!==t}function ft(t,e,i){if(vt(i))return i;if(!t)return;const o=/^[0-9]+$/.test(e)?"channel_device_id":gt[e],n=o?t[o]:void 0;return vt(n)?n:vt(t.alt_device_id)?t.alt_device_id:vt(t.device_id)?t.device_id:void 0}function _t(t){return"object"==typeof t&&null!==t}function yt(t,e,i){var o,n;const{number:s,service:r,image:a,data:c,target:l}=t,d=function(t,e){var i={};for(var o in t)Object.prototype.hasOwnProperty.call(t,o)&&e.indexOf(o)<0&&(i[o]=t[o]);if(null!=t&&"function"==typeof Object.getOwnPropertySymbols){var n=0;for(o=Object.getOwnPropertySymbols(t);n<o.length;n++)e.indexOf(o[n])<0&&Object.prototype.propertyIsEnumerable.call(t,o[n])&&(i[o[n]]=t[o[n]])}return i}(t,["number","service","image","data","target"]);if(!r)return{number:s,image:a};const h=_t(r)?r:{},u="string"==typeof r?r:h.name;return{number:s,service:Object.assign(Object.assign({},d),{name:u,data:null!==(o=h.data)&&void 0!==o?o:c,target:null!==(n=h.target)&&void 0!==n?n:l}),contextPath:`activities.${e}.favorites[${i}]`,image:a}}function $t(t){return null!=(e=null==t?void 0:t.device)&&""!==e;var e}function wt(t){if(!$t(t))return"";const e=null==t?void 0:t.device_name;return"string"==typeof e&&""!==e.trim()?e:String(null==t?void 0:t.device)}function xt(t,e){var i;return null===(i=null==t?void 0:t.activities)||void 0===i?void 0:i[e]}function kt(t,e,i=!1){return i&&$t(t)?wt(t):e}console.info("%c  My Harmony Remote Control Card  \n%c  version: 1.42.3  ","color: orange; font-weight: bold; background: black","color: white; font-weight: bold; background: dimgray");const At=window;At.customCards=At.customCards||[],At.customCards.push({type:ht,name:"My Harmony Remote Control Card",preview:!0,description:"Remote control card for Harmony Companion Remote Controllers"});let Ct=class extends rt{get _hasDirectDevice(){return $t(this.config)}_directLabel(){return wt(this.config)}static get styles(){return pt}static getConfigElement(){return document.createElement(ut)}static getStubConfig(t){let e=Object.keys(t.entities).filter(t=>t.startsWith("remote."));const i=e.length>0?e[0]:"";return{type:`custom:${ht}`,entity:i}}_getFavorites(){const t=xt(this.config,this._current_activity);return e=null==t?void 0:t.favorites,i=this._current_activity,Array.isArray(e)?e.filter(_t).map((t,e)=>yt(t,i,e)):[];var e,i}_handle123ButtonDown(t){"touchstart"===t.type&&t.touches.length>1||(t.preventDefault(),this.isButtonPressed=!0,this.buttonTimeout=setTimeout(()=>{this._popcard(),this.isButtonPressed=!1},500))}_handle123ButtonUp(t){t.preventDefault(),this.isButtonPressed&&(this._show_keypad=!this._show_keypad),this.buttonTimeout&&(clearTimeout(this.buttonTimeout),this.buttonTimeout=null),this.isButtonPressed=!1}_handleButtonDown(t,e){this.isButtonPressed=!0,this.buttonTimeout=setTimeout(()=>{this.isButtonPressed&&("media"===e?this._moreMediaPlayer():this._button(e),this.isButtonPressed=!1)},500)}_handleButtonUp(t){this.isButtonPressed&&this._button(t),this.buttonTimeout&&(clearTimeout(this.buttonTimeout),this.buttonTimeout=null),this.isButtonPressed=!1}static get properties(){return{hass:{},config:{},_show_keypad:{},_show_activity:{},_directActive:{type:Boolean},_show_vol_text:{},_current_activity:{type:String}}}constructor(){super(),this.isButtonPressed=!1,this.buttonTimeout=null,this._show_keypad=!1,this._show_activity=!1,this._directActive=!1,this._lastHubActivity=void 0,this._current_activity="",this.debug=!1,this._dialogOpen=!1}_toggleDialog(){this._dialogOpen=!this._dialogOpen,this.requestUpdate()}_popcard(){this._dialogOpen=!0,this.requestUpdate()}_moreMediaPlayer(){const t=xt(this.config,this._current_activity),e=null==t?void 0:t.player_name;e&&function(t,e,i,o){o=o||{},i=null==i?{}:i;var n=new Event(e,{bubbles:void 0===o.bubbles||o.bubbles,cancelable:Boolean(o.cancelable),composed:void 0===o.composed||o.composed});n.detail=i,t.dispatchEvent(n)}(this,"hass-more-info",{entityId:e}),this.debug&&console.log("More Info media_player called",e)}_renderTable(){const t=this._getFavorites(),e=this.config.favsize?this.config.favsize:50,i=this.config.faviconpath?this.config.faviconpath:"/local/community/my-harmony-card/stations/";return L`
       <!-- <tbody>  -->
       <!-- <div class="popup-container"> -->
-      ${t.map(t=>(t.service&&!0===this.debug&&console.log(`Func: _renderTable.Service: ${JSON.stringify(t.service)}`),F`
-          ${t.number?F`
+      ${t.map(t=>(t.service&&!0===this.debug&&console.log(`Func: _renderTable.Service: ${JSON.stringify(t.service)}`),L`
+          ${t.number?L`
                 <img
                   style="max-height: ${e}px;"
                   src="${i}${t.image}"
                   alt="${t.number}"
                   @click=${()=>this._chanchange(t.number)}
                 />
-              `:t.service?F`
+              `:t.service?L`
               <!-- ANCHOR v1.40 -->
                 <img
                   style="max-height: ${e}px;"
@@ -849,7 +910,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                 `:""}
         `))}
       <!-- </tbody>-->
-    `}_renderMissingEntity(){return F`
+    `}_renderMissingEntity(){return L`
       <div class="card">
         <div class="error">
           <ha-icon icon="mdi:alert-circle-outline"></ha-icon>
@@ -863,41 +924,41 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
           </div>
         </div>
       </div>
-    `}render(){var t,e,i,o;if(!this.hass||!this.config)return F``;const n=this.hass.states[this.config.entity];if(!n)return this.debug&&console.warn(`Func: render - Entity ${this.config.entity} not found in hass.states`),this._renderMissingEntity();this._current_activity=null!==(e=null===(t=n.attributes)||void 0===t?void 0:t.current_activity)&&void 0!==e?e:"";const s=null===(i=this.config.activities)||void 0===i?void 0:i[this._current_activity],r="PowerOff"===this._current_activity?"red":"green";this.debug&&console.log(`Func: render - Current Activity ${(null===(o=null==n?void 0:n.attributes)||void 0===o?void 0:o.current_activity)||"N/A"} - DeviceID: ${(null==s?void 0:s.device_id)||"N/A"}`);const a=this.config.dimensions&&this.config.dimensions.border_width?this.config.dimensions.border_width:"1px",c=this.config.dimensions&&this.config.dimensions.scale?this.config.dimensions.scale:1,l=Math.round(260*c)+"px",d=this.config.colors&&this.config.colors.background?this.config.colors.background:"var( --ha-card-background, var(--card-background-color, white) )",h=this.config.colors&&this.config.colors.border?this.config.colors.border:"var(--primary-text-color)",u=this.config.colors&&this.config.colors.buttons?this.config.colors.buttons:"var(--secondary-background-color)",p=this.config.colors&&this.config.colors.text?this.config.colors.text:"var(--primary-text-color)",b=this.config.colors&&this.config.colors.popup?this.config.colors.popup:"var(--popup-color)";return F`
+    `}render(){var t,e,i,o;if(!this.hass||!this.config)return L``;const n=this.hass.states[this.config.entity];if(!n)return this.debug&&console.warn(`Func: render - Entity ${this.config.entity} not found in hass.states`),this._renderMissingEntity();this._current_activity=null!==(e=null===(t=n.attributes)||void 0===t?void 0:t.current_activity)&&void 0!==e?e:"",void 0!==this._lastHubActivity&&this._lastHubActivity!==this._current_activity&&(this._directActive=!1),this._lastHubActivity=this._current_activity;const s=null===(i=this.config.activities)||void 0===i?void 0:i[this._current_activity],r="PowerOff"===this._current_activity?"red":"green";this.debug&&console.log(`Func: render - Current Activity ${(null===(o=null==n?void 0:n.attributes)||void 0===o?void 0:o.current_activity)||"N/A"} - DeviceID: ${(null==s?void 0:s.device_id)||"N/A"}`);const a=this.config.dimensions&&this.config.dimensions.border_width?this.config.dimensions.border_width:"1px",c=this.config.dimensions&&this.config.dimensions.scale?this.config.dimensions.scale:1,l=Math.round(260*c)+"px",d=this.config.colors&&this.config.colors.background?this.config.colors.background:"var( --ha-card-background, var(--card-background-color, white) )",h=this.config.colors&&this.config.colors.border?this.config.colors.border:"var(--primary-text-color)",u=this.config.colors&&this.config.colors.buttons?this.config.colors.buttons:"var(--secondary-background-color)",p=this.config.colors&&this.config.colors.text?this.config.colors.text:"var(--primary-text-color)",m=this.config.colors&&this.config.colors.popup?this.config.colors.popup:"var(--popup-color)";return L`
 
         <div class="card">
             <div class="page"
                  style="--remote-button-color: ${u};
                         --remote-text-color: ${p};
                         --remote-color: ${d};
-                        --popup-color: ${b};
+                        --popup-color: ${m};
                         --remotewidth: ${l};
                         --main-border-color: ${h};
                         --main-border-width: ${a};
                         --scale: ${c}">
 
                 <!-- Power row -->
-                ${this.config.name?F` <div class="tv_title" style="color:${p}">${this.config.name}</div> `:""}
-                    
+                ${this.config.name?L` <div class="tv_title" style="color:${p}">${this.config.name}</div> `:""}
+
                 <button class="btn-act-action button-style" style="color:${p}"
                   @click=${()=>this._show_activity=!this._show_activity} 
                   title=${this.config.tooltip?"Action Selector":""}>
-                  <span class="scrolling-text ${this._current_activity.length>19?"btn-act-scroll":""}">
-                    ${this._current_activity}
+                  <span class="scrolling-text ${kt(this.config,this._current_activity,this._directActive).length>19?"btn-act-scroll":""}">
+                    ${kt(this.config,this._current_activity,this._directActive)}
                   </span>
                 </button>
                 <div class="grid-container-power" style="--remotewidth: ${l}">                            
                 <!-- FIXME New Function for this button is waiting?-->
-                ${(()=>{const t=this.config.Special;return t?F` <button
+                ${(()=>{const t=this.config.Special;return t?L` <button
                         class="btn ripple  button-style"
                         @click=${()=>{t.service?this._service(t.service):t.command&&this._button(t.command)}}
                         title=${t.tooltip||""}
                       >
-                        ${t.icon?F`<ha-icon
+                        ${t.icon?L`<ha-icon
                               class="mdi-extra button-style"
                               icon="${t.icon}"
                             ></ha-icon>`:t.name}
-                      </button>`:F` <button
+                      </button>`:L` <button
                         class="btn ripple button-style"
                         style="background: transparent;"
                         disabled
@@ -921,55 +982,55 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                 </div>
 <!-- Buttons row -->
                        <!-- Extra BUTTONS #2  -->
-                       ${(()=>{var t,e,i,o;return(null===(t=this.config)||void 0===t?void 0:t.ButtonA)||(null===(e=this.config)||void 0===e?void 0:e.ButtonB)||(null===(i=this.config)||void 0===i?void 0:i.ButtonC)||(null===(o=this.config)||void 0===o?void 0:o.ButtonD)?F`
+                       ${(()=>{var t,e,i,o;return(null===(t=this.config)||void 0===t?void 0:t.ButtonA)||(null===(e=this.config)||void 0===e?void 0:e.ButtonB)||(null===(i=this.config)||void 0===i?void 0:i.ButtonC)||(null===(o=this.config)||void 0===o?void 0:o.ButtonD)?L`
                                <div class="grid-container-extra_2">
-                                 ${(()=>{const t=this.config.ButtonA;return t?F` <button
+                                 ${(()=>{const t=this.config.ButtonA;return t?L` <button
                                          class="ripple btn-extra button-style"
                                          @click=${()=>{t.service?this._service(t.service):t.command&&this._button(t.command)}}
                                          title=${t.tooltip||""}
                                        >
-                                         ${t.icon?F`<ha-icon
+                                         ${t.icon?L`<ha-icon
                                                class="mdi-extra button-style"
                                                icon="${t.icon}"
                                              ></ha-icon>`:t.name}
                                        </button>`:""})()}
-                                 ${(()=>{const t=this.config.ButtonB;return t?F` <button
+                                 ${(()=>{const t=this.config.ButtonB;return t?L` <button
                                          class="ripple btn-extra button-style"
                                          @click=${()=>{t.service?this._service(t.service):t.command&&this._button(t.command)}}
                                          title=${t.tooltip||""}
                                        >
-                                         ${t.icon?F`<ha-icon
+                                         ${t.icon?L`<ha-icon
                                                class="mdi-extra button-style"
                                                icon="${t.icon}"
                                              ></ha-icon>`:t.name}
                                        </button>`:""})()}
-                                 ${(()=>{const t=this.config.ButtonC;return t?F` <button
+                                 ${(()=>{const t=this.config.ButtonC;return t?L` <button
                                          class="ripple btn-extra button-style"
                                          @click=${()=>{t.service?this._service(t.service):t.command&&this._button(t.command)}}
                                          title=${t.tooltip||""}
                                        >
-                                         ${t.icon?F`<ha-icon
+                                         ${t.icon?L`<ha-icon
                                                class="mdi-extra button-style"
                                                icon="${t.icon}"
                                              ></ha-icon>`:t.name}
                                        </button>`:""})()}
-                                 ${(()=>{const t=this.config.ButtonD;return t?F` <button
+                                 ${(()=>{const t=this.config.ButtonD;return t?L` <button
                                          class="ripple btn-extra button-style"
                                          @click=${()=>{t.service?this._service(t.service):t.command&&this._button(t.command)}}
                                          title=${t.tooltip||""}
                                        >
-                                         ${t.icon?F`<ha-icon
+                                         ${t.icon?L`<ha-icon
                                                class="mdi-extra button-style"
                                                icon="${t.icon}"
                                              ></ha-icon>`:t.name}
                                        </button>`:""})()}
                                </div>
-                             `:F``})()}                       
+                             `:L``})()}                       
                        <!--  Extra buttons end -->
 <!-- Remote buttons -->
 
 
-                ${this._show_activity?F`
+                ${this._show_activity?L`
                         <!--  Activity Overlay  -->
                         <div class="grid-container-act">
                           <button
@@ -984,10 +1045,10 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                           </p>
 
                           <div class="grid-item-act">
-                            ${n.attributes.activity_list.map(t=>F`
+                            ${n.attributes.activity_list.map(t=>L`
                                 <button
                                   class="button-style 
-                                          ${n.attributes.current_activity===t?"btn-act-on":"btn-act ripple overlay"}"
+                                          ${this._directActive||n.attributes.current_activity!==t?"btn-act ripple overlay":"btn-act-on"}"
                                   @click=${()=>{this._select_activity(t),this._show_activity=!1}}
                                 >
                                   <span
@@ -999,81 +1060,99 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                                   </span>
                                 </button>
                               `)}
+                            ${this._hasDirectDevice?L`
+                                  <button
+                                    class="button-style act-direct ${this._directActive?"btn-act-on":"btn-act ripple overlay"}"
+                                    @click=${()=>{this._select_direct(),this._show_activity=!1}}
+                                  >
+                                    <ha-icon
+                                      class="act-direct-icon"
+                                      icon="mdi:remote"
+                                    ></ha-icon>
+                                    <span
+                                      class="${this._directLabel().length>18?"btn-act-scroll":""}"
+                                    >
+                                      <div class="scrolling-text">
+                                        ${this._directLabel()}
+                                      </div>
+                                    </span>
+                                  </button>
+                                `:""}
                           </div>
                         </div>
 
                         <!--  Activity Overlay END  -->
-                      `:F`
+                      `:L`
 
-                ${this._show_keypad?F`
+                ${this._show_keypad?L`
                         <!--  Keypad Overlay  -->
                         <div class="grid-container-keypad">
                           <button
-                            class="btn-keypad ripple button-style"
+                            class="btn-keypad ripple button-style${this._routedClass("1")}"
                             @click=${()=>this._chanchange("1")}
                           >
                             1
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("2")}"
                             @click=${()=>this._chanchange("2")}
                           >
                             2
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("3")}"
                             @click=${()=>this._chanchange("3")}
                           >
                             3
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("4")}"
                             @click=${()=>this._chanchange("4")}
                           >
                             4
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("5")}"
                             @click=${()=>this._chanchange("5")}
                           >
                             5
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("6")}"
                             @click=${()=>this._chanchange("6")}
                           >
                             6
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("7")}"
                             @click=${()=>this._chanchange("7")}
                           >
                             7
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("8")}"
                             @click=${()=>this._chanchange("8")}
                           >
                             8
                           </button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("9")}"
                             @click=${()=>this._chanchange("9")}
                           >
                             9
                           </button>
                           <button class="btn-keypad"></button>
                           <button
-                            class="btn-keypad button-style ripple"
+                            class="btn-keypad button-style ripple${this._routedClass("0")}"
                             @click=${()=>this._chanchange("0")}
                           >
                             0
                           </button>
                           <button class="btn-keypad"></button>
                         </div>
-                      `:F`
+                      `:L`
                         <!-- Call Popup Window -->
-                        ${this._dialogOpen?F`
+                        ${this._dialogOpen?L`
                               <ha-dialog
                                 class="popup-dialog"
                                 open
@@ -1108,26 +1187,26 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                             </svg>
                           </div>
                           <button
-                            class="btn ripple item_guide button-style"
-                            @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.Guide)&&void 0!==e?e:"Guide")}}
+                            class="btn ripple item_guide button-style${this._routedClass("Guide")}"
+                            @click=${()=>this._button("Guide")}
                             title=${this.config.tooltip?"Guide":""}
                           >
                             <ha-icon class="msc" icon="mdi:television-guide" />
                           </button>
 
                           <button
-                            class="btn ripple item_up button-style"
+                            class="btn ripple item_up button-style${this._routedClass("DirectionUp")}"
                             @click=${()=>this._button("DirectionUp")}
                           >
                             <ha-icon class="msc" icon="mdi:chevron-up" />
                           </button>
                           <!-- ANCHOR Menu-->
                           <button
-                            class="btn ripple item_act button-style"
-                            @mousedown=${t=>{var e,i;return this._handleButtonDown(null!==(i=null===(e=this.config.activities[this._current_activity])||void 0===e?void 0:e.Menu)&&void 0!==i?i:"Menu","media")}}
-                            @mouseup=${t=>{var e,i;return this._handleButtonUp(null!==(i=null===(e=this.config.activities[this._current_activity])||void 0===e?void 0:e.Menu)&&void 0!==i?i:"Menu")}}
-                            @touchstart=${t=>{var e,i;return this._handleButtonDown(null!==(i=null===(e=this.config.activities[this._current_activity])||void 0===e?void 0:e.Menu)&&void 0!==i?i:"Menu","media")}}
-                            @touchend=${t=>{var e,i;return this._handleButtonUp(null!==(i=null===(e=this.config.activities[this._current_activity])||void 0===e?void 0:e.Menu)&&void 0!==i?i:"Menu")}}
+                            class="btn ripple item_act button-style${this._routedClass("Menu")}"
+                            @mousedown=${t=>this._handleButtonDown("Menu","media")}
+                            @mouseup=${t=>this._handleButtonUp("Menu")}
+                            @touchstart=${t=>this._handleButtonDown("Menu","media")}
+                            @touchend=${t=>this._handleButtonUp("Menu")}
                             title=${this.config.tooltip?"Menu/Mediaplayer":""}
                           >
                             <ha-icon
@@ -1137,44 +1216,44 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                           </button>
 
                           <button
-                            class="btn ripple item_2_sx button-style"
+                            class="btn ripple item_2_sx button-style${this._routedClass("DirectionLeft")}"
                             @click=${()=>this._button("DirectionLeft")}
                           >
                             <ha-icon class="msc " icon="mdi:chevron-left" />
                           </button>
 
                           <div
-                            class="ok_button ripple item_2_c button-style"
+                            class="ok_button ripple item_2_c button-style${this._routedClass("OK")}"
                             style="border: solid 2px ${d}"
-                            @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.OK)&&void 0!==e?e:"OK")}}
+                            @click=${()=>this._button("OK")}
                           >
                             OK
                           </div>
 
                           <button
-                            class="btn ripple item_right button-style"
+                            class="btn ripple item_right button-style${this._routedClass("DirectionRight")}"
                             @click=${()=>this._button("DirectionRight")}
                           >
                             <ha-icon class="msc" icon="mdi:chevron-right" />
                           </button>
 
                           <button
-                            class="btn ripple item_back button-style"
-                            @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.Back)&&void 0!==e?e:"Back")}}
+                            class="btn ripple item_back button-style${this._routedClass("Back")}"
+                            @click=${()=>this._button("Back")}
                           >
                             <ha-icon class="msc" icon="mdi:undo-variant" />
                           </button>
 
                           <button
-                            class="btn ripple item_down button-style"
+                            class="btn ripple item_down button-style${this._routedClass("DirectionDown")}"
                             @click=${()=>this._button("DirectionDown")}
                           >
                             <ha-icon class="msc" icon="mdi:chevron-down" />
                           </button>
 
                           <button
-                            class="btn ripple item_exit button-style"
-                            @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.Exit)&&void 0!==e?e:"Exit")}}
+                            class="btn ripple item_exit button-style${this._routedClass("Exit")}"
+                            @click=${()=>this._button("Exit")}
                           >
                             EXIT
                           </button>
@@ -1183,196 +1262,196 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                        <!-- DIRECTION PAD END  -->
 
                        <!-- Extra BUTTONS  -->
-                       ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity];return(null==e?void 0:e.Button1)||(null==e?void 0:e.Button2)||(null==e?void 0:e.Button3)||(null==e?void 0:e.Button4)?F`
+                       ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity];return(null==e?void 0:e.Button1)||(null==e?void 0:e.Button2)||(null==e?void 0:e.Button3)||(null==e?void 0:e.Button4)?L`
                                <div class="grid-container-extra">
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button1;return i?F`
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button1;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button2;return i?F`
+                                   `:L``})()}
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button2;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button3;return i?F`
+                                   `:L``})()}
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button3;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button4;return i?F`
+                                   `:L``})()}
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button4;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
+                                   `:L``})()}
                                </div>
-                             `:F``})()}
+                             `:L``})()}
                        <!--  Extra buttons end -->
                        <!-- Extra BUTTONS  -->
-                       ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity];return(null==e?void 0:e.Button5)||(null==e?void 0:e.Button6)||(null==e?void 0:e.Button7)||(null==e?void 0:e.Button8)?F`
+                       ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity];return(null==e?void 0:e.Button5)||(null==e?void 0:e.Button6)||(null==e?void 0:e.Button7)||(null==e?void 0:e.Button8)?L`
                                <div class="grid-container-extra">
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button5;return i?F`
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button5;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button6;return i?F`
+                                   `:L``})()}
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button6;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button7;return i?F`
+                                   `:L``})()}
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button7;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
-                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button8;return i?F`
+                                   `:L``})()}
+                                 ${(()=>{var t;const e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity],i=null==e?void 0:e.Button8;return i?L`
                                      <button
                                        class="ripple btn-extra button-style"
                                        @click=${()=>{i.service?this._service(i.service):i.command&&this._button(i.command)}}
                                        title=${i.tooltip||""}
                                      >
-                                       ${i.icon?F`<ha-icon
+                                       ${i.icon?L`<ha-icon
                                              class="mdi-extra button-style"
                                              icon="${i.icon}"
                                            ></ha-icon>`:i.name}
                                      </button>
-                                   `:F``})()}
+                                   `:L``})()}
                                </div>
-                             `:F``})()}
+                             `:L``})()}
                        <!--  Extra buttons_2 end -->                       
                        
 
                        <!-- COLORED BUTTONS -->
-                        ${(()=>{var t,e;return(null===(e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity])||void 0===e?void 0:e.activateCButtons)?F`
+                        ${(()=>{var t,e;return(null===(e=null===(t=this.config.activities)||void 0===t?void 0:t[this._current_activity])||void 0===e?void 0:e.activateCButtons)?L`
                                 <div class="grid-container-color_btn">
                                   <button
-                                    class="btn-color ripple btn-red button-style"
+                                    class="btn-color ripple btn-red button-style${this._routedClass("Red")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${()=>this._button("Red")}
                                   ></button>
                                   <button
-                                    class="btn-color ripple btn-green button-style"
+                                    class="btn-color ripple btn-green button-style${this._routedClass("Green")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${()=>this._button("Green")}
                                   ></button>
                                   <button
-                                    class="btn-color ripple btn-yellow button-style"
+                                    class="btn-color ripple btn-yellow button-style${this._routedClass("Yellow")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${()=>this._button("Yellow")}
                                   ></button>
                                   <button
-                                    class="btn-color ripple btn-blue button-style"
+                                    class="btn-color ripple btn-blue button-style${this._routedClass("Blue")}"
                                     style="height: calc(var(--remotewidth) / 9);"
                                     @click=${()=>this._button("Blue")}
                                   ></button>
                                 </div>
-                              `:F``})()} 
+                              `:L``})()} 
                         <!-- COLORED BUTTONS END  -->
 
 
                     <div class="grid-container-volume-channel-control" >
-                         <button class="btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("VolumeUp")} btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%"
                             @click=${()=>this._button("VolumeUp")}>
                           <ha-icon class="msc" icon="mdi:plus"/></button>
 
-                         <button class="btn-flat flat-high ripple button-style" style="margin-top: 0px; height: 65%;"
-                            @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.Home)&&void 0!==e?e:"Home")}}
+                         <button class="${this._routedClass("Home")} btn-flat flat-high ripple button-style" style="margin-top: 0px; height: 65%"
+                            @click=${()=>this._button("Home")}
                             title=${this.config.tooltip?"Home":""}>
                            <ha-icon class="msc" icon="mdi:home" ></ha-icon> </button>
 
-                         <button class="btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("ChannelUp")} btn ripple button-style" style="border-radius: 50% 50% 0px 0px; margin: 0px auto 0px auto; height: 100%"
                             @click=${()=>this._button("ChannelUp")}>
                           <ha-icon class="msc" icon="mdi:chevron-up"/></button>
 
                          <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;">
                           <ha-icon class="msc" icon="mdi:volume-high"/></button>
 
-                         <button class="btn ripple button-style" Style="height: 100%;"
+                         <button class="${this._routedClass("Mute")} btn ripple button-style" Style="height: 100%"
                             @click=${()=>this._button("Mute")}><span>
                           <ha-icon class="msc" icon="mdi:volume-mute"></span></button>
 
                          <button class="btn" style="border-radius: 0px; cursor: default; margin: 0px auto 0px auto; height: 100%;">
                           <ha-icon class="msc" icon="mdi:parking"/></button>
 
-                         <button class="btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("VolumeDown")} btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%"
                             @click=${()=>this._button("VolumeDown")}>
                           <ha-icon class="msc" icon="mdi:minus"/></button>
 
-                         <button class="btn-flat flat-high ripple button-style" style="margin-bottom: 0px; height: 65%;"
-                            @click=${()=>{var t,e;return this._button(null!==(e=null===(t=this.config.activities[this._current_activity])||void 0===t?void 0:t.Info)&&void 0!==e?e:"Info")}}
+                         <button class="${this._routedClass("Info")} btn-flat flat-high ripple button-style" style="margin-bottom: 0px; height: 65%"
+                            @click=${()=>this._button("Info")}
                             title=${this.config.tooltip?"Info":""}>
                           <ha-icon class="msc" icon="mdi:information-variant"/></button>
 
-                         <button class="btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%;"
+                         <button class="${this._routedClass("ChannelDown")} btn ripple button-style" style="border-radius: 0px 0px 50% 50%;  margin: 0px auto 0px auto; height: 100%"
                             @click=${()=>this._button("ChannelDown")}>
                           <ha-icon class="msc" icon="mdi:chevron-down"/></button>
                         </div>
 
                     <!--  MEDIA CONTROL -->
                     <div class="grid-container-media-control">
-                         <button class="btn-flat flat-low ripple button-style" @click=${()=>this._button("Play")}><ha-icon class="msc" icon="mdi:play"/></button>
-                         <button class="btn-flat flat-low ripple button-style"  @click=${()=>this._button("Pause")}><ha-icon class="msc" icon="mdi:pause"/></button>
-                         <button class="btn-flat flat-low ripple button-style"  @click=${()=>this._button("Stop")}><ha-icon class="msc" icon="mdi:stop"/></button>
-                         <button class="btn-flat flat-low ripple button-style"
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Play")}" @click=${()=>this._button("Play")}><ha-icon class="msc" icon="mdi:play"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Pause")}"  @click=${()=>this._button("Pause")}><ha-icon class="msc" icon="mdi:pause"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Stop")}"  @click=${()=>this._button("Stop")}><ha-icon class="msc" icon="mdi:stop"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Rewind")}"
                             @mousedown=${t=>this._handleButtonDown("Rewind","SkipBack")}
                             @mouseup=${t=>this._handleButtonUp("Rewind")}
                             @touchstart=${t=>this._handleButtonDown("Rewind","SkipBack")}
                             @touchend=${t=>this._handleButtonUp("Rewind")}>
                           <ha-icon class="msc" icon="mdi:skip-backward" /> </button>
 
-                         <button class="btn-flat flat-low ripple button-style" style="color: red;" @click=${()=>this._button("Record")}><ha-icon class="msc" icon="mdi:record"/></button>
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("Record")}" style="color: red;" @click=${()=>this._button("Record")}><ha-icon class="msc" icon="mdi:record"/></button>
 
-                         <button class="btn-flat flat-low ripple button-style"
+                         <button class="btn-flat flat-low ripple button-style${this._routedClass("FastForward")}"
                            @mousedown=${t=>this._handleButtonDown("FastForward","SkipForward")}
                            @mouseup=${t=>this._handleButtonUp("FastForward")}
                            @touchstart=${t=>this._handleButtonDown("FastForward","SkipForward")}
@@ -1383,4 +1462,4 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
                         </div>
                     `}
             </div>
-         </div> `}_button(t){const e=this.config.activities[this._current_activity];let i;switch(t){case"VolumeUp":case"VolumeDown":case"Mute":i=e.volume_device_id?e.volume_device_id:void 0;break;case"ChannelUp":case"ChannelDown":i=e.channel_device_id?e.channel_device_id:void 0;break;case"Guide":i=e.guide_device_id?e.guide_device_id:void 0;break;case"Menu":i=e.menu_device_id?e.menu_device_id:void 0;break;case"OK":i=e.ok_device_id?e.ok_device_id:void 0;break;case"Back":i=e.back_device_id?e.back_device_id:void 0;break;case"Exit":i=e.exit_device_id?e.exit_device_id:void 0;break;case"DirectionUp":case"DirectionDown":case"DirectionLeft":case"DirectionRight":i=e.direction_device_id?e.direction_device_id:void 0;break;case"Home":i=e.home_device_id?e.home_device_id:void 0;break;case"Info":i=e.info_device_id?e.info_device_id:void 0;break;case"Play":case"Pause":case"Stop":case"Rewind":case"FastForward":case"Record":i=e.media_device_id?e.media_device_id:void 0;break;case"Red":case"Green":case"Yellow":case"Blue":i=e.color_device_id?e.color_device_id:void 0}i=i||e.alt_device_id||e.device_id,this.hass.callService("remote","send_command",{entity_id:this.config.entity,device:i,command:t}),this.debug&&console.log(`_button Pressed - DeviceId: ${i} - Command: ${t} - entity_id: ${this.config.entity}`)}_service(t){if(this.debug&&console.log(`Func:_service: ${JSON.stringify(t)}`),null==t?void 0:t.name){const[e,i]=t.name.split("."),o=Object.assign(Object.assign({},t.data),t.target);this.hass.callService(e,i,o)}}_select_activity(t){this.hass.callService("remote","turn_on",{entity_id:this.config.entity,activity:t})}_chanchange(t){const e=this.config.activities[this._current_activity];!!e.useChangeChannel&&e.useChangeChannel?(this.hass.callService("harmony","change_channel",{entity_id:this.config.entity,channel:t}),this.debug&&console.log(`_chanchange - entity_id: ${this.config.entity} - Channel: ${t}`)):this._button(t)}setConfig(t){if(!t.entity)throw new Error("Invalid configuration");this.config=t,this.debug=!0===t.debug}getCardSize(){return 15}};gt=t([ct(ht)],gt);
+         </div> `}_routedClass(t){if(this._directActive)return"";return function(t,e){if(!t)return!1;const i=ft(t,e);if(!vt(i))return!1;const o=vt(t.alt_device_id)?t.alt_device_id:t.device_id;return!vt(o)||String(i)!==String(o)}(xt(this.config,this._current_activity),t)?" routed-away":""}_button(t){const e=xt(this.config,this._current_activity),i=function(t,e){if(!t)return e;if(!bt.includes(e))return e;const i=t[e];return"string"==typeof i&&""!==i.trim()?i:e}(e,t),o=ft(e,t,this._directActive?this.config.device:void 0);void 0===o&&this.debug&&console.warn(`_button: no device for "${t}" - sending to activity (${this.config.entity})`),this.hass.callService("remote","send_command",{entity_id:this.config.entity,device:o,command:i}),this.debug&&console.log(`_button Pressed - DeviceId: ${o} - Command: ${i} - button: ${t} - entity_id: ${this.config.entity}`)}_service(t){if(this.debug&&console.log(`Func:_service: ${JSON.stringify(t)}`),null==t?void 0:t.name){const[e,i]=t.name.split("."),o=Object.assign(Object.assign({},t.data),t.target);this.hass.callService(e,i,o)}}_select_activity(t){this._directActive=!1,this.hass.callService("remote","turn_on",{entity_id:this.config.entity,activity:t})}_select_direct(){this._directActive=!0}_chanchange(t){!function(t,e=!1){return!e&&!0===(null==t?void 0:t.useChangeChannel)}(xt(this.config,this._current_activity),this._directActive)?this._button(t):(this.hass.callService("harmony","change_channel",{entity_id:this.config.entity,channel:t}),this.debug&&console.log(`_chanchange - entity_id: ${this.config.entity} - Channel: ${t}`))}setConfig(t){if(!t.entity)throw new Error("Invalid configuration");this.config=t,this.debug=!0===t.debug}getCardSize(){return 15}};Ct=t([ct(ht)],Ct);

@@ -126,6 +126,66 @@ class MYHarmonyCardEditor extends LitElement {
     `;
   }
 
+  getDeviceOptions(): string[] {
+    const entity = this._config?.entity;
+    const stateObj = entity ? this.hass?.states?.[entity] : undefined;
+    const devices = stateObj?.attributes?.devices_list;
+    return Array.isArray(devices) ? devices : [];
+  }
+
+  // Text input with the hub's device names as suggestions. Free text stays
+  // possible, so numeric ids keep working.
+  renderDeviceInput(name: string, value, handler) {
+    const options = this.getDeviceOptions();
+    return html`
+      <input
+        type="text"
+        name="${name}"
+        id="${name}"
+        class="activity-input"
+        .value="${value ?? ""}"
+        list="devices-${name}"
+        placeholder="device name or id"
+        @change=${handler}
+      />
+      <datalist id="devices-${name}">
+        ${options.map(
+          (device) => html`<option value="${device}"></option>`
+        )}
+      </datalist>
+    `;
+  }
+
+  deviceModeConfig() {
+    return html`
+      <hr
+        style="width: 100%; height: 1px; border: none; border-top: 1px solid #eeeeee;"
+      />
+      <div class="heading">Direct device (optional)</div>
+      ${this.renderDeviceInput(
+        "device",
+        this._config.device,
+        this.configChanged
+      )}
+      <input
+        type="text"
+        name="device_name"
+        class="activity-input"
+        .value="${this._config.device_name ?? ""}"
+        placeholder="label for this entry (optional)"
+        @change=${this.configChanged}
+      />
+      <div style="margin-top: 4px">
+        <i
+          >Adds an extra entry to the activity list for direct control of this
+          device. Harmony activities keep working as macros. Leave empty to
+          show activities only.</i
+        >
+      </div>
+      <br />
+    `;
+  }
+
   setRemoteName(remoteNameValue) {
     let heading = "Remote Control Name (optional):";
     return html`
@@ -173,7 +233,7 @@ class MYHarmonyCardEditor extends LitElement {
 
         <input type="color" name="popup" id="popup" .value="${config.colors.popup || ""}"
             @input=${this.colorsConfigChanged}>
-        <ha-icon data-input-name="text" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
+        <ha-icon data-input-name="popup" icon="mdi:trash-can-outline" @click=${this.colorsConfigChanged}></ha-icon>
         <label class="color-item" for="text">Popup Background Color</label>
       </div>
       <div>
@@ -294,16 +354,7 @@ class MYHarmonyCardEditor extends LitElement {
         <br />
         <div class="outer-container">
           ${activityKeys.map((key, index) => {
-            let activityData = { ...configActivities[key] };
-            if (!activityData.device_id) {
-              activityData.device_id = "0";
-              const updatedConfig = {
-                ...this._config.activities,
-                [key]: activityData,
-              };
-              this._config = { ...this._config, activities: updatedConfig };
-              this.requestUpdate();
-            }
+            const activityData = { ...configActivities[key] };
 
             return html`
               <div class="activity-container">
@@ -311,14 +362,11 @@ class MYHarmonyCardEditor extends LitElement {
                   <label for="activity-${index}-key" class="activity-identifier"
                     >${key}:</label
                   >
-                  <input
-                    type="text"
-                    id="activity-${index}-device-id"
-                    .value="${activityData.device_id}"
-                    @input="${(e) => this._updateDeviceId(key, e.target.value)}"
-                    maxlength="9"
-                    class="activity-input"
-                  />
+                  ${this.renderDeviceInput(
+                    `activity-${index}-device-id`,
+                    activityData.device_id,
+                    (e) => this._updateDeviceId(key, e.target.value)
+                  )}
                 </div>
               </div>
             `;
@@ -397,6 +445,7 @@ class MYHarmonyCardEditor extends LitElement {
       <div class="card-config">
         ${this.getHarmonyEntityDropdown(this._config.entity)}
         ${this.setRemoteName(this._config.name)}
+        ${this.deviceModeConfig()}
         ${this.selectColors(this._config)}
         ${this.setDimensions(this._config.dimensions)}
         ${this.importActivities()} ${this.checkActivities()}

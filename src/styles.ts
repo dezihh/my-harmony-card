@@ -280,7 +280,9 @@ export const styles = css`
     background-color: var(--remote-button-color);
     margin: auto;
     margin-top: calc(var(--remotewidth)/2.6);
-    overflow: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
     height: calc(var(--remotewidth)*2.01);
     width: calc(var(--remotewidth) - 9%);
     border-radius: calc(var(--remotewidth)/12); }
@@ -614,4 +616,33 @@ export const styles = css`
 
   .popup-dialog img:hover {
     transform: scale(1.1); 
+  }
+
+  /* Buttons routed to a device other than the activity default */
+  .routed-away {
+    box-shadow: inset 0 0 0 1px
+      var(
+        --my-harmony-routed-ring,
+        color-mix(in srgb, var(--primary-color, #03a9f4) 45%, transparent)
+      );
+  }
+
+  /* Icon in the activity overlay for the direct device entry */
+  .act-direct {
+    position: relative;
+    --act-direct-accent: var(--primary-color, #4fc3f7);
+  }
+
+  .act-direct .scrolling-text {
+    font-style: italic;
+    color: var(--act-direct-accent);
+  }
+
+  .act-direct-icon {
+    --mdc-icon-size: calc(var(--remotewidth) / 16);
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    color: var(--act-direct-accent);
+    pointer-events: none;
   }   `;
